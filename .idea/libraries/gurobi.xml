@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="gurobi">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/IdeaProjects/libs/gurobi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
