@@ -1,12 +1,15 @@
 package processor;
 
 import grb.GurobiExecutor;
+import org.apache.commons.lang3.tuple.Pair;
 import parser.DocumentParser;
 import parser.Document;
 import parser.OutputDocument;
 import shapes.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @auther lianmeng
@@ -47,6 +50,14 @@ public class Processor {
     public OutputDocument processToOutputPre(String caseName, PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles) {
         OutputDocument output = new OutputDocument(caseName);
         pseudoBaseVariablesDetermination(master, slaves, obstacles);
+        detectOverlappedObstacleWithinPathArea(obstacles);
+
+        /*
+        Debug
+         */
+        for (Obstacle o : obstacles) {
+            System.out.println(o);
+        }
 
 
         return output;
@@ -62,59 +73,42 @@ public class Processor {
         for (int i = 0; i < obstacles.size(); ++i) {
             Obstacle cur_o = obstacles.get(i);
 
-            for (int j = i + 1; j < obstacles.size(); ++j) {
+            for (int j = 0; j < obstacles.size(); ++j) {
                 Obstacle other_o = obstacles.get(j);
+                if (!other_o.getName().equals(cur_o.getName())) {
+                    Map<BaseType, ArrayList<Obstacle>> typeToArrayMap = new HashMap<>();
+                    //cur_o's LowerLeft
+                    typeToArrayMap.put(BaseType.lowerLeft, overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getLowerLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getLowerRight(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getUpperLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getUpperRight(), cur_o, other_o));
+                    cur_o.addToMapLowerLeftPathAreaOs(other_o, typeToArrayMap);
 
-                //LL and LL
-                PseudoBase cur_o_LL = cur_o.getLowerLeft();
-                PseudoBase other_o_LL = other_o.getLowerLeft();
 
-                PseudoBase p1 = cur_o_LL;
-                PseudoBase p3 = other_o_LL;
-                PseudoBase p2 = null, p4 = null;
-                int dx = Math.abs(cur_o_LL.getX() - other_o_LL.getX());
-                int dy = Math.abs(cur_o_LL.getY() - other_o_LL.getY());
-                if (dx == dy) {
-                    p2 = cur_o_LL;
-                    p4 = other_o_LL;
-                }
+                    //cur_o's LowerRight
+                    typeToArrayMap = new HashMap<>();
+                    typeToArrayMap.put(BaseType.lowerLeft, overlappedObstacles(obstacles, cur_o.getLowerRight(), other_o.getLowerLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getLowerRight(), other_o.getLowerRight(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getLowerRight(), other_o.getUpperLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getLowerRight(), other_o.getUpperRight(), cur_o, other_o));
+                    cur_o.addToMapLowerRightPathAreaOs(other_o, typeToArrayMap);
 
-                else {
-                    int plusDY = (int) Math.max(dy * Math.signum(dx - dy), 0);
-                    int plusDx = (int) Math.max(dx * Math.signum(dy - dx), 0);
-                    //other: lowerRight
-                    if (other_o_LL.getX() > cur_o_LL.getX() && other_o_LL.getY() < cur_o_LL.getY()) {
-                        p2 = new PseudoBase(other_o_LL.getX() - plusDY, cur_o_LL.getY() - plusDx);
-                        p4 = new PseudoBase(cur_o_LL.getX() - plusDY, other_o_LL.getY() - plusDx);
-                    }
-                    //other: upperRight
-                    else if (other_o_LL.getX() > cur_o_LL.getX() && other_o_LL.getY() > cur_o_LL.getY()) {
-                        p2 = new PseudoBase(cur_o_LL.getX() + plusDY, other_o_LL.getY() - plusDx);
-                        p4 = new PseudoBase(other_o_LL.getX() - plusDY, cur_o_LL.getY() + plusDx);
-                    }
-                    //other: upperLeft
-                    else if (other_o_LL.getX() < cur_o_LL.getX() && other_o_LL.getY() > cur_o_LL.getY()) {
-                        p2 = new PseudoBase(cur_o_LL.getX() - plusDY, other_o_LL.getY() - plusDx);
-                        p4 = new PseudoBase(other_o_LL.getX() + plusDY, cur_o_LL.getY() + plusDx);
-                    }
-                    //other: lowerLeft
-                    else if (other_o_LL.getX() < cur_o_LL.getX() && other_o_LL.getY() < cur_o_LL.getY()){
-                        p2 = new PseudoBase(other_o_LL.getX() + plusDY, cur_o_LL.getY() - plusDx);
-                        p4 = new PseudoBase(cur_o_LL.getX() - plusDY, other_o_LL.getY() + plusDx);
-                    }
-                    else {
-                        System.err.println("Another Type of Parallelogram!!");
-                    }
+                    //cur_o's UpperLeft
+                    typeToArrayMap = new HashMap<>();
+                    typeToArrayMap.put(BaseType.lowerLeft, overlappedObstacles(obstacles, cur_o.getUpperLeft(), other_o.getLowerLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getUpperLeft(), other_o.getLowerRight(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getUpperLeft(), other_o.getUpperLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getUpperLeft(), other_o.getUpperRight(), cur_o, other_o));
+                    cur_o.addToMapUpperLeftPathAreaOs(other_o, typeToArrayMap);
 
-                }
+                    //cur_o's UpperRight
+                    typeToArrayMap = new HashMap<>();
+                    typeToArrayMap.put(BaseType.lowerLeft, overlappedObstacles(obstacles, cur_o.getUpperRight(), other_o.getLowerLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getUpperRight(), other_o.getLowerRight(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getUpperRight(), other_o.getUpperLeft(), cur_o, other_o));
+                    typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getUpperRight(), other_o.getUpperRight(), cur_o, other_o));
+                    cur_o.addToMapUpperRightPathAreaOs(other_o, typeToArrayMap);
 
-                ArrayList<Obstacle> overlappedO = new ArrayList<>();
-                for (Obstacle o : obstacles) {
-                    //check if one of the edges of obstacles v.s., one of the edges of the parallelogram
-                    if (segmentOverlappedObstacle(p1, p2, overlappedO, o)) continue;
-                    if (segmentOverlappedObstacle(p2, p3, overlappedO, o)) continue;
-                    if (segmentOverlappedObstacle(p3, p4, overlappedO, o)) continue;
-                    if (segmentOverlappedObstacle(p4, p1, overlappedO, o)) continue;
 
                 }
 
@@ -125,24 +119,108 @@ public class Processor {
 
     }
 
-    private boolean segmentOverlappedObstacle(PseudoBase p1, PseudoBase p2, ArrayList<Obstacle> overlappedO, Obstacle o) {
+    private ArrayList<Obstacle> overlappedObstacles(ArrayList<Obstacle> obstacles, PseudoBase cur_node, PseudoBase other_node, Obstacle cur_o, Obstacle other_o) {
+        PseudoBase p1 = cur_node;
+        PseudoBase p3 = other_node;
+        PseudoBase p2 = null, p4 = null;
+        int dx = Math.abs(cur_node.getX() - other_node.getX());
+        int dy = Math.abs(cur_node.getY() - other_node.getY());
+        if (dx == dy || cur_node.getX() == other_node.getX() || cur_node.getY() == other_node.getY()) {
+            p2 = cur_node;
+            p4 = other_node;
+        } else {
+            int plusDY = (int) Math.max(dy * Math.signum(dx - dy), 0);
+            int plusDx = (int) Math.max(dx * Math.signum(dy - dx), 0);
+            //other: lowerRight
+            if (other_node.getX() > cur_node.getX() && other_node.getY() < cur_node.getY()) {
+                p2 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() - plusDx);
+                p4 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
+            }
+            //other: upperRight
+            else if (other_node.getX() > cur_node.getX() && other_node.getY() > cur_node.getY()) {
+                p2 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
+                p4 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() + plusDx);
+            }
+            //other: upperLeft
+            else if (other_node.getX() < cur_node.getX() && other_node.getY() > cur_node.getY()) {
+                p2 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() - plusDx);
+                p4 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() + plusDx);
+            }
+            //other: lowerLeft
+            else if (other_node.getX() < cur_node.getX() && other_node.getY() < cur_node.getY()) {
+                p2 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() - plusDx);
+                p4 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() + plusDx);
+            } else {
+                System.err.println("Another Type of Parallelogram!!");
+                System.out.println("cur_node = (" + cur_node.getX() + ", " + cur_node.getY() + "), other_node = (" + other_node.getX() + ", " + other_node.getY() + ")");
+            }
+
+        }
+
+        ArrayList<Obstacle> overlappedO = new ArrayList<>();
+        for (Obstacle o : obstacles) {
+            //check if one of the edges of obstacles v.s., one of the edges of the parallelogram
+            if (segmentOverlappedObstacle(p1, p2, overlappedO, o)) continue;
+            if (segmentOverlappedObstacle(p2, p3, overlappedO, o)) continue;
+            if (segmentOverlappedObstacle(p3, p4, overlappedO, o)) continue;
+            if (segmentOverlappedObstacle(p4, p1, overlappedO, o)) continue;
+
+        }
+        //Left -- Right
+        if (cur_node.getX() <= other_node.getX()){
+            if (cur_node.getType() == BaseType.lowerRight || cur_node.getType() == BaseType.upperRight){
+                overlappedO.remove(cur_o);
+            }
+            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.upperLeft){
+                overlappedO.remove(other_o);
+            }
+        }else {
+            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.upperLeft){
+                overlappedO.remove(cur_o);
+            }
+            if (other_node.getType() == BaseType.lowerRight || other_node.getType() == BaseType.upperRight){
+                overlappedO.remove(other_o);
+            }
+        }
+        //Up -- Down
+        if (cur_node.getY() <= other_node.getY()){
+            if (cur_node.getType() == BaseType.upperLeft || cur_node.getType() == BaseType.upperRight){
+                overlappedO.remove(cur_o);
+            }
+            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.lowerRight){
+                overlappedO.remove(other_o);
+            }
+        }else {
+            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.lowerRight){
+                overlappedO.remove(cur_o);
+            }
+            if (other_node.getType() == BaseType.upperLeft || other_node.getType() == BaseType.upperRight){
+                overlappedO.remove(other_o);
+            }
+
+        }
+
+        return overlappedO;
+    }
+
+    private boolean segmentOverlappedObstacle(PseudoBase node1, PseudoBase node2, ArrayList<Obstacle> overlappedO, Obstacle o) {
         //p1_p2 vs o_LL_LR
-        if (doIntersect(p1, o.getLowerLeft(), p2, o.getLowerRight())) {
+        if (doIntersect(node1, node2, o.getLowerLeft(), o.getLowerRight())) {
             overlappedO.add(o);
             return true;
         }
         //p1_p2 vs o_LL_UL
-        if (doIntersect(p1, o.getLowerLeft(), p2, o.getUpperLeft())) {
+        if (doIntersect(node1, node2, o.getLowerLeft(), o.getUpperLeft())) {
             overlappedO.add(o);
             return true;
         }
         //p1_p2 vs o_UR_UL
-        if (doIntersect(p1, o.getUpperRight(), p2, o.getUpperLeft())) {
+        if (doIntersect(node1, node2, o.getUpperRight(), o.getUpperLeft())) {
             overlappedO.add(o);
             return true;
         }
         //p1_p2 vs o_UR_LR
-        if (doIntersect(p1, o.getUpperRight(), p2, o.getLowerRight())) {
+        if (doIntersect(node1, node2, o.getUpperRight(), o.getLowerRight())) {
             overlappedO.add(o);
             return true;
         }
