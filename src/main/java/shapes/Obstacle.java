@@ -115,6 +115,38 @@ public class Obstacle {
         this.map_oo_corner_dist.put(o, distArray);
     }
 
+    public Map<Obstacle, Pair<BaseType, ArrayList<Obstacle>>[]> getMapLowerLeftPathAreaOs() {
+        return mapLowerLeftPathAreaOs;
+    }
+
+    public void addToMapLowerLeftPathAreaOs(Obstacle o, Pair<BaseType, ArrayList<Obstacle>>[] array) {
+        this.mapLowerLeftPathAreaOs.put(o, array);
+    }
+
+    public Map<Obstacle, Pair<BaseType, ArrayList<Obstacle>>[]> getMapLowerRightPathAreaOs() {
+        return mapLowerRightPathAreaOs;
+    }
+
+    public void addToMapLowerRightPathAreaOs(Obstacle o, Pair<BaseType, ArrayList<Obstacle>>[] array) {
+        this.mapLowerRightPathAreaOs.put(o, array);
+    }
+
+    public Map<Obstacle, Pair<BaseType, ArrayList<Obstacle>>[]> getMapUpperLeftPathAreaOs() {
+        return mapUpperLeftPathAreaOs;
+    }
+
+    public void addToMapUpperLeftPathAreaOs(Obstacle o, Pair<BaseType, ArrayList<Obstacle>>[] array) {
+        this.mapUpperLeftPathAreaOs.put(o, array);
+    }
+
+    public Map<Obstacle, Pair<BaseType, ArrayList<Obstacle>>[]> getMapUpperRightPathAreaOs() {
+        return mapUpperRightPathAreaOs;
+    }
+
+    public void addToMapUpperRightPathAreaOs(Obstacle o, Pair<BaseType, ArrayList<Obstacle>>[] array) {
+        this.mapUpperRightPathAreaOs.put(o, array);
+    }
+
     public String convertMapPairToString(Map<Obstacle, Pair<BaseType, Integer>[]> mapPair) {
 
         StringBuilder mapAsString = new StringBuilder("||");
