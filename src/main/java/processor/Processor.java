@@ -52,6 +52,10 @@ public class Processor {
         pseudoBaseVariablesDetermination(master, slaves, obstacles);
         detectOverlappedObstacleWithinPathArea(obstacles);
 
+
+
+
+
         /*
         Debug
          */
@@ -64,9 +68,9 @@ public class Processor {
     }
 
     /**
-     * Determine the overlapped obstacle within the PathArea
+     * Determine the overlapped obstacles within the PathArea
      *
-     * @param obstacles
+     * @param obstacles ArrayList of obstacles
      */
     public void detectOverlappedObstacleWithinPathArea(ArrayList<Obstacle> obstacles) {
 

@@ -181,7 +181,7 @@ public class Obstacle {
         this.mapUpperRightL.put(o, map);
     }
 
-    public String convertMapPairToString(Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> map) {
+    public String convertMapMapOArrayToString(Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> map) {
 
         StringBuilder mapAsString = new StringBuilder("||");
         for (Obstacle o : map.keySet()) {
@@ -200,6 +200,21 @@ public class Obstacle {
         return mapAsString.toString();
     }
 
+    public String convertMapMapDToString(Map<Obstacle, Map<BaseType, Double>> map) {
+
+        StringBuilder mapAsString = new StringBuilder("||");
+        for (Obstacle o : map.keySet()) {
+            Map<BaseType, Double> subMap = map.get(o);
+            for (BaseType type : subMap.keySet()) {
+                mapAsString.append(this.getName() + "-" + o.getName() + "." + type.toString() + "{" + subMap.get(type) + "}");
+                mapAsString.append("\n");
+            }
+        }
+        mapAsString.append("||");
+        mapAsString.append("\n");
+        return mapAsString.toString();
+    }
+
 
     @Override
     public String toString() {
@@ -209,10 +224,14 @@ public class Obstacle {
                 ", maxX=" + maxX +
                 ", minY=" + minY +
                 ", maxY=" + maxY + "\n" +
-                //"LowerLeft_Os = " + convertMapPairToString(mapLowerLeftPathAreaOs) +
-                //"LowerRight_Os = " + convertMapPairToString(mapLowerRightPathAreaOs) +
-                //"UpperLeft_Os = " + convertMapPairToString(mapUpperLeftPathAreaOs) +
-                //"UpperRight_Os = " + convertMapPairToString(mapUpperRightPathAreaOs) +
+                //"LowerLeft_Os = " + convertMapMapOArrayToString(mapLowerLeftPathAreaOs) +
+                //"LowerRight_Os = " + convertMapMapOArrayToString(mapLowerRightPathAreaOs) +
+                //"UpperLeft_Os = " + convertMapMapOArrayToString(mapUpperLeftPathAreaOs) +
+                //"UpperRight_Os = " + convertMapMapOArrayToString(mapUpperRightPathAreaOs) +
+                "LowerLeft_Length = " + convertMapMapDToString(mapLowerLeftL) +
+                "LowerRight_Length = " + convertMapMapDToString(mapLowerRightL) +
+                "UpperLeft_Length = " + convertMapMapDToString(mapUpperLeftL) +
+                "UpperRight_Length = " + convertMapMapDToString(mapUpperRightL) +
                 '}';
     }
 }
