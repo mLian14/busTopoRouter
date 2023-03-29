@@ -1,13 +1,13 @@
 package processor;
 
 import grb.GurobiExecutor;
-import org.apache.commons.lang3.tuple.Pair;
 import parser.DocumentParser;
 import parser.Document;
 import parser.OutputDocument;
 import shapes.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +22,13 @@ public class Processor {
     private final DocumentParser parser;
     private final static int M = 999999;
     private OutputDocument output;
+
+    enum SortType {
+        LeftToRight,
+        RightToLeft,
+        TopToBottom,
+        BottomToTop
+    }
 
 
     public Processor() {
@@ -58,19 +65,6 @@ public class Processor {
          */
         detectOverlappedObstacleWithinPathArea(obstacles);
 
-        for (Obstacle cur_o : obstacles){
-
-
-            for (Obstacle des_o : obstacles){
-
-
-
-
-
-            }
-
-        }
-
 
 
 
@@ -78,12 +72,101 @@ public class Processor {
         /*
         Debug
          */
-        for (Obstacle o : obstacles) {
+        /*for (Obstacle o : obstacles) {
             System.out.println(o);
-        }
+        }*/
 
 
         return output;
+    }
+
+
+    public void sortedObstacles(ArrayList<Obstacle> targetObstacles, SortType type) {
+
+        if (type == SortType.LeftToRight) {
+            for (int i = 0; i < targetObstacles.size(); ++i) {
+
+                boolean flag = true;
+                while (flag) {
+                    Obstacle cur_o = targetObstacles.get(i);
+                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
+                        Obstacle other_o = targetObstacles.get(j);
+                        if (cur_o.onLeft(other_o)) {
+                            Collections.swap(targetObstacles, i, j);
+                            break;
+                        }
+                        if (j == targetObstacles.size() - 1) {
+                            flag = false;
+                        }
+                    }
+                    if (i == targetObstacles.size() - 1) flag = false;
+                }
+            }
+
+        }else if (type == SortType.RightToLeft){
+
+            for (int i = 0; i < targetObstacles.size(); ++i) {
+
+                boolean flag = true;
+                while (flag) {
+                    Obstacle cur_o = targetObstacles.get(i);
+                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
+                        Obstacle other_o = targetObstacles.get(j);
+                        if (cur_o.onRight(other_o)) {
+                            Collections.swap(targetObstacles, i, j);
+                            break;
+                        }
+                        if (j == targetObstacles.size() - 1) {
+                            flag = false;
+                        }
+                    }
+                    if (i == targetObstacles.size() - 1) flag = false;
+                }
+            }
+        }
+        else if (type == SortType.TopToBottom){
+
+            for (int i = 0; i < targetObstacles.size(); ++i) {
+
+                boolean flag = true;
+                while (flag) {
+                    Obstacle cur_o = targetObstacles.get(i);
+                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
+                        Obstacle other_o = targetObstacles.get(j);
+                        if (cur_o.onTop(other_o)) {
+                            Collections.swap(targetObstacles, i, j);
+                            break;
+                        }
+                        if (j == targetObstacles.size() - 1) {
+                            flag = false;
+                        }
+                    }
+                    if (i == targetObstacles.size() - 1) flag = false;
+                }
+            }
+        }else if (type == SortType.BottomToTop){
+
+            for (int i = 0; i < targetObstacles.size(); ++i) {
+
+                boolean flag = true;
+                while (flag) {
+                    Obstacle cur_o = targetObstacles.get(i);
+                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
+                        Obstacle other_o = targetObstacles.get(j);
+                        if (cur_o.onBottom(other_o)) {
+                            Collections.swap(targetObstacles, i, j);
+                            break;
+                        }
+                        if (j == targetObstacles.size() - 1) {
+                            flag = false;
+                        }
+                    }
+                    if (i == targetObstacles.size() - 1) flag = false;
+                }
+            }
+        }
+
+
     }
 
     /**
@@ -105,7 +188,7 @@ public class Processor {
                     typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getLowerRight(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getUpperLeft(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getUpperRight(), cur_o, other_o));
-                    cur_o.addToMapLowerLeftPathAreaOs(other_o, typeToArrayMap);
+                    cur_o.addToMapLowerLeftBypassOs(other_o, typeToArrayMap);
 
 
                     //cur_o's LowerRight
@@ -114,7 +197,7 @@ public class Processor {
                     typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getLowerRight(), other_o.getLowerRight(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getLowerRight(), other_o.getUpperLeft(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getLowerRight(), other_o.getUpperRight(), cur_o, other_o));
-                    cur_o.addToMapLowerRightPathAreaOs(other_o, typeToArrayMap);
+                    cur_o.addToMapLowerRightBypassOs(other_o, typeToArrayMap);
 
                     //cur_o's UpperLeft
                     typeToArrayMap = new HashMap<>();
@@ -122,7 +205,7 @@ public class Processor {
                     typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getUpperLeft(), other_o.getLowerRight(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getUpperLeft(), other_o.getUpperLeft(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getUpperLeft(), other_o.getUpperRight(), cur_o, other_o));
-                    cur_o.addToMapUpperLeftPathAreaOs(other_o, typeToArrayMap);
+                    cur_o.addToMapUpperLeftBypassOs(other_o, typeToArrayMap);
 
                     //cur_o's UpperRight
                     typeToArrayMap = new HashMap<>();
@@ -130,7 +213,7 @@ public class Processor {
                     typeToArrayMap.put(BaseType.lowerRight, overlappedObstacles(obstacles, cur_o.getUpperRight(), other_o.getLowerRight(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperLeft, overlappedObstacles(obstacles, cur_o.getUpperRight(), other_o.getUpperLeft(), cur_o, other_o));
                     typeToArrayMap.put(BaseType.upperRight, overlappedObstacles(obstacles, cur_o.getUpperRight(), other_o.getUpperRight(), cur_o, other_o));
-                    cur_o.addToMapUpperRightPathAreaOs(other_o, typeToArrayMap);
+                    cur_o.addToMapUpperRightBypassOs(other_o, typeToArrayMap);
 
 
                 }
@@ -190,34 +273,34 @@ public class Processor {
 
         }
         //Left -- Right
-        if (cur_node.getX() <= other_node.getX()){
-            if (cur_node.getType() == BaseType.lowerRight || cur_node.getType() == BaseType.upperRight){
+        if (cur_node.getX() <= other_node.getX()) {
+            if (cur_node.getType() == BaseType.lowerRight || cur_node.getType() == BaseType.upperRight) {
                 overlappedO.remove(cur_o);
             }
-            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.upperLeft){
+            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.upperLeft) {
                 overlappedO.remove(other_o);
             }
-        }else {
-            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.upperLeft){
+        } else {
+            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.upperLeft) {
                 overlappedO.remove(cur_o);
             }
-            if (other_node.getType() == BaseType.lowerRight || other_node.getType() == BaseType.upperRight){
+            if (other_node.getType() == BaseType.lowerRight || other_node.getType() == BaseType.upperRight) {
                 overlappedO.remove(other_o);
             }
         }
         //Up -- Down
-        if (cur_node.getY() <= other_node.getY()){
-            if (cur_node.getType() == BaseType.upperLeft || cur_node.getType() == BaseType.upperRight){
+        if (cur_node.getY() <= other_node.getY()) {
+            if (cur_node.getType() == BaseType.upperLeft || cur_node.getType() == BaseType.upperRight) {
                 overlappedO.remove(cur_o);
             }
-            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.lowerRight){
+            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.lowerRight) {
                 overlappedO.remove(other_o);
             }
-        }else {
-            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.lowerRight){
+        } else {
+            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.lowerRight) {
                 overlappedO.remove(cur_o);
             }
-            if (other_node.getType() == BaseType.upperLeft || other_node.getType() == BaseType.upperRight){
+            if (other_node.getType() == BaseType.upperLeft || other_node.getType() == BaseType.upperRight) {
                 overlappedO.remove(other_o);
             }
 
@@ -365,7 +448,7 @@ public class Processor {
         if (dir_q[5] + dir_q[9] == 2 && dir_q[7] == 0) {
             rel_q[7] = 1;
         } else rel_q[7] = 0;
-
+        base.addToPseudo_Rel_qs(o, rel_q);
 
     }
 
