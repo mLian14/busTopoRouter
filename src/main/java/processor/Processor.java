@@ -87,6 +87,7 @@ public class Processor {
 
 
 
+
                         }
 
 
@@ -455,34 +456,42 @@ public class Processor {
         //Ld
         if (dir_q[0] == 1 && dir_q[2] + dir_q[3] == 0) {
             rel_q[0] = 1;
+            base.addToOLd(o);
         } else rel_q[0] = 0;
         //Rd
         if (dir_q[1] == 1 && dir_q[2] + dir_q[3] == 0) {
             rel_q[1] = 1;
+            base.addToORd(o);
         } else rel_q[1] = 0;
         //Ad
         if (dir_q[2] == 1 && dir_q[0] + dir_q[1] == 0) {
             rel_q[2] = 1;
+            base.addToOAd(o);
         } else rel_q[2] = 0;
         //Bd
         if (dir_q[3] == 1 && dir_q[0] + dir_q[1] == 0) {
             rel_q[3] = 1;
+            base.addToOBd(o);
         } else rel_q[3] = 0;
         //UpperLeft
         if (dir_q[7] + dir_q[9] == 0 && dir_q[5] == 1) {
             rel_q[4] = 1;
+            base.addToOULd(o);
         } else rel_q[4] = 0;
         //UpperRight
         if (dir_q[6] + dir_q[8] == 0 && dir_q[4] == 1) {
             rel_q[5] = 1;
+            base.addToOURd(o);
         } else rel_q[5] = 0;
         //LowerLeft
         if (dir_q[4] + dir_q[8] == 2 && dir_q[6] == 0) {
             rel_q[6] = 1;
+            base.addToOLLd(o);
         } else rel_q[6] = 0;
         //LowerRight
         if (dir_q[5] + dir_q[9] == 2 && dir_q[7] == 0) {
             rel_q[7] = 1;
+            base.addToOLRd(o);
         } else rel_q[7] = 0;
         base.addToPseudo_Rel_qs(o, rel_q);
 

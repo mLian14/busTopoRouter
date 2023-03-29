@@ -43,10 +43,20 @@ public class PseudoBase {
     private Map<Obstacle, int[]> pseudo_Rel_qs;
 
 
+
     /*
 
      */
     private Map<Obstacle, int[]> pseudo_iVars;
+
+    private ArrayList<Obstacle> oLd;
+    private ArrayList<Obstacle> oRd;
+    private ArrayList<Obstacle> oAd;
+    private ArrayList<Obstacle> oBd;
+    private ArrayList<Obstacle> oULd;
+    private ArrayList<Obstacle> oURd;
+    private ArrayList<Obstacle> oLLd;
+    private ArrayList<Obstacle> oLRd;
 
 
 
@@ -57,6 +67,15 @@ public class PseudoBase {
         this.pseudo_Rel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
 
+        this.oLd = new ArrayList<>();
+        this.oRd = new ArrayList<>();
+        this.oAd = new ArrayList<>();
+        this.oBd = new ArrayList<>();
+        this.oULd = new ArrayList<>();
+        this.oURd = new ArrayList<>();
+        this.oLLd = new ArrayList<>();
+        this.oLRd = new ArrayList<>();
+
     }
 
     public PseudoBase() {
@@ -64,6 +83,15 @@ public class PseudoBase {
         this.pseudo_Dir_qs = new HashMap<>();
         this.pseudo_Rel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
+
+        this.oLd = new ArrayList<>();
+        this.oRd = new ArrayList<>();
+        this.oAd = new ArrayList<>();
+        this.oBd = new ArrayList<>();
+        this.oULd = new ArrayList<>();
+        this.oURd = new ArrayList<>();
+        this.oLLd = new ArrayList<>();
+        this.oLRd = new ArrayList<>();
     }
 
     public BaseType getType() {
@@ -114,7 +142,69 @@ public class PseudoBase {
         this.pseudo_Rel_qs.put(o,q);
     }
 
+    public ArrayList<Obstacle> getOLd() {
+        return oLd;
+    }
 
+    public void addToOLd(Obstacle o) {
+        this.oLd.add(o);
+    }
+
+    public ArrayList<Obstacle> getORd() {
+        return oRd;
+    }
+
+    public void addToORd(Obstacle o) {
+        this.oRd.add(o);
+    }
+
+    public ArrayList<Obstacle> getOAd() {
+        return oAd;
+    }
+
+    public void addToOAd(Obstacle o) {
+        this.oAd.add(o);
+    }
+
+    public ArrayList<Obstacle> getOBd() {
+        return oBd;
+    }
+
+    public void addToOBd(Obstacle o) {
+        this.oBd.add(o);
+    }
+
+    public ArrayList<Obstacle> getOULd() {
+        return oULd;
+    }
+
+    public void addToOULd(Obstacle o) {
+        this.oULd.add(o);
+    }
+
+    public ArrayList<Obstacle> getOURd() {
+        return oURd;
+    }
+
+    public void addToOURd(Obstacle o) {
+        this.oURd.add(o);
+    }
+
+    public ArrayList<Obstacle> getOLLd() {
+        return oLLd;
+    }
+
+    public void addToOLLd(Obstacle o) {
+        this.oLLd.add(o);
+    }
+
+    public ArrayList<Obstacle> getOLRd() {
+        return oLRd;
+    }
+
+    public void addToOLRd(Obstacle o) {
+        this.oLRd.add(o);
+    }
 
     @Override
     public boolean equals(Object o) {
