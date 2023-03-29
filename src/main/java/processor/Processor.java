@@ -66,6 +66,43 @@ public class Processor {
         detectOverlappedObstacleWithinPathArea(obstacles);
 
 
+        for (Obstacle cur_o : obstacles){
+
+            for (Obstacle other_o : obstacles){
+
+                if (!other_o.getName().equals(cur_o.getName())){
+
+                    //LowerLeft Case
+                    Map<BaseType, Path> lowerLeftPathMap = new HashMap<>();
+                    cur_o.addToMapLowerLeftPath(other_o, lowerLeftPathMap);
+                    for (BaseType type : cur_o.getMapLowerLeftBypassOs().get(other_o).keySet()){
+                        Path path = new Path();
+                        path.addToNodes(cur_o.getLowerLeft());
+                        if (type == BaseType.lowerLeft) {
+                            if (cur_o.getMapLowerLeftBypassOs().get(other_o).get(type).size() == 0) {
+                                path.addToNodes(other_o.getLowerLeft());
+                            }
+
+
+
+
+
+                        }
+
+
+                        lowerLeftPathMap.put(type, path);
+                    }
+
+
+
+
+                }
+
+
+
+            }
+
+        }
 
 
 
@@ -103,7 +140,7 @@ public class Processor {
                 }
             }
 
-        }else if (type == SortType.RightToLeft){
+        } else if (type == SortType.RightToLeft) {
 
             for (int i = 0; i < targetObstacles.size(); ++i) {
 
@@ -123,8 +160,7 @@ public class Processor {
                     if (i == targetObstacles.size() - 1) flag = false;
                 }
             }
-        }
-        else if (type == SortType.TopToBottom){
+        } else if (type == SortType.TopToBottom) {
 
             for (int i = 0; i < targetObstacles.size(); ++i) {
 
@@ -144,7 +180,7 @@ public class Processor {
                     if (i == targetObstacles.size() - 1) flag = false;
                 }
             }
-        }else if (type == SortType.BottomToTop){
+        } else if (type == SortType.BottomToTop) {
 
             for (int i = 0; i < targetObstacles.size(); ++i) {
 

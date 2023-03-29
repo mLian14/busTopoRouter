@@ -1,9 +1,6 @@
 package shapes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 /**
@@ -24,16 +21,23 @@ public class Obstacle {
     private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperLeftBypassOs;
     private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperRightBypassOs;
 
+    private ArrayList<Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>>> bypassMapArray;
+
     private Map<Obstacle, Map<BaseType, Double>> mapLowerLeftL;
     private Map<Obstacle, Map<BaseType, Double>> mapLowerRightL;
     private Map<Obstacle, Map<BaseType, Double>> mapUpperLeftL;
     private Map<Obstacle, Map<BaseType, Double>> mapUpperRightL;
+
+    private ArrayList<Map<Obstacle, Map<BaseType, Double>>> lengthMapArray;
 
 
     private Map<Obstacle, Map<BaseType, Path>> mapLowerLeftPath;
     private Map<Obstacle, Map<BaseType, Path>> mapLowerRightPath;
     private Map<Obstacle, Map<BaseType, Path>> mapUpperLeftPath;
     private Map<Obstacle, Map<BaseType, Path>> mapUpperRightPath;
+
+    private ArrayList<Map<Obstacle, Map<BaseType, Path>>> pathMapArray;
+
 
 
     public Obstacle(String name, int minX, int maxX, int minY, int maxY) {
@@ -58,16 +62,19 @@ public class Obstacle {
         this.mapLowerRightBypassOs = new HashMap<>();
         this.mapUpperLeftBypassOs = new HashMap<>();
         this.mapUpperRightBypassOs = new HashMap<>();
+        this.bypassMapArray = new ArrayList<>(Arrays.asList(this.mapLowerLeftBypassOs, this.mapLowerRightBypassOs, this.mapUpperLeftBypassOs, this.mapUpperRightBypassOs));
 
         this.mapLowerLeftL = new HashMap<>();
         this.mapLowerRightL = new HashMap<>();
         this.mapUpperLeftL = new HashMap<>();
         this.mapUpperRightL = new HashMap<>();
+        this.lengthMapArray = new ArrayList<>(Arrays.asList(this.mapLowerLeftL, this.mapLowerRightL, this.mapUpperLeftL, this.mapUpperRightL));
 
         this.mapLowerLeftPath = new HashMap<>();
         this.mapLowerRightPath = new HashMap<>();
         this.mapUpperLeftPath = new HashMap<>();
         this.mapUpperRightPath = new HashMap<>();
+        this.pathMapArray = new ArrayList<>(Arrays.asList(this.mapLowerLeftPath, this.mapLowerRightPath, this.mapUpperLeftPath, this.mapUpperRightPath));
     }
 
     public PseudoBase getLowerLeft() {
