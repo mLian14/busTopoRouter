@@ -226,7 +226,7 @@ public class Obstacle {
                 ", maxY=" + maxY + "\n" +
                 //"LowerLeft_Os = " + convertMapMapOArrayToString(mapLowerLeftPathAreaOs) +
                 //"LowerRight_Os = " + convertMapMapOArrayToString(mapLowerRightPathAreaOs) +
-                //"UpperLeft_Os = " + convertMapMapOArrayToString(mapUpperLeftPathAreaOs) +
+                "UpperLeft_Os = " + convertMapMapOArrayToString(mapUpperLeftPathAreaOs) +
                 //"UpperRight_Os = " + convertMapMapOArrayToString(mapUpperRightPathAreaOs) +
                 "LowerLeft_Length = " + convertMapMapDToString(mapLowerLeftL) +
                 "LowerRight_Length = " + convertMapMapDToString(mapLowerRightL) +

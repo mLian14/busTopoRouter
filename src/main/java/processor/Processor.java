@@ -49,8 +49,27 @@ public class Processor {
      */
     public OutputDocument processToOutputPre(String caseName, PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles) {
         OutputDocument output = new OutputDocument(caseName);
+        /*
+        Determine the pseudo Variables of Master and slaves
+         */
         pseudoBaseVariablesDetermination(master, slaves, obstacles);
+        /*
+        Determine the overlapped Obstacle within the path area between arbitrary two corners of two obstacles.
+         */
         detectOverlappedObstacleWithinPathArea(obstacles);
+
+        for (Obstacle cur_o : obstacles){
+
+
+            for (Obstacle des_o : obstacles){
+
+
+
+
+
+            }
+
+        }
 
 
 
@@ -135,25 +154,25 @@ public class Processor {
         } else {
             int plusDY = (int) Math.max(dy * Math.signum(dx - dy), 0);
             int plusDx = (int) Math.max(dx * Math.signum(dy - dx), 0);
-            //other: lowerRight
+            //Case1: other -> lowerRight
             if (other_node.getX() > cur_node.getX() && other_node.getY() < cur_node.getY()) {
                 p2 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() - plusDx);
                 p4 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
             }
-            //other: upperRight
+            //Case2: other -> upperRight
             else if (other_node.getX() > cur_node.getX() && other_node.getY() > cur_node.getY()) {
                 p2 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
                 p4 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() + plusDx);
             }
-            //other: upperLeft
+            //Case3: other -> upperLeft
             else if (other_node.getX() < cur_node.getX() && other_node.getY() > cur_node.getY()) {
-                p2 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() - plusDx);
-                p4 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() + plusDx);
+                p4 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() - plusDx);
+                p2 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() + plusDx);
             }
-            //other: lowerLeft
+            //Case 4: other -> lowerLeft
             else if (other_node.getX() < cur_node.getX() && other_node.getY() < cur_node.getY()) {
-                p2 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() - plusDx);
-                p4 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() + plusDx);
+                p4 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() - plusDx);
+                p2 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() + plusDx);
             } else {
                 System.err.println("Another Type of Parallelogram!!");
                 System.out.println("cur_node = (" + cur_node.getX() + ", " + cur_node.getY() + "), other_node = (" + other_node.getX() + ", " + other_node.getY() + ")");
