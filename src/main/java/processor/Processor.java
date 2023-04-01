@@ -75,7 +75,7 @@ public class Processor {
                     //LowerLeft Case
                     Map<BaseType, Path> lowerLeftPathMap = new HashMap<>();
                     cur_o.addToMapLowerLeftPath(other_o, lowerLeftPathMap);
-                    for (BaseType type : cur_o.getMapLowerLeftBypassOs().get(other_o).keySet()){
+                    for (BaseType type : cur_o.getBypassMapArray().get(0).get(other_o).keySet()){
                         Path path = new Path();
                         path.addToNodes(cur_o.getLowerLeft());
                         if (type == BaseType.lowerLeft) {
@@ -380,15 +380,16 @@ public class Processor {
      */
     public void pseudoBaseVariablesDetermination(PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles) {
 
+        ArrayList<PseudoBase> bases = new ArrayList<>(slaves);
+        bases.add(master);
         for (Obstacle o : obstacles) {
-
-            basicBinaryVariables(master, o);
+            basicBinaryVariables(master, o, slaves);
             for (PseudoBase slave : slaves) {
-                basicBinaryVariables(slave, o);
+                basicBinaryVariables(slave, o, slaves);
             }
-
-
         }
+
+
 
 
     }
@@ -399,101 +400,129 @@ public class Processor {
      * @param base given point
      * @param o    given obstacle
      */
-    private void basicBinaryVariables(PseudoBase base, Obstacle o) {
+    private void basicBinaryVariables(PseudoBase base, Obstacle o, ArrayList<PseudoBase> bases) {
 
         /*
-        Dir_q: L, R, A, B, UL, UR, LR, LL, D,U
+        oDir_q: L, R, A, B, UL, UR, LR, LL, D,U
          */
-        int cnt_base_Dir_q = 10;
-        int[] dir_q = new int[cnt_base_Dir_q];
+        int cnt_oDir_q = 10;
+        int[] odir_q = new int[cnt_oDir_q];
         //L
         if (base.getX() < o.getMinX()) {
-            dir_q[0] = 1;
-        } else dir_q[0] = 0;
+            odir_q[0] = 1;
+        } else odir_q[0] = 0;
         //R
         if (base.getX() > o.getMaxX()) {
-            dir_q[1] = 1;
-        } else dir_q[1] = 0;
+            odir_q[1] = 1;
+        } else odir_q[1] = 0;
         //A
         if (base.getX() > o.getMaxY()) {
-            dir_q[2] = 1;
-        } else dir_q[2] = 0;
+            odir_q[2] = 1;
+        } else odir_q[2] = 0;
         //B
         if (base.getY() < o.getMinY()) {
-            dir_q[3] = 1;
-        } else dir_q[3] = 0;
+            odir_q[3] = 1;
+        } else odir_q[3] = 0;
         //UL
         if (base.getY() <= base.getX() + o.getMaxY() - o.getMinX()) {
-            dir_q[4] = 1;
-        } else dir_q[4] = 0;
+            odir_q[4] = 1;
+        } else odir_q[4] = 0;
         //UR
         if (base.getY() <= -base.getX() + o.getMaxY() + o.getMaxX()) {
-            dir_q[5] = 1;
-        } else dir_q[5] = 0;
+            odir_q[5] = 1;
+        } else odir_q[5] = 0;
         //LR
         if (base.getY() <= base.getX() + o.getMinY() - o.getMaxX()) {
-            dir_q[6] = 1;
-        } else dir_q[6] = 0;
+            odir_q[6] = 1;
+        } else odir_q[6] = 0;
         //LL
         if (base.getY() <= -base.getX() + o.getMinY() + o.getMinX()) {
-            dir_q[7] = 1;
-        } else dir_q[7] = 0;
+            odir_q[7] = 1;
+        } else odir_q[7] = 0;
         //D
         if (base.getY() <= (double) (o.getMinY() - o.getMaxY()) / (double) (o.getMaxX() - o.getMinX()) * (double) (base.getX() - o.getMinX()) + o.getMaxY()) {
-            dir_q[8] = 1;
-        } else dir_q[8] = 0;
+            odir_q[8] = 1;
+        } else odir_q[8] = 0;
         //U
         if (base.getY() <= (double) (o.getMaxY() - o.getMinY()) / (double) (o.getMaxX() - o.getMinX()) * (double) (base.getX() - o.getMinX()) + o.getMinY()) {
-            dir_q[9] = 1;
-        } else dir_q[9] = 0;
-        base.addToPseudo_Dir_qs(o, dir_q);
+            odir_q[9] = 1;
+        } else odir_q[9] = 0;
+        base.addToPseudo_oDir_qs(o, odir_q);
 
         /*
-        Rel_q:
+        oRel_q:
          */
-        int cnt_Rel_q = 8;
-        int[] rel_q = new int[cnt_Rel_q];
+        int cnt_oRel_q = 8;
+        int[] orel_q = new int[cnt_oRel_q];
         //Ld
-        if (dir_q[0] == 1 && dir_q[2] + dir_q[3] == 0) {
-            rel_q[0] = 1;
+        if (odir_q[0] == 1 && odir_q[2] + odir_q[3] == 0) {
+            orel_q[0] = 1;
             base.addToOLd(o);
-        } else rel_q[0] = 0;
+        } else orel_q[0] = 0;
         //Rd
-        if (dir_q[1] == 1 && dir_q[2] + dir_q[3] == 0) {
-            rel_q[1] = 1;
+        if (odir_q[1] == 1 && odir_q[2] + odir_q[3] == 0) {
+            orel_q[1] = 1;
             base.addToORd(o);
-        } else rel_q[1] = 0;
+        } else orel_q[1] = 0;
         //Ad
-        if (dir_q[2] == 1 && dir_q[0] + dir_q[1] == 0) {
-            rel_q[2] = 1;
+        if (odir_q[2] == 1 && odir_q[0] + odir_q[1] == 0) {
+            orel_q[2] = 1;
             base.addToOAd(o);
-        } else rel_q[2] = 0;
+        } else orel_q[2] = 0;
         //Bd
-        if (dir_q[3] == 1 && dir_q[0] + dir_q[1] == 0) {
-            rel_q[3] = 1;
+        if (odir_q[3] == 1 && odir_q[0] + odir_q[1] == 0) {
+            orel_q[3] = 1;
             base.addToOBd(o);
-        } else rel_q[3] = 0;
+        } else orel_q[3] = 0;
         //UpperLeft
-        if (dir_q[7] + dir_q[9] == 0 && dir_q[5] == 1) {
-            rel_q[4] = 1;
+        if (odir_q[7] + odir_q[9] == 0 && odir_q[5] == 1) {
+            orel_q[4] = 1;
             base.addToOULd(o);
-        } else rel_q[4] = 0;
+        } else orel_q[4] = 0;
         //UpperRight
-        if (dir_q[6] + dir_q[8] == 0 && dir_q[4] == 1) {
-            rel_q[5] = 1;
+        if (odir_q[6] + odir_q[8] == 0 && odir_q[4] == 1) {
+            orel_q[5] = 1;
             base.addToOURd(o);
-        } else rel_q[5] = 0;
+        } else orel_q[5] = 0;
         //LowerLeft
-        if (dir_q[4] + dir_q[8] == 2 && dir_q[6] == 0) {
-            rel_q[6] = 1;
+        if (odir_q[4] + odir_q[8] == 2 && odir_q[6] == 0) {
+            orel_q[6] = 1;
             base.addToOLLd(o);
-        } else rel_q[6] = 0;
+        } else orel_q[6] = 0;
         //LowerRight
-        if (dir_q[5] + dir_q[9] == 2 && dir_q[7] == 0) {
-            rel_q[7] = 1;
+        if (odir_q[5] + odir_q[9] == 2 && odir_q[7] == 0) {
+            orel_q[7] = 1;
             base.addToOLRd(o);
-        } else rel_q[7] = 0;
-        base.addToPseudo_Rel_qs(o, rel_q);
+        } else orel_q[7] = 0;
+        base.addToPseudo_oRel_qs(o, orel_q);
+
+        /*
+        p_Dir_q:
+         */
+        int cnt_pDir_q = 4;
+        int[] pdir_q = new int[cnt_pDir_q];
+        for (PseudoBase other_b : bases){
+            //L
+            if (base.getX() < other_b.getX()){
+                pdir_q[0] = 1;
+            }else pdir_q[0] = 0;
+            //R
+            if (base.getX() > other_b.getX()){
+                pdir_q[1] = 1;
+            }else pdir_q[1] = 0;
+            //Top
+            if (base.getY() > other_b.getY()){
+                pdir_q[2] = 1;
+            }else pdir_q[2] = 0;
+            //Bottom
+            if (base.getY() < other_b.getY()){
+                pdir_q[3] = 1;
+            }else pdir_q[3] = 0;
+
+
+
+
+        }
 
     }
 

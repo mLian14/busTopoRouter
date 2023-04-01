@@ -28,7 +28,7 @@ public class PseudoBase {
     9: oqU
 
      */
-    private Map<Obstacle, int[]> pseudo_Dir_qs;
+    private Map<Obstacle, int[]> pseudo_oDir_qs;
 
     /*
     0: oqLd
@@ -40,8 +40,7 @@ public class PseudoBase {
     6: oqLL
     7: oqLR
      */
-    private Map<Obstacle, int[]> pseudo_Rel_qs;
-
+    private Map<Obstacle, int[]> pseudo_oRel_qs;
 
 
     /*
@@ -58,14 +57,37 @@ public class PseudoBase {
     private ArrayList<Obstacle> oLLd;
     private ArrayList<Obstacle> oLRd;
 
+    /*
+    0: L
+    1: R
+    2: Top
+    3: Bottom
+
+     */
+    private Map<PseudoBase, int[]> pseudo_pDir_qs;
+
+    /*
+    0: dL-R
+    1: dR-L
+    2: dT-B
+    3: dB-T
+    4: UL-LR
+    5: LR-UL
+    6: UR-LL
+    7: LL-UR
+     */
+    private Map<PseudoBase, int[]> pseudo_pRel_qs;
+
 
 
     public PseudoBase(int x, int y) {
         this.x = x;
         this.y = y;
-        this.pseudo_Dir_qs = new HashMap<>();
-        this.pseudo_Rel_qs = new HashMap<>();
+        this.pseudo_oDir_qs = new HashMap<>();
+        this.pseudo_oRel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
+
+        this.pseudo_pDir_qs = new HashMap<>();
 
         this.oLd = new ArrayList<>();
         this.oRd = new ArrayList<>();
@@ -76,12 +98,13 @@ public class PseudoBase {
         this.oLLd = new ArrayList<>();
         this.oLRd = new ArrayList<>();
 
+
     }
 
     public PseudoBase() {
 
-        this.pseudo_Dir_qs = new HashMap<>();
-        this.pseudo_Rel_qs = new HashMap<>();
+        this.pseudo_oDir_qs = new HashMap<>();
+        this.pseudo_oRel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
 
         this.oLd = new ArrayList<>();
@@ -126,20 +149,28 @@ public class PseudoBase {
         this.y = y;
     }
 
-    public Map<Obstacle, int[]> getPseudo_Dir_qs() {
-        return pseudo_Dir_qs;
+    public Map<Obstacle, int[]> getPseudo_oDir_qs() {
+        return pseudo_oDir_qs;
     }
 
-    public void addToPseudo_Dir_qs(Obstacle o, int[] q) {
-        this.pseudo_Dir_qs.put(o, q);
+    public void addToPseudo_oDir_qs(Obstacle o, int[] q) {
+        this.pseudo_oDir_qs.put(o, q);
     }
 
-    public Map<Obstacle, int[]> getPseudo_Rel_qs() {
-        return pseudo_Rel_qs;
+    public Map<Obstacle, int[]> getPseudo_oRel_qs() {
+        return pseudo_oRel_qs;
     }
 
-    public void addToPseudo_Rel_qs(Obstacle o, int[] q) {
-        this.pseudo_Rel_qs.put(o,q);
+    public void addToPseudo_oRel_qs(Obstacle o, int[] q) {
+        this.pseudo_oRel_qs.put(o, q);
+    }
+
+    public Map<PseudoBase, int[]> getPseudo_pDir_qs() {
+        return pseudo_pDir_qs;
+    }
+
+    public void addToPseudo_pDir_qs(PseudoBase base, int[] q) {
+        this.pseudo_pDir_qs.put(base, q);
     }
 
     public ArrayList<Obstacle> getOLd() {
@@ -214,9 +245,9 @@ public class PseudoBase {
         return Double.compare(point.x, x) == 0 && Double.compare(point.y, y) == 0;
     }
 
-    public String convertMapIntArrayToString(Map<Obstacle, int[]> mapIntArray){
+    public String convertMapIntArrayToString(Map<Obstacle, int[]> mapIntArray) {
         StringBuilder mapAsString = new StringBuilder("||");
-        for (Obstacle o : mapIntArray.keySet()){
+        for (Obstacle o : mapIntArray.keySet()) {
             mapAsString.append(o.getName() + "[" + Arrays.toString(mapIntArray.get(o)) + "];");
         }
         mapAsString.append("||");
@@ -233,12 +264,11 @@ public class PseudoBase {
                 "x=" + x +
                 ", y=" + y +
                 ", name='" + name +
-                ", mapQ = " + convertMapIntArrayToString(pseudo_Dir_qs) +
+                ", mapQ = " + convertMapIntArrayToString(pseudo_oDir_qs) +
                 ", mapIq = " + convertMapIntArrayToString(pseudo_iVars) +
                 '\'' +
                 '}';
     }
-
 
 
 }

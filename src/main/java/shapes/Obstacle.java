@@ -38,6 +38,9 @@ public class Obstacle {
 
     private ArrayList<Map<Obstacle, Map<BaseType, Path>>> pathMapArray;
 
+    private ArrayList<Obstacle> rightOs, leftOs, topOs, bottomOs;
+    private ArrayList<Obstacle> topLeftOs, bottomLeftOs, topRightOs, bottomRightOs;
+
 
 
     public Obstacle(String name, int minX, int maxX, int minY, int maxY) {
@@ -75,6 +78,91 @@ public class Obstacle {
         this.mapUpperLeftPath = new HashMap<>();
         this.mapUpperRightPath = new HashMap<>();
         this.pathMapArray = new ArrayList<>(Arrays.asList(this.mapLowerLeftPath, this.mapLowerRightPath, this.mapUpperLeftPath, this.mapUpperRightPath));
+
+        this.leftOs = new ArrayList<>();
+        this.rightOs = new ArrayList<>();
+        this.topOs = new ArrayList<>();
+        this.bottomOs = new ArrayList<>();
+        this.topLeftOs = new ArrayList<>();
+        this.bottomLeftOs = new ArrayList<>();
+        this.topRightOs = new ArrayList<>();
+        this.bottomRightOs = new ArrayList<>();
+    }
+
+    public ArrayList<Obstacle> getRightOs() {
+        return rightOs;
+    }
+
+    public void addToRightOs(Obstacle o) {
+        this.rightOs.add(o);
+    }
+
+    public ArrayList<Obstacle> getLeftOs() {
+        return leftOs;
+    }
+
+    public void addToLeftOs(Obstacle o) {
+        this.leftOs.add(o);
+    }
+
+    public ArrayList<Obstacle> getTopOs() {
+        return topOs;
+    }
+
+    public void addToTopOs(Obstacle o) {
+        this.topOs.add(o);
+    }
+
+    public ArrayList<Obstacle> getBottomOs() {
+        return bottomOs;
+    }
+
+    public void addToBottomOs(Obstacle o) {
+        this.bottomOs.add(o);
+    }
+
+    public ArrayList<Obstacle> getTopLeftOs() {
+        return topLeftOs;
+    }
+
+    public void addToTopLeftOs(Obstacle o) {
+        this.topLeftOs.add(o);
+    }
+
+    public ArrayList<Obstacle> getBottomLeftOs() {
+        return bottomLeftOs;
+    }
+
+    public void addToBottomLeftOs(Obstacle o) {
+        this.bottomLeftOs.add(o);
+    }
+
+    public ArrayList<Obstacle> getTopRightOs() {
+        return topRightOs;
+    }
+
+    public void addToTopRightOs(Obstacle o) {
+        this.topRightOs.add(o);
+    }
+
+    public ArrayList<Obstacle> getBottomRightOs() {
+        return bottomRightOs;
+    }
+
+    public void addToBottomRightOs(Obstacle o) {
+        this.bottomRightOs.add(o);
+    }
+
+    public ArrayList<Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>>> getBypassMapArray() {
+        return bypassMapArray;
+    }
+
+    public ArrayList<Map<Obstacle, Map<BaseType, Double>>> getLengthMapArray() {
+        return lengthMapArray;
+    }
+
+    public ArrayList<Map<Obstacle, Map<BaseType, Path>>> getPathMapArray() {
+        return pathMapArray;
     }
 
     public PseudoBase getLowerLeft() {
