@@ -387,6 +387,23 @@ public class Processor {
             for (PseudoBase slave : slaves) {
                 basicBinaryVariables(slave, o, slaves);
             }
+
+            /*
+            oo_dir
+             */
+            for (Obstacle other_o : obstacles){
+                if (!other_o.getName().equals(o.getName())){
+
+                    if (o.topL_bottomR_Overlap(other_o)){
+                        o.addTo_topL_bottomR_Os(other_o);
+                    }
+
+                    if (o.bottomL_topR_Overlap(other_o)){
+                        o.addTo_bottomL_topR_Os(other_o);
+                    }
+
+                }else continue;
+            }
         }
 
 
