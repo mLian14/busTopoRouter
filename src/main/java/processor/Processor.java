@@ -6,10 +6,8 @@ import parser.Document;
 import parser.OutputDocument;
 import shapes.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * @auther lianmeng
@@ -86,8 +84,10 @@ public class Processor {
                     for (BaseType type : cur_o.getBypassOsMapArray().get(0).get(other_o).keySet()){
                         Path path = new Path();
                         path.addToNodes(cur_o.getBaseArray().get(0));
+
                         ArrayList<PseudoBase> tmpBaseArray = new ArrayList<>();
                         tmpBaseArray.add(cur_o.getBaseArray().get(0));
+
                         if (type == BaseType.lowerLeft) {
                             if (cur_o.getBypassOsMapArray().get(0).get(other_o).get(type).size() != 0) {
 
@@ -319,7 +319,7 @@ public class Processor {
 
     }
 
-    private ArrayList<Obstacle> overlappedObstacles(ArrayList<Obstacle> obstacles, PseudoBase cur_node, PseudoBase other_node, Obstacle cur_o, Obstacle other_o) {
+    private ArrayList<PseudoBase> parallelogramClockwise(PseudoBase cur_node, PseudoBase other_node){
         PseudoBase p1 = cur_node;
         PseudoBase p3 = other_node;
         PseudoBase p2 = null, p4 = null;
@@ -356,7 +356,51 @@ public class Processor {
             }
 
         }
+        ArrayList<PseudoBase> array = new ArrayList<PseudoBase>(Arrays.asList(p1, p2, p3, p4));
+        return array;
+    }
 
+    private ArrayList<Obstacle> overlappedObstacles(ArrayList<Obstacle> obstacles, PseudoBase cur_node, PseudoBase other_node, Obstacle cur_o, Obstacle other_o) {
+
+//        PseudoBase p1 = cur_node;
+//        PseudoBase p3 = other_node;
+//        PseudoBase p2 = null, p4 = null;
+//        int dx = Math.abs(cur_node.getX() - other_node.getX());
+//        int dy = Math.abs(cur_node.getY() - other_node.getY());
+//        if (dx == dy || cur_node.getX() == other_node.getX() || cur_node.getY() == other_node.getY()) {
+//            p2 = cur_node;
+//            p4 = other_node;
+//        } else {
+//            int plusDY = (int) Math.max(dy * Math.signum(dx - dy), 0);
+//            int plusDx = (int) Math.max(dx * Math.signum(dy - dx), 0);
+//            //Case1: other -> lowerRight
+//            if (other_node.getX() > cur_node.getX() && other_node.getY() < cur_node.getY()) {
+//                p2 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() - plusDx);
+//                p4 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
+//            }
+//            //Case2: other -> upperRight
+//            else if (other_node.getX() > cur_node.getX() && other_node.getY() > cur_node.getY()) {
+//                p2 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
+//                p4 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() + plusDx);
+//            }
+//            //Case3: other -> upperLeft
+//            else if (other_node.getX() < cur_node.getX() && other_node.getY() > cur_node.getY()) {
+//                p4 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() - plusDx);
+//                p2 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() + plusDx);
+//            }
+//            //Case 4: other -> lowerLeft
+//            else if (other_node.getX() < cur_node.getX() && other_node.getY() < cur_node.getY()) {
+//                p4 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() - plusDx);
+//                p2 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() + plusDx);
+//            } else {
+//                System.err.println("Another Type of Parallelogram!!");
+//                System.out.println("cur_node = (" + cur_node.getX() + ", " + cur_node.getY() + "), other_node = (" + other_node.getX() + ", " + other_node.getY() + ")");
+//            }
+//
+//        }
+
+        ArrayList<PseudoBase> vertices = parallelogramClockwise(cur_node, other_node);
+        PseudoBase p1 = vertices.get(0), p2 = vertices.get(1), p3 = vertices.get(2), p4 = vertices.get(3);
         ArrayList<Obstacle> overlappedO = new ArrayList<>();
         for (Obstacle o : obstacles) {
             //check if one of the edges of obstacles v.s., one of the edges of the parallelogram
@@ -603,10 +647,8 @@ public class Processor {
 
 
     public static boolean onSegment(PseudoBase p, PseudoBase q, PseudoBase r) {
-        if (q.getX() <= Math.max(p.getX(), r.getX()) && q.getX() >= Math.min(p.getX(), r.getX())
-                && q.getY() <= Math.max(p.getY(), r.getY()) && q.getY() >= Math.min(p.getY(), r.getY()))
-            return true;
-        return false;
+        return q.getX() <= Math.max(p.getX(), r.getX()) && q.getX() >= Math.min(p.getX(), r.getX())
+                && q.getY() <= Math.max(p.getY(), r.getY()) && q.getY() >= Math.min(p.getY(), r.getY());
     }
 
     public static int orientation(PseudoBase p, PseudoBase q, PseudoBase r) {
