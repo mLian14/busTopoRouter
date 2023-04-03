@@ -30,6 +30,14 @@ public class Processor {
         BottomToTop
     }
 
+    enum OppositeType{
+        topLtoBottomR,
+        bottomLtoTopR,
+        topRtoBottomL,
+        bottomRtoTopL,
+        NoOppositeRelation
+    }
+
 
     public Processor() {
         this.parser = new DocumentParser();
@@ -72,16 +80,25 @@ public class Processor {
 
                 if (!other_o.getName().equals(cur_o.getName())){
 
-                    //LowerLeft Case
-                    Map<BaseType, Path> lowerLeftPathMap = new HashMap<>();
-                    cur_o.addToMapLowerLeftPath(other_o, lowerLeftPathMap);
-                    for (BaseType type : cur_o.getBypassMapArray().get(0).get(other_o).keySet()){
+                    //0: LowerLeft Case
+                    Map<BaseType, Path> tmpPathMap = new HashMap<>();
+                    cur_o.addToPathMap(0, other_o, tmpPathMap);
+                    for (BaseType type : cur_o.getBypassOsMapArray().get(0).get(other_o).keySet()){
                         Path path = new Path();
-                        path.addToNodes(cur_o.getLowerLeft());
+                        path.addToNodes(cur_o.getBaseArray().get(0));
+                        ArrayList<PseudoBase> tmpBaseArray = new ArrayList<>();
+                        tmpBaseArray.add(cur_o.getBaseArray().get(0));
                         if (type == BaseType.lowerLeft) {
-                            if (cur_o.getMapLowerLeftBypassOs().get(other_o).get(type).size() == 0) {
-                                path.addToNodes(other_o.getLowerLeft());
+                            if (cur_o.getBypassOsMapArray().get(0).get(other_o).get(type).size() != 0) {
+
+
+
+
+                            }else {
+                                //no obstacle overlaps the shortest path
+                                path.addToNodes(other_o.getBaseArray().get(0));
                             }
+
 
 
 
@@ -91,7 +108,7 @@ public class Processor {
                         }
 
 
-                        lowerLeftPathMap.put(type, path);
+                        tmpPathMap.put(type, path);
                     }
 
 
@@ -118,7 +135,45 @@ public class Processor {
         return output;
     }
 
+    public OppositeType relationDetermineRegardOs(ArrayList<Obstacle> relevantObstacles, PseudoBase cur_n, PseudoBase other_n){
 
+        OppositeType type = OppositeType.NoOppositeRelation;
+        for (Obstacle cur_o : relevantObstacles){
+            for (Obstacle other_o : relevantObstacles){
+                //topL to bottomR
+                if (cur_o.topL_bottomR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[4] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[7] == 1){
+                    type = OppositeType.topLtoBottomR;
+                    break;
+                }
+                //bottomR to topL
+                if (cur_o.bottomR_topL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[7] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[4] == 1){
+                    type = OppositeType.bottomRtoTopL;
+                    break;
+                }
+                //topR to bottomL
+                if (cur_o.topR_bottomL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[5] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[6] == 1){
+                    type = OppositeType.topRtoBottomL;
+                    break;
+                }
+                //bottomL to topR
+                if (cur_o.bottomL_topR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[6] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[5] == 1){
+                    type = OppositeType.bottomLtoTopR;
+                }
+
+
+            }
+        }
+
+
+        return type;
+    }
+
+
+    /**
+     * Sorted ArrayList of Obstacles according to the SortType
+     * @param targetObstacles ArrayList of Obstacles
+     * @param type SortType
+     */
     public void sortedObstacles(ArrayList<Obstacle> targetObstacles, SortType type) {
 
         if (type == SortType.LeftToRight) {
@@ -205,6 +260,8 @@ public class Processor {
 
 
     }
+
+
 
     /**
      * Determine the overlapped obstacles within the PathArea
@@ -394,11 +451,11 @@ public class Processor {
             for (Obstacle other_o : obstacles){
                 if (!other_o.getName().equals(o.getName())){
 
-                    if (o.topL_bottomR_Overlap(other_o)){
+                    if (o.topL_bottomR_AreaOverlap(other_o)){
                         o.addTo_topL_bottomR_Os(other_o);
                     }
 
-                    if (o.bottomL_topR_Overlap(other_o)){
+                    if (o.bottomL_topR_AreaOverlap(other_o)){
                         o.addTo_bottomL_topR_Os(other_o);
                     }
 
@@ -543,11 +600,6 @@ public class Processor {
 
     }
 
-
-    public void pathDeterminationAlgorithm(ArrayList<Obstacle> obstacles) {
-
-
-    }
 
 
     public static boolean onSegment(PseudoBase p, PseudoBase q, PseudoBase r) {
