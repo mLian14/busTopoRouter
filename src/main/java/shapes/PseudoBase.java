@@ -16,29 +16,21 @@ public class PseudoBase {
     private BaseType type;
 
     /*
-    0: oqL
-    1: oqR
-    2: oqA
-    3: oqB
-    4: oqUL
-    5: oqUR
-    6: oqLR
-    7: oqLL
-    8: oqD
-    9: oqU
+    0: oqUL
+    1: oqUR
+    2: oqLR
+    3: oqLL
+    4: oqD
+    5: oqU
 
      */
     private Map<Obstacle, int[]> pseudo_oDir_qs;
 
     /*
-    0: oqLd
-    1: oqRd
-    2: oqAd
-    3: oqBd
-    4: oqUL
-    5: oqUR
-    6: oqLL
-    7: oqLR
+    0: oqtL
+    1: oqtR
+    2: oqbL
+    3: oqbR
      */
     private Map<Obstacle, int[]> pseudo_oRel_qs;
 
@@ -48,10 +40,6 @@ public class PseudoBase {
      */
     private Map<Obstacle, int[]> pseudo_iVars;
 
-    private ArrayList<Obstacle> oLd;
-    private ArrayList<Obstacle> oRd;
-    private ArrayList<Obstacle> oAd;
-    private ArrayList<Obstacle> oBd;
     private ArrayList<Obstacle> oULd;
     private ArrayList<Obstacle> oURd;
     private ArrayList<Obstacle> oLLd;
@@ -66,18 +54,6 @@ public class PseudoBase {
      */
     private Map<PseudoBase, int[]> pseudo_pDir_qs;
 
-    /*
-    0: dL-R
-    1: dR-L
-    2: dT-B
-    3: dB-T
-    4: UL-LR
-    5: LR-UL
-    6: UR-LL
-    7: LL-UR
-     */
-    private Map<PseudoBase, int[]> pseudo_pRel_qs;
-
 
 
     public PseudoBase(int x, int y) {
@@ -89,10 +65,6 @@ public class PseudoBase {
 
         this.pseudo_pDir_qs = new HashMap<>();
 
-        this.oLd = new ArrayList<>();
-        this.oRd = new ArrayList<>();
-        this.oAd = new ArrayList<>();
-        this.oBd = new ArrayList<>();
         this.oULd = new ArrayList<>();
         this.oURd = new ArrayList<>();
         this.oLLd = new ArrayList<>();
@@ -107,10 +79,6 @@ public class PseudoBase {
         this.pseudo_oRel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
 
-        this.oLd = new ArrayList<>();
-        this.oRd = new ArrayList<>();
-        this.oAd = new ArrayList<>();
-        this.oBd = new ArrayList<>();
         this.oULd = new ArrayList<>();
         this.oURd = new ArrayList<>();
         this.oLLd = new ArrayList<>();
@@ -173,37 +141,6 @@ public class PseudoBase {
         this.pseudo_pDir_qs.put(base, q);
     }
 
-    public ArrayList<Obstacle> getOLd() {
-        return oLd;
-    }
-
-    public void addToOLd(Obstacle o) {
-        this.oLd.add(o);
-    }
-
-    public ArrayList<Obstacle> getORd() {
-        return oRd;
-    }
-
-    public void addToORd(Obstacle o) {
-        this.oRd.add(o);
-    }
-
-    public ArrayList<Obstacle> getOAd() {
-        return oAd;
-    }
-
-    public void addToOAd(Obstacle o) {
-        this.oAd.add(o);
-    }
-
-    public ArrayList<Obstacle> getOBd() {
-        return oBd;
-    }
-
-    public void addToOBd(Obstacle o) {
-        this.oBd.add(o);
-    }
 
     public ArrayList<Obstacle> getOULd() {
         return oULd;

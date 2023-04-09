@@ -65,61 +65,10 @@ public class Processor {
         Determine the pseudo Variables of Master and slaves
          */
         pseudoBaseVariablesDetermination(master, slaves, obstacles);
-        /*
-        Determine the overlapped Obstacle within the path area between arbitrary two corners of two obstacles.
-         */
-        detectOverlappedObstacleWithinPathArea(obstacles);
-
-
-        for (Obstacle cur_o : obstacles){
-
-            for (Obstacle other_o : obstacles){
-
-                if (!other_o.getName().equals(cur_o.getName())){
-
-                    //0: LowerLeft Case
-                    Map<BaseType, Path> tmpPathMap = new HashMap<>();
-                    cur_o.addToPathMap(0, other_o, tmpPathMap);
-                    for (BaseType type : cur_o.getBypassOsMapArray().get(0).get(other_o).keySet()){
-                        Path path = new Path();
-                        path.addToNodes(cur_o.getBaseArray().get(0));
-
-                        ArrayList<PseudoBase> tmpBaseArray = new ArrayList<>();
-                        tmpBaseArray.add(cur_o.getBaseArray().get(0));
-
-                        if (type == BaseType.lowerLeft) {
-                            if (cur_o.getBypassOsMapArray().get(0).get(other_o).get(type).size() != 0) {
 
 
 
 
-                            }else {
-                                //no obstacle overlaps the shortest path
-                                path.addToNodes(other_o.getBaseArray().get(0));
-                            }
-
-
-
-
-
-
-
-                        }
-
-
-                        tmpPathMap.put(type, path);
-                    }
-
-
-
-
-                }
-
-
-
-            }
-
-        }
 
 
 
@@ -260,86 +209,6 @@ public class Processor {
 
     }
 
-
-
-    /**
-     * Determine the overlapped obstacles within the PathArea
-     *
-     * @param obstacles ArrayList of obstacles
-     */
-    public void detectOverlappedObstacleWithinPathArea(ArrayList<Obstacle> obstacles) {
-
-        for (int i = 0; i < obstacles.size(); ++i) {
-            Obstacle cur_o = obstacles.get(i);
-
-            for (int j = 0; j < obstacles.size(); ++j) {
-                Obstacle other_o = obstacles.get(j);
-                if (!other_o.getName().equals(cur_o.getName())) {
-                    Map<BaseType, ArrayList<Obstacle>> typeToArrayMap = new HashMap<>();
-                    Map<BaseType, Path> typeToPathMap = new HashMap<>();
-
-                    //cur_o's LowerLeft
-                    //LL to LL
-                    cur_o.addToPathMap(0, other_o, typeToPathMap);
-                    ArrayList<Obstacle> bypassP2Os = overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getLowerLeft(), parallelogramClockwise(cur_o.getLowerLeft(), other_o.getLowerLeft()).get(1), cur_o, other_o);
-                    ArrayList<Obstacle> bypassP4Os = overlappedObstacles(obstacles, cur_o.getLowerLeft(), other_o.getLowerLeft(), parallelogramClockwise(cur_o.getLowerLeft(), other_o.getLowerLeft()).get(3), cur_o, other_o);
-
-                    if (bypassP2Os.size() == 0){
-                        Path path = new Path();
-                        path.addToNodes(cur_o.getLowerLeft());
-                        path.addToNodes(parallelogramClockwise(cur_o.getLowerLeft(), other_o.getLowerLeft()).get(1));
-                        path.addToNodes(other_o.getLowerLeft());
-                        typeToPathMap.put(BaseType.lowerLeft, path);
-
-
-                    }else if (bypassP4Os.size() == 0){
-                        Path path = new Path();
-                        path.addToNodes(cur_o.getLowerLeft());
-                        path.addToNodes(parallelogramClockwise(cur_o.getLowerLeft(), other_o.getLowerLeft()).get(3));
-                        path.addToNodes(other_o.getLowerLeft());
-                        typeToPathMap.put(BaseType.lowerLeft, path);
-
-                    }
-
-                    if (bypassP2Os.size() != 0){
-
-                    }
-                    //LL to LR
-
-                    //LL to UL
-                    //LL to UR
-
-
-
-
-
-                    cur_o.addToMapLowerLeftBypassOs(other_o, typeToArrayMap);
-
-
-                    //cur_o's LowerRight
-                    typeToArrayMap = new HashMap<>();
-
-                    cur_o.addToMapLowerRightBypassOs(other_o, typeToArrayMap);
-
-                    //cur_o's UpperLeft
-                    typeToArrayMap = new HashMap<>();
-
-                    cur_o.addToMapUpperLeftBypassOs(other_o, typeToArrayMap);
-
-                    //cur_o's UpperRight
-                    typeToArrayMap = new HashMap<>();
-
-                    cur_o.addToMapUpperRightBypassOs(other_o, typeToArrayMap);
-
-
-                }
-
-
-            }
-
-        }
-
-    }
 
     private ArrayList<PseudoBase> parallelogramClockwise(PseudoBase cur_node, PseudoBase other_node){
         PseudoBase p1 = cur_node;
@@ -513,13 +382,27 @@ public class Processor {
             for (Obstacle other_o : obstacles){
                 if (!other_o.getName().equals(o.getName())){
 
-                    if (o.topL_bottomR_AreaOverlap(other_o)){
-                        o.addTo_topL_bottomR_Os(other_o);
+                    //OtL:
+                    if (o.down_AreaOverlap(other_o) && o.onTop(other_o)){
+                        o.addTotLObstacles(other_o);
                     }
 
-                    if (o.bottomL_topR_AreaOverlap(other_o)){
-                        o.addTo_bottomL_topR_Os(other_o);
+                    //OtR:
+                    if (o.up_AreaOverlap(other_o) && o.onTop(other_o)){
+                        o.addTotRObstacles(other_o);
                     }
+
+                    //ObL:
+                    if (o.up_AreaOverlap(other_o) && o.onBottom(other_o)){
+                        o.addTobLObstacles(other_o);
+                    }
+
+                    //ObR:
+                    if (o.down_AreaOverlap(other_o) && o.onBottom(other_o)){
+                        o.addTobRObstacles(other_o);
+                    }
+
+
 
                 }else continue;
             }
@@ -541,124 +424,61 @@ public class Processor {
         /*
         oDir_q: L, R, A, B, UL, UR, LR, LL, D,U
          */
-        int cnt_oDir_q = 10;
+        int cnt_oDir_q = 6;
         int[] odir_q = new int[cnt_oDir_q];
-        //L
-        if (base.getX() < o.getMinX()) {
-            odir_q[0] = 1;
-        } else odir_q[0] = 0;
-        //R
-        if (base.getX() > o.getMaxX()) {
-            odir_q[1] = 1;
-        } else odir_q[1] = 0;
-        //A
-        if (base.getX() > o.getMaxY()) {
-            odir_q[2] = 1;
-        } else odir_q[2] = 0;
-        //B
-        if (base.getY() < o.getMinY()) {
-            odir_q[3] = 1;
-        } else odir_q[3] = 0;
         //UL
         if (base.getY() <= base.getX() + o.getMaxY() - o.getMinX()) {
-            odir_q[4] = 1;
-        } else odir_q[4] = 0;
+            odir_q[0] = 1;
+        } else odir_q[0] = 0;
         //UR
         if (base.getY() <= -base.getX() + o.getMaxY() + o.getMaxX()) {
-            odir_q[5] = 1;
-        } else odir_q[5] = 0;
+            odir_q[1] = 1;
+        } else odir_q[1] = 0;
         //LR
         if (base.getY() <= base.getX() + o.getMinY() - o.getMaxX()) {
-            odir_q[6] = 1;
-        } else odir_q[6] = 0;
+            odir_q[2] = 1;
+        } else odir_q[2] = 0;
         //LL
         if (base.getY() <= -base.getX() + o.getMinY() + o.getMinX()) {
-            odir_q[7] = 1;
-        } else odir_q[7] = 0;
+            odir_q[3] = 1;
+        } else odir_q[3] = 0;
         //D
         if (base.getY() <= (double) (o.getMinY() - o.getMaxY()) / (double) (o.getMaxX() - o.getMinX()) * (double) (base.getX() - o.getMinX()) + o.getMaxY()) {
-            odir_q[8] = 1;
-        } else odir_q[8] = 0;
+            odir_q[4] = 1;
+        } else odir_q[4] = 0;
         //U
         if (base.getY() <= (double) (o.getMaxY() - o.getMinY()) / (double) (o.getMaxX() - o.getMinX()) * (double) (base.getX() - o.getMinX()) + o.getMinY()) {
-            odir_q[9] = 1;
-        } else odir_q[9] = 0;
+            odir_q[5] = 1;
+        } else odir_q[5] = 0;
         base.addToPseudo_oDir_qs(o, odir_q);
 
         /*
         oRel_q:
          */
-        int cnt_oRel_q = 8;
+        int cnt_oRel_q = 4;
         int[] orel_q = new int[cnt_oRel_q];
-        //Ld
-        if (odir_q[0] == 1 && odir_q[2] + odir_q[3] == 0) {
-            orel_q[0] = 1;
-            base.addToOLd(o);
-        } else orel_q[0] = 0;
-        //Rd
-        if (odir_q[1] == 1 && odir_q[2] + odir_q[3] == 0) {
-            orel_q[1] = 1;
-            base.addToORd(o);
-        } else orel_q[1] = 0;
-        //Ad
-        if (odir_q[2] == 1 && odir_q[0] + odir_q[1] == 0) {
-            orel_q[2] = 1;
-            base.addToOAd(o);
-        } else orel_q[2] = 0;
-        //Bd
-        if (odir_q[3] == 1 && odir_q[0] + odir_q[1] == 0) {
-            orel_q[3] = 1;
-            base.addToOBd(o);
-        } else orel_q[3] = 0;
         //UpperLeft
-        if (odir_q[7] + odir_q[9] == 0 && odir_q[5] == 1) {
-            orel_q[4] = 1;
+        if (odir_q[2] + odir_q[4] == 0 && odir_q[1] == 1) {
+            orel_q[0] = 1;
             base.addToOULd(o);
-        } else orel_q[4] = 0;
+        } else orel_q[0] = 0;
         //UpperRight
-        if (odir_q[6] + odir_q[8] == 0 && odir_q[4] == 1) {
-            orel_q[5] = 1;
+        if (odir_q[2] + odir_q[4] == 0 && odir_q[0] == 1) {
+            orel_q[1] = 1;
             base.addToOURd(o);
-        } else orel_q[5] = 0;
+        } else orel_q[1] = 0;
         //LowerLeft
-        if (odir_q[4] + odir_q[8] == 2 && odir_q[6] == 0) {
-            orel_q[6] = 1;
+        if (odir_q[0] + odir_q[4] == 2 && odir_q[2] == 0) {
+            orel_q[2] = 1;
             base.addToOLLd(o);
-        } else orel_q[6] = 0;
+        } else orel_q[2] = 0;
         //LowerRight
-        if (odir_q[5] + odir_q[9] == 2 && odir_q[7] == 0) {
-            orel_q[7] = 1;
+        if (odir_q[1] + odir_q[5] == 2 && odir_q[3] == 0) {
+            orel_q[3] = 1;
             base.addToOLRd(o);
-        } else orel_q[7] = 0;
+        } else orel_q[3] = 0;
         base.addToPseudo_oRel_qs(o, orel_q);
 
-        /*
-        p_Dir_q:
-         */
-        int cnt_pDir_q = 4;
-        int[] pdir_q = new int[cnt_pDir_q];
-        for (PseudoBase other_b : bases){
-            //L
-            if (base.getX() < other_b.getX()){
-                pdir_q[0] = 1;
-            }else pdir_q[0] = 0;
-            //R
-            if (base.getX() > other_b.getX()){
-                pdir_q[1] = 1;
-            }else pdir_q[1] = 0;
-            //Top
-            if (base.getY() > other_b.getY()){
-                pdir_q[2] = 1;
-            }else pdir_q[2] = 0;
-            //Bottom
-            if (base.getY() < other_b.getY()){
-                pdir_q[3] = 1;
-            }else pdir_q[3] = 0;
-
-
-
-
-        }
 
     }
 
