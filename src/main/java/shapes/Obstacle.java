@@ -17,10 +17,15 @@ public class Obstacle {
     private ArrayList<PseudoBase> baseArray;
 
 
-    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapLowerLeftBypassOs;
-    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapLowerRightBypassOs;
-    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperLeftBypassOs;
-    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperRightBypassOs;
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapLowerLeftBypassP2Os;
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapLowerRightBypassP2Os;
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperLeftBypassP2Os;
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperRightBypassP2Os;
+
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapLowerLeftBypassP4Os;
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapLowerRightBypassP4Os;
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperLeftBypassP4Os;
+    private Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>> mapUpperRightBypassP4Os;
 
     private ArrayList<Map<Obstacle,  Map<BaseType, ArrayList<Obstacle>>>> bypassOsMapArray;//LL, LR, UL, UR
 
@@ -62,11 +67,15 @@ public class Obstacle {
 
 
 
-        this.mapLowerLeftBypassOs = new HashMap<>();
-        this.mapLowerRightBypassOs = new HashMap<>();
-        this.mapUpperLeftBypassOs = new HashMap<>();
-        this.mapUpperRightBypassOs = new HashMap<>();
-        this.bypassOsMapArray = new ArrayList<>(Arrays.asList(this.mapLowerLeftBypassOs, this.mapLowerRightBypassOs, this.mapUpperLeftBypassOs, this.mapUpperRightBypassOs));
+        this.mapLowerLeftBypassP2Os = new HashMap<>();
+        this.mapLowerRightBypassP2Os = new HashMap<>();
+        this.mapUpperLeftBypassP2Os = new HashMap<>();
+        this.mapUpperRightBypassP2Os = new HashMap<>();
+        this.mapLowerLeftBypassP4Os = new HashMap<>();
+        this.mapLowerRightBypassP4Os = new HashMap<>();
+        this.mapUpperLeftBypassP4Os = new HashMap<>();
+        this.mapUpperRightBypassP4Os = new HashMap<>();
+        this.bypassOsMapArray = new ArrayList<>(Arrays.asList(this.mapLowerLeftBypassP2Os, this.mapLowerRightBypassP2Os, this.mapUpperLeftBypassP2Os, this.mapUpperRightBypassP2Os, this.mapLowerLeftBypassP4Os, this.mapLowerRightBypassP4Os, this.mapUpperLeftBypassP4Os, this.mapUpperRightBypassP4Os));
 
         this.mapLowerLeftL = new HashMap<>();
         this.mapLowerRightL = new HashMap<>();
@@ -175,37 +184,37 @@ public class Obstacle {
     }
 
 
-    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapLowerLeftBypassOs() {
-        return mapLowerLeftBypassOs;
+    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapLowerLeftBypassP2Os() {
+        return mapLowerLeftBypassP2Os;
     }
 
     public void addToMapLowerLeftBypassOs(Obstacle o, Map<BaseType, ArrayList<Obstacle>> map) {
-        this.mapLowerLeftBypassOs.put(o, map);
+        this.mapLowerLeftBypassP2Os.put(o, map);
     }
 
 
-    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapLowerRightBypassOs() {
-        return mapLowerRightBypassOs;
+    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapLowerRightBypassP2Os() {
+        return mapLowerRightBypassP2Os;
     }
 
     public void addToMapLowerRightBypassOs(Obstacle o, Map<BaseType, ArrayList<Obstacle>> map) {
-        this.mapLowerRightBypassOs.put(o, map);
+        this.mapLowerRightBypassP2Os.put(o, map);
     }
 
-    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapUpperLeftBypassOs() {
-        return mapUpperLeftBypassOs;
+    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapUpperLeftBypassP2Os() {
+        return mapUpperLeftBypassP2Os;
     }
 
     public void addToMapUpperLeftBypassOs(Obstacle o, Map<BaseType, ArrayList<Obstacle>> map) {
-        this.mapUpperLeftBypassOs.put(o, map);
+        this.mapUpperLeftBypassP2Os.put(o, map);
     }
 
-    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapUpperRightBypassOs() {
-        return mapUpperRightBypassOs;
+    public Map<Obstacle, Map<BaseType, ArrayList<Obstacle>>> getMapUpperRightBypassP2Os() {
+        return mapUpperRightBypassP2Os;
     }
 
     public void addToMapUpperRightBypassOs(Obstacle o, Map<BaseType, ArrayList<Obstacle>> map) {
-        this.mapUpperRightBypassOs.put(o, map);
+        this.mapUpperRightBypassP2Os.put(o, map);
     }
 
     public Map<Obstacle, Map<BaseType, Double>> getMapLowerLeftL() {
@@ -363,7 +372,7 @@ public class Obstacle {
                 ", maxY=" + maxY + "\n" +
                 //"LowerLeft_Os = " + convertMapMapOArrayToString(mapLowerLeftPathAreaOs) +
                 //"LowerRight_Os = " + convertMapMapOArrayToString(mapLowerRightPathAreaOs) +
-                "UpperLeft_Os = " + convertMapMapOArrayToString(mapUpperLeftBypassOs) +
+                "UpperLeft_Os = " + convertMapMapOArrayToString(mapUpperLeftBypassP2Os) +
                 //"UpperRight_Os = " + convertMapMapOArrayToString(mapUpperRightPathAreaOs) +
                 "LowerLeft_Length = " + convertMapMapDToString(mapLowerLeftL) +
                 "LowerRight_Length = " + convertMapMapDToString(mapLowerRightL) +

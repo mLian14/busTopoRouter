@@ -20,4 +20,8 @@ public class Path {
     public void addToNodes(PseudoBase node) {
         this.nodes.add(node);
     }
+
+    public void setNodes(ArrayList<PseudoBase> nodes) {
+        this.nodes = nodes;
+    }
 }
