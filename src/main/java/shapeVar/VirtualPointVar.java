@@ -2,8 +2,8 @@ package shapeVar;
 
 import grb.GurobiVariable;
 import shapes.Obstacle;
+import shapes.PseudoBase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class VirtualPointVar {
 
 
     /*
-    Detour triggering
+    Detour triggering regarding NEXT VirtualPoint
      */
 
     /*
@@ -73,7 +73,7 @@ public class VirtualPointVar {
 
 
     /*
-    Path Length Computation
+    Path Length Computation regarding Next VirtualPoint
      */
 
     /*
@@ -99,33 +99,44 @@ public class VirtualPointVar {
     public Map<Obstacle, GurobiVariable[]> vv_inOutCnn_qs;//binaryVar regarding next virtualPoint for starting and end point connection
 
     /*
-    vv_oCoordinate_iqs
+    vv_oCoordinate_cqs
     0: x_m
     1: y_m
      */
-    public Map<Obstacle, GurobiVariable[]> vv_oCoordinate_iqs;//intVar regarding next virtualPoint: coordinates of the selected intermedia point
+    public Map<Obstacle, GurobiVariable[]> vv_oCoordinate_cqs;//intVar regarding next virtualPoint: coordinates of the selected intermedia point
 
     /*
-    vv_ooDist_iqs
+    vv_ooDist_cqs
     0: d_m->n
      */
-    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> vv_ooDist_iqs;//intVar: path length between o_m and o_n
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> vv_ooDist_cqs;//intVar: path length between o_m and o_n
 
     /*
-    vv_inOutDist_iqs
+    vv_inOutDist_cqs
     0: d_->
     1: d_<-
      */
-    public GurobiVariable[] vv_inOutDist_iqs;//intVar
+    public GurobiVariable[] vv_inOutDist_cqs;//contVar
 
     /*
-    dist_iqs
+    dist_cqs
     0: vv dist
     1: v.corrS dist
     2: vm dist (only for 1st vp)
      */
-    public GurobiVariable[] dist_iqs;
+    public GurobiVariable[] dist_cqs;
 
+
+
+
+    /*
+    Detour triggering regarding Slaves
+     */
+    //vsCnn_q
+    public Map<PseudoBase, GurobiVariable> vsCnn_q;//binaryVar
+    
+    //vsDist_cq
+    public Map<PseudoBase, GurobiVariable> vsDist_cq;
 
     public VirtualPointVar() {
 
@@ -138,8 +149,11 @@ public class VirtualPointVar {
         this.o_vvCorner_qs = new HashMap<>();
         this.vv_ooCnn_qs = new HashMap<>();
         this.vv_inOutCnn_qs = new HashMap<>();
-        this.vv_oCoordinate_iqs = new HashMap<>();
-        this.vv_ooDist_iqs = new HashMap<>();
+        this.vv_oCoordinate_cqs = new HashMap<>();
+        this.vv_ooDist_cqs = new HashMap<>();
+
+        this.vsCnn_q = new HashMap<>();
+        this.vsDist_cq = new HashMap<>();
 
     }
 }

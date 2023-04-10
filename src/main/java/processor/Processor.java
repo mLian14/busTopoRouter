@@ -219,11 +219,11 @@ public class Processor {
 
 
                 /*
-                vv_oCoordinate_iqs
+                vv_oCoordinate_cqs
                 0: x_m
                 1: y_m
                  */
-                vp.vv_oCoordinate_iqs.put(o, buildOkIntVar(i, o.getName(), lb, ub, "vv_oCoordinate_iqs", 2));
+                vp.vv_oCoordinate_cqs.put(o, buildOkContinuousVar(i, o.getName(), lb, ub, "vv_oCoordinate_cqs", 2));
 
 
 
@@ -233,16 +233,16 @@ public class Processor {
                  */
                 Map<Obstacle, GurobiVariable[]> vv_ooCnn_qsMap = new HashMap<>();
                 /*
-                vv_ooDist_iqs
+                vv_ooDist_cqs
                 0: d_m->n
                  */
-                Map<Obstacle, GurobiVariable[]> vv_ooDist_iqsMap = new HashMap<>();
+                Map<Obstacle, GurobiVariable[]> vv_ooDist_cqsMap = new HashMap<>();
                 for (Obstacle other_o : obstacles){
                     vv_ooCnn_qsMap.put(other_o, buildOmOnBinaryVar(i, o.getName(), other_o.getName(), "vv_ooCnn_qs", 1));
-                    vv_ooDist_iqsMap.put(other_o, buildOmOnIntVar(i, o.getName(), other_o.getName(), lb, ub, "vv_ooDist_iqs", 1));
+                    vv_ooDist_cqsMap.put(other_o, buildOmOnContinuousVar(i, o.getName(), other_o.getName(), lb, ub, "vv_ooDist_cqs", 1));
                 }
                 vp.vv_ooCnn_qs.put(o, vv_ooCnn_qsMap);
-                vp.vv_ooDist_iqs.put(o, vv_ooDist_iqsMap);
+                vp.vv_ooDist_cqs.put(o, vv_ooDist_cqsMap);
 
             }
 
@@ -257,22 +257,40 @@ public class Processor {
             vp.vvDetour_qs = buildBinaryVar(i, "vp_detour_qs", 5);
 
             /*
-            vv_inOutDist_iqs
+            vv_inOutDist_cqs
             0: d_->
             1: d_<-
              */
-            vp.vv_inOutDist_iqs = buildIntVar(i, "vv_inOutDist_iqs", -M, M, 2);
+            vp.vv_inOutDist_cqs = buildContinuousVar(i, "vv_inOutDist_cqs", 0, M, 2);
 
             /*
-            dist_iqs
+            dist_cqs
             0: vv dist
             1: v.corrS dist
             2: vm dist (only for 1st vp)
              */
             if (i == 0){
-                vp.dist_iqs = buildIntVar(i, "dist_iqs", -M, M, 3);
+                vp.dist_cqs = buildContinuousVar(i, "dist_cqs", 0, M, 3);
             }else {
-                vp.dist_iqs = buildIntVar(i, "dist_iqs", -M, M, 2);
+                vp.dist_cqs = buildContinuousVar(i, "dist_cqs", 0, M, 2);
+            }
+
+            /*
+            Regarding Slaves
+             */
+            for (PseudoBase sv : slaves){
+                //vsCnn_q
+                GurobiVariable vsCnn_q = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + "_vsCnn_q_" + sv.getName());
+                executor.addVariable(vsCnn_q);
+                vp.vsCnn_q.put(sv, vsCnn_q);
+
+                //vsDist_cq
+                GurobiVariable vsDist_cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + "vsDist_cq" + sv.getName());
+                executor.addVariable(vsDist_cq);
+                vp.vsDist_cq.put(sv, vsDist_cq);
+
+
+
             }
 
         }
@@ -280,19 +298,19 @@ public class Processor {
 
     }
 
-    private GurobiVariable[] buildOkIntVar(int i, String oName, int lb, int ub, String varName, int varCnt) {
+    private GurobiVariable[] buildOkContinuousVar(int i, String oName, int lb, int ub, String varName, int varCnt) {
         GurobiVariable[] qs = new GurobiVariable[varCnt];
         for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
-            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";" + oName + "_" + varName + "_" + var_cnt);
+            qs[var_cnt] = new GurobiVariable(GRB.CONTINUOUS, lb, ub, "v_" + i + ";" + oName + "_" + varName + "_" + var_cnt);
             executor.addVariable(qs[var_cnt]);
         }
         return qs;
     }
 
-    private GurobiVariable[] buildOmOnIntVar(int i, String omName, String onName, int lb, int ub, String varName, int varCnt) {
+    private GurobiVariable[] buildOmOnContinuousVar(int i, String omName, String onName, int lb, int ub, String varName, int varCnt) {
         GurobiVariable[] qs = new GurobiVariable[varCnt];
         for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
-            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";" + omName + "->" + onName + "_" + varName + "_" + var_cnt);
+            qs[var_cnt] = new GurobiVariable(GRB.CONTINUOUS, lb, ub, "v_" + i + ";" + omName + "->" + onName + "_" + varName + "_" + var_cnt);
             executor.addVariable(qs[var_cnt]);
         }
         return qs;
@@ -309,10 +327,10 @@ public class Processor {
         return qs;
     }
 
-    private GurobiVariable[] buildIntVar(int i, String varName, int lb, int ub, int varCnt) {
+    private GurobiVariable[] buildContinuousVar(int i, String varName, int lb, int ub, int varCnt) {
         GurobiVariable[] qs = new GurobiVariable[varCnt];
         for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
-            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";_" + varName + "_" + var_cnt);
+            qs[var_cnt] = new GurobiVariable(GRB.CONTINUOUS, lb, ub, "v_" + i + ";_" + varName + "_" + var_cnt);
             executor.addVariable(qs[var_cnt]);
         }
         return qs;
