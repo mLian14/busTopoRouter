@@ -118,6 +118,14 @@ public class VirtualPointVar {
      */
     public GurobiVariable[] vv_inOutDist_iqs;//intVar
 
+    /*
+    dist_iqs
+    0: vv dist
+    1: v.corrS dist
+    2: vm dist (only for 1st vp)
+     */
+    public GurobiVariable[] dist_iqs;
+
 
     public VirtualPointVar() {
 
@@ -127,7 +135,11 @@ public class VirtualPointVar {
         this.o_vp_relObstacles_qs = new HashMap<>();
 
 
-        this.vv_ooCnn_qs = new HashMap<>();
         this.o_vvCorner_qs = new HashMap<>();
+        this.vv_ooCnn_qs = new HashMap<>();
+        this.vv_inOutCnn_qs = new HashMap<>();
+        this.vv_oCoordinate_iqs = new HashMap<>();
+        this.vv_ooDist_iqs = new HashMap<>();
+
     }
 }

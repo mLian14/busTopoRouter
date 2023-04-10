@@ -168,7 +168,7 @@ public class Processor {
                 2: nonA
                 3: nonB
                  */
-                vp.o_vp_Non_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_Non_qs", 4));
+                vp.o_vp_Non_qs.put(o, buildOkBinaryVar(i, o.getName(), "o_vp_Non_qs", 4));
 
                 /*
                 o_vp_Rel_qs
@@ -179,7 +179,7 @@ public class Processor {
                 4: d
                 5: u
                  */
-                vp.o_vp_Rel_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_Rel_qs", 6));
+                vp.o_vp_Rel_qs.put(o, buildOkBinaryVar(i, o.getName(), "o_vp_Rel_qs", 6));
 
                 /*
                 o_vp_diagonalSets_qs
@@ -188,7 +188,7 @@ public class Processor {
                 2: o_bL
                 3: o_bR
                  */
-                vp.o_vp_diagonalSets_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_diagonalSets_qs", 4));
+                vp.o_vp_diagonalSets_qs.put(o, buildOkBinaryVar(i, o.getName(), "o_vp_diagonalSets_qs", 4));
 
                 /*
                 o_vp_relObstacles_qs
@@ -198,7 +198,7 @@ public class Processor {
                 3: ll->ur
                 4: relative obstacle: aux.2
                  */
-                vp.o_vp_relObstacles_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_relObstacles_qs", 5));
+                vp.o_vp_relObstacles_qs.put(o, buildOkBinaryVar(i, o.getName(), "o_vp_relObstacles_qs", 5));
 
 
                 /*
@@ -208,14 +208,14 @@ public class Processor {
                 2: ul
                 3: lr
                  */
-                vp.o_vvCorner_qs.put(o, buildObstacleBinaryVar(i, o, "o_vvCorner_qs", 4));
+                vp.o_vvCorner_qs.put(o, buildOkBinaryVar(i, o.getName(), "o_vvCorner_qs", 4));
 
                 /*
                 vv_inOutCnn_qs
                 0: ->
                 1: <-
                 */
-                vp.vv_inOutCnn_qs.put(o, buildObstacleBinaryVar(i, o, "vv_inOutCnn_qs", 2));
+                vp.vv_inOutCnn_qs.put(o, buildOkBinaryVar(i, o.getName(), "vv_inOutCnn_qs", 2));
 
 
                 /*
@@ -223,7 +223,7 @@ public class Processor {
                 0: x_m
                 1: y_m
                  */
-                vp.vv_oCoordinate_iqs.put(o, buildObstacleIntVar(i, o, lb, ub, "vv_oCoordinate_iqs", 2));
+                vp.vv_oCoordinate_iqs.put(o, buildOkIntVar(i, o.getName(), lb, ub, "vv_oCoordinate_iqs", 2));
 
 
 
@@ -231,18 +231,18 @@ public class Processor {
                 vv_ooCnn_qs
                 0: q_ij^m->n
                  */
-                Map<Obstacle, GurobiVariable[]> obstacleToGrbArrayMap = new HashMap<>();
+                Map<Obstacle, GurobiVariable[]> vv_ooCnn_qsMap = new HashMap<>();
+                /*
+                vv_ooDist_iqs
+                0: d_m->n
+                 */
+                Map<Obstacle, GurobiVariable[]> vv_ooDist_iqsMap = new HashMap<>();
                 for (Obstacle other_o : obstacles){
-
-                    int cnt_vv_ooCnn_qs = 1;
-                    qs = new GurobiVariable[cnt_vv_ooCnn_qs];
-                    for (int var_cnt = 0; var_cnt < cnt_vv_ooCnn_qs; ++var_cnt) {
-                        qs[var_cnt] = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + o.getName() + "->" + other_o.getName() + "_" + "vv_ooCnn_qs" + "_" + var_cnt);
-                        executor.addVariable(qs[var_cnt]);
-                    }
-                    obstacleToGrbArrayMap.put(other_o, qs);
+                    vv_ooCnn_qsMap.put(other_o, buildOmOnBinaryVar(i, o.getName(), other_o.getName(), "vv_ooCnn_qs", 1));
+                    vv_ooDist_iqsMap.put(other_o, buildOmOnIntVar(i, o.getName(), other_o.getName(), lb, ub, "vv_ooDist_iqs", 1));
                 }
-                vp.vv_ooCnn_qs.put(o, obstacleToGrbArrayMap);
+                vp.vv_ooCnn_qs.put(o, vv_ooCnn_qsMap);
+                vp.vv_ooDist_iqs.put(o, vv_ooDist_iqsMap);
 
             }
 
@@ -254,23 +254,50 @@ public class Processor {
             3: ll->ur
             4: detour trigger: aux.3
              */
-            int cnt_vp_detour_qs = 5;
-            vp.vvDetour_qs = buildBinaryVar(i, "", cnt_vp_detour_qs);
+            vp.vvDetour_qs = buildBinaryVar(i, "vp_detour_qs", 5);
 
+            /*
+            vv_inOutDist_iqs
+            0: d_->
+            1: d_<-
+             */
+            vp.vv_inOutDist_iqs = buildIntVar(i, "vv_inOutDist_iqs", -M, M, 2);
+
+            /*
+            dist_iqs
+            0: vv dist
+            1: v.corrS dist
+            2: vm dist (only for 1st vp)
+             */
+            if (i == 0){
+                vp.dist_iqs = buildIntVar(i, "dist_iqs", -M, M, 3);
+            }else {
+                vp.dist_iqs = buildIntVar(i, "dist_iqs", -M, M, 2);
+            }
 
         }
 
 
     }
 
-    private GurobiVariable[] buildObstacleIntVar(int i, Obstacle o, int lb, int ub, String varName, int varCnt) {
+    private GurobiVariable[] buildOkIntVar(int i, String oName, int lb, int ub, String varName, int varCnt) {
         GurobiVariable[] qs = new GurobiVariable[varCnt];
         for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
-            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";" + o.getName() + "_" + varName + "_" + var_cnt);
+            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";" + oName + "_" + varName + "_" + var_cnt);
             executor.addVariable(qs[var_cnt]);
         }
         return qs;
     }
+
+    private GurobiVariable[] buildOmOnIntVar(int i, String omName, String onName, int lb, int ub, String varName, int varCnt) {
+        GurobiVariable[] qs = new GurobiVariable[varCnt];
+        for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
+            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";" + omName + "->" + onName + "_" + varName + "_" + var_cnt);
+            executor.addVariable(qs[var_cnt]);
+        }
+        return qs;
+    }
+
 
 
     private GurobiVariable[] buildBinaryVar(int i, String varName, int varCnt) {
@@ -282,10 +309,28 @@ public class Processor {
         return qs;
     }
 
-    private GurobiVariable[] buildObstacleBinaryVar(int i, Obstacle o, String varName, int varCnt) {
+    private GurobiVariable[] buildIntVar(int i, String varName, int lb, int ub, int varCnt) {
         GurobiVariable[] qs = new GurobiVariable[varCnt];
         for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
-            qs[var_cnt] = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + o.getName() + "_" + varName + "_" + var_cnt);
+            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";_" + varName + "_" + var_cnt);
+            executor.addVariable(qs[var_cnt]);
+        }
+        return qs;
+    }
+
+    private GurobiVariable[] buildOkBinaryVar(int i, String oName, String varName, int varCnt) {
+        GurobiVariable[] qs = new GurobiVariable[varCnt];
+        for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
+            qs[var_cnt] = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + oName + "_" + varName + "_" + var_cnt);
+            executor.addVariable(qs[var_cnt]);
+        }
+        return qs;
+    }
+
+    private GurobiVariable[] buildOmOnBinaryVar(int i, String omName, String onName, String varName, int varCnt) {
+        GurobiVariable[] qs = new GurobiVariable[varCnt];
+        for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
+            qs[var_cnt] = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + omName + "->" + onName + "_" + varName + "_" + var_cnt);
             executor.addVariable(qs[var_cnt]);
         }
         return qs;
