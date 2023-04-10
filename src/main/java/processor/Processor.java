@@ -1,9 +1,13 @@
 package processor;
 
 import grb.GurobiExecutor;
+import grb.GurobiVariable;
+import gurobi.GRB;
+import gurobi.GRBException;
 import parser.DocumentParser;
 import parser.Document;
 import parser.OutputDocument;
+import shapeVar.VirtualPointVar;
 import shapes.*;
 
 import java.util.*;
@@ -27,7 +31,7 @@ public class Processor {
         BottomToTop
     }
 
-    enum OppositeType{
+    enum OppositeType {
         topLtoBottomR,
         bottomLtoTopR,
         topRtoBottomL,
@@ -40,7 +44,7 @@ public class Processor {
         this.parser = new DocumentParser();
     }
 
-    public OutputDocument processToOutputPre(String path) {
+    public OutputDocument processToOutputPre(String path) throws GRBException {
 
         parser.parseInputToDocument(path);
         Document input = parser.getParseDoc();
@@ -59,12 +63,19 @@ public class Processor {
      * @param obstacles ArrayList of obstacles
      * @return OutputDocument from preparation
      */
-    public OutputDocument processToOutputPre(String caseName, PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles) {
+    public OutputDocument processToOutputPre(String caseName, PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles) throws GRBException {
         OutputDocument output = new OutputDocument(caseName);
         /*
         Determine the pseudo Variables of Master and slaves
          */
         pseudoBaseVariablesDetermination(master, slaves, obstacles);
+
+        executor = new GurobiExecutor("LinearBusRouting_KO");
+        executor.setMIPGap(0);
+        executor.setMIPGapAbs(0);
+
+        //build Gurobi Varibales
+
 
 
 
@@ -83,28 +94,226 @@ public class Processor {
         return output;
     }
 
-    public OppositeType relationDetermineRegardOs(ArrayList<Obstacle> relevantObstacles, PseudoBase cur_n, PseudoBase other_n){
+    public void buildVars(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualpointVars, ArrayList<PseudoBase> slaves, PseudoBase master) {
+        GurobiVariable[] qs;
+
+        /*
+        find the boundary of the board
+         */
+        ArrayList<Integer> xs = new ArrayList<>();
+        ArrayList<Integer> ys = new ArrayList<>();
+        for (Obstacle o : obstacles) {
+            xs.add(o.getMinX());
+            xs.add(o.getMaxX());
+            ys.add(o.getMinY());
+            ys.add(o.getMaxY());
+        }
+        for (PseudoBase sv : slaves) {
+            xs.add(sv.getX());
+            ys.add(sv.getY());
+        }
+        xs.add(master.getX());
+        ys.add(master.getY());
+
+        int lb_x = Collections.min(xs);
+        int ub_x = Collections.max(xs);
+        int lb_y = Collections.min(ys);
+        int ub_y = Collections.max(ys);
+        //lb_x
+        if (lb_x <= 0) {
+            lb_x *= 2;
+        } else {
+            lb_x *= 0.5;
+        }
+        //lb_y
+        if (lb_y <= 0) {
+            lb_y *= 2;
+        } else {
+            lb_y *= 0.5;
+        }
+        //ub_x
+        if (ub_x >= 0) {
+            ub_x *= 2;
+        } else {
+            ub_x *= 0.5;
+        }
+        //ub_y
+        if (ub_y >= 0) {
+            ub_y *= 2;
+        } else {
+            ub_y *= 0.5;
+        }
+
+        int lb = Math.min(lb_x, lb_y);
+        int ub = Math.max(ub_x, ub_y);
+
+
+
+        /*
+        initialize virtual points
+         */
+        for (int i = 0; i < slaves.size(); ++i) {
+            VirtualPointVar vp = new VirtualPointVar();
+            vp.x = new GurobiVariable(GRB.INTEGER, lb_x, ub_x, "x" + i);
+            executor.addVariable(vp.x);
+            vp.y = new GurobiVariable(GRB.INTEGER, lb_y, ub_y, "y" + i);
+            executor.addVariable(vp.y);
+
+
+            for (Obstacle o : obstacles) {
+                /*
+                o_vp_Non_qs
+                0: nonL
+                1: nonR
+                2: nonA
+                3: nonB
+                 */
+                vp.o_vp_Non_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_Non_qs", 4));
+
+                /*
+                o_vp_Rel_qs
+                0: ul
+                1: ur
+                2: lr
+                3: ll
+                4: d
+                5: u
+                 */
+                vp.o_vp_Rel_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_Rel_qs", 6));
+
+                /*
+                o_vp_diagonalSets_qs
+                0: o_tL
+                1: o_tR
+                2: o_bL
+                3: o_bR
+                 */
+                vp.o_vp_diagonalSets_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_diagonalSets_qs", 4));
+
+                /*
+                o_vp_relObstacles_qs
+                0: ul->lr
+                1: lr->ul
+                2: ur->ll
+                3: ll->ur
+                4: relative obstacle: aux.2
+                 */
+                vp.o_vp_relObstacles_qs.put(o, buildObstacleBinaryVar(i, o, "o_vp_relObstacles_qs", 5));
+
+
+                /*
+                o_vvCorner_qs
+                0: ll
+                1: ur
+                2: ul
+                3: lr
+                 */
+                vp.o_vvCorner_qs.put(o, buildObstacleBinaryVar(i, o, "o_vvCorner_qs", 4));
+
+                /*
+                vv_inOutCnn_qs
+                0: ->
+                1: <-
+                */
+                vp.vv_inOutCnn_qs.put(o, buildObstacleBinaryVar(i, o, "vv_inOutCnn_qs", 2));
+
+
+                /*
+                vv_oCoordinate_iqs
+                0: x_m
+                1: y_m
+                 */
+                vp.vv_oCoordinate_iqs.put(o, buildObstacleIntVar(i, o, lb, ub, "vv_oCoordinate_iqs", 2));
+
+
+
+                /*
+                vv_ooCnn_qs
+                0: q_ij^m->n
+                 */
+                Map<Obstacle, GurobiVariable[]> obstacleToGrbArrayMap = new HashMap<>();
+                for (Obstacle other_o : obstacles){
+
+                    int cnt_vv_ooCnn_qs = 1;
+                    qs = new GurobiVariable[cnt_vv_ooCnn_qs];
+                    for (int var_cnt = 0; var_cnt < cnt_vv_ooCnn_qs; ++var_cnt) {
+                        qs[var_cnt] = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + o.getName() + "->" + other_o.getName() + "_" + "vv_ooCnn_qs" + "_" + var_cnt);
+                        executor.addVariable(qs[var_cnt]);
+                    }
+                    obstacleToGrbArrayMap.put(other_o, qs);
+                }
+                vp.vv_ooCnn_qs.put(o, obstacleToGrbArrayMap);
+
+            }
+
+            /*
+            vp_detour_qs
+            0: ul->lr
+            1: lr->ul
+            2: ur->ll
+            3: ll->ur
+            4: detour trigger: aux.3
+             */
+            int cnt_vp_detour_qs = 5;
+            vp.vvDetour_qs = buildBinaryVar(i, "", cnt_vp_detour_qs);
+
+
+        }
+
+
+    }
+
+    private GurobiVariable[] buildObstacleIntVar(int i, Obstacle o, int lb, int ub, String varName, int varCnt) {
+        GurobiVariable[] qs = new GurobiVariable[varCnt];
+        for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
+            qs[var_cnt] = new GurobiVariable(GRB.INTEGER, lb, ub, "v_" + i + ";" + o.getName() + "_" + varName + "_" + var_cnt);
+            executor.addVariable(qs[var_cnt]);
+        }
+        return qs;
+    }
+
+
+    private GurobiVariable[] buildBinaryVar(int i, String varName, int varCnt) {
+        GurobiVariable[] qs = new GurobiVariable[varCnt];
+        for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
+            qs[var_cnt] = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";_" + varName + "_" + var_cnt);
+            executor.addVariable(qs[var_cnt]);
+        }
+        return qs;
+    }
+
+    private GurobiVariable[] buildObstacleBinaryVar(int i, Obstacle o, String varName, int varCnt) {
+        GurobiVariable[] qs = new GurobiVariable[varCnt];
+        for (int var_cnt = 0; var_cnt < varCnt; ++var_cnt) {
+            qs[var_cnt] = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + o.getName() + "_" + varName + "_" + var_cnt);
+            executor.addVariable(qs[var_cnt]);
+        }
+        return qs;
+    }
+
+
+    public OppositeType relationDetermineRegardOs(ArrayList<Obstacle> relevantObstacles, PseudoBase cur_n, PseudoBase other_n) {
 
         OppositeType type = OppositeType.NoOppositeRelation;
-        for (Obstacle cur_o : relevantObstacles){
-            for (Obstacle other_o : relevantObstacles){
+        for (Obstacle cur_o : relevantObstacles) {
+            for (Obstacle other_o : relevantObstacles) {
                 //topL to bottomR
-                if (cur_o.topL_bottomR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[4] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[7] == 1){
+                if (cur_o.topL_bottomR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[4] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[7] == 1) {
                     type = OppositeType.topLtoBottomR;
                     break;
                 }
                 //bottomR to topL
-                if (cur_o.bottomR_topL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[7] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[4] == 1){
+                if (cur_o.bottomR_topL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[7] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[4] == 1) {
                     type = OppositeType.bottomRtoTopL;
                     break;
                 }
                 //topR to bottomL
-                if (cur_o.topR_bottomL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[5] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[6] == 1){
+                if (cur_o.topR_bottomL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[5] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[6] == 1) {
                     type = OppositeType.topRtoBottomL;
                     break;
                 }
                 //bottomL to topR
-                if (cur_o.bottomL_topR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[6] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[5] == 1){
+                if (cur_o.bottomL_topR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[6] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[5] == 1) {
                     type = OppositeType.bottomLtoTopR;
                 }
 
@@ -116,11 +325,11 @@ public class Processor {
         return type;
     }
 
-
     /**
      * Sorted ArrayList of Obstacles according to the SortType
+     *
      * @param targetObstacles ArrayList of Obstacles
-     * @param type SortType
+     * @param type            SortType
      */
     public void sortedObstacles(ArrayList<Obstacle> targetObstacles, SortType type) {
 
@@ -209,8 +418,7 @@ public class Processor {
 
     }
 
-
-    private ArrayList<PseudoBase> parallelogramClockwise(PseudoBase cur_node, PseudoBase other_node){
+    private ArrayList<PseudoBase> parallelogramClockwise(PseudoBase cur_node, PseudoBase other_node) {
         PseudoBase p1 = cur_node;
         PseudoBase p3 = other_node;
         PseudoBase p2 = null, p4 = null;
@@ -294,14 +502,13 @@ public class Processor {
 
         for (Obstacle o : obstacles) {
             //check if one of the edges of obstacles v.s., one of the edges of the parallelogram
-            if (segmentOverlappedObstacle(cur_node, bypassNode, o)){
+            if (segmentOverlappedObstacle(cur_node, bypassNode, o)) {
                 overlappedO.add(o);
             }
-            if (segmentOverlappedObstacle(bypassNode, other_node, o)){
+            if (segmentOverlappedObstacle(bypassNode, other_node, o)) {
                 overlappedO.add(o);
             }
         }
-
 
 
         //Left -- Right
@@ -379,36 +586,33 @@ public class Processor {
             /*
             oo_dir
              */
-            for (Obstacle other_o : obstacles){
-                if (!other_o.getName().equals(o.getName())){
+            for (Obstacle other_o : obstacles) {
+                if (!other_o.getName().equals(o.getName())) {
 
                     //OtL:
-                    if (o.down_AreaOverlap(other_o) && o.onTop(other_o)){
+                    if (o.down_AreaOverlap(other_o) && o.onTop(other_o)) {
                         o.addTotLObstacles(other_o);
                     }
 
                     //OtR:
-                    if (o.up_AreaOverlap(other_o) && o.onTop(other_o)){
+                    if (o.up_AreaOverlap(other_o) && o.onTop(other_o)) {
                         o.addTotRObstacles(other_o);
                     }
 
                     //ObL:
-                    if (o.up_AreaOverlap(other_o) && o.onBottom(other_o)){
+                    if (o.up_AreaOverlap(other_o) && o.onBottom(other_o)) {
                         o.addTobLObstacles(other_o);
                     }
 
                     //ObR:
-                    if (o.down_AreaOverlap(other_o) && o.onBottom(other_o)){
+                    if (o.down_AreaOverlap(other_o) && o.onBottom(other_o)) {
                         o.addTobRObstacles(other_o);
                     }
 
 
-
-                }else continue;
+                } else continue;
             }
         }
-
-
 
 
     }
@@ -481,7 +685,6 @@ public class Processor {
 
 
     }
-
 
 
     public static boolean onSegment(PseudoBase p, PseudoBase q, PseudoBase r) {
