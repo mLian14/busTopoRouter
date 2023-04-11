@@ -80,7 +80,11 @@ public class Processor {
         ArrayList<VirtualPointVar> vps = new ArrayList<>();
         buildVars(obstacles, vps, slaves, master);
         executor.updateModelWithVars();
-        //System.out.println(executor.getVariables().size());
+        System.out.println("#Variables = " + executor.getVariables().size());
+
+        buildCons(obstacles, vps, slaves, master);
+        executor.updateModelWithCons();
+        System.out.println("#Constraints = " + executor.getConstraints().size());
 
 
 
@@ -99,16 +103,19 @@ public class Processor {
         return output;
     }
 
-    public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master) {
+    public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master) throws GRBException {
         double eps = 3;
 
         GurobiConstraint c;
         GurobiQuadConstraint qc;
 
+        GurobiVariable[] grbArray;
+
         double dTmp;
 
 
         for (VirtualPointVar vp : virtualPointVars) {
+
 
             for (Obstacle o : obstacles) {
                 //nonl
@@ -184,7 +191,7 @@ public class Processor {
                 c.setRHSConstant(o.getMinY() + o.getMinX() + eps);
                 executor.addConstraint(c);
                 //rel.d
-                dTmp = (double) (o.getMinY() - o.getMaxY())/ (double) (o.getMaxX() - o.getMinX());
+                dTmp = (double) (o.getMinY() - o.getMaxY()) / (double) (o.getMaxX() - o.getMinX());
                 c = new GurobiConstraint();
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
@@ -193,7 +200,7 @@ public class Processor {
                 c.setRHSConstant(dTmp * o.getMinX() + o.getMaxY() + eps);
                 executor.addConstraint(c);
                 //rel.u
-                dTmp = (double)(o.getMaxY() - o.getMinY()) /(double)(o.getMaxX() - o.getMinX());
+                dTmp = (double) (o.getMaxY() - o.getMinY()) / (double) (o.getMaxX() - o.getMinX());
                 c = new GurobiConstraint();
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
@@ -307,8 +314,119 @@ public class Processor {
                 executor.addConstraint(c);
 
 
+            }
+
+            /*
+            Index 0 -- vps.size() - 1
+             */
+            if (virtualPointVars.indexOf(vp) < virtualPointVars.size() - 1) {
+                VirtualPointVar vpN = virtualPointVars.get(virtualPointVars.indexOf(vp) + 1);
+
+                /*
+                d_ij
+                VVVV
+                 */
+                c = new GurobiConstraint();
+                c.addToLHS(vp.dist_cqs[0], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.aux_vvDist_cqs[2], Math.sqrt(2));
+                c.addToRHS(vp.aux_vvDist_cqs[3], 1.0);
+                executor.addConstraint(c);
+                //aux_ABS
+                c = new GurobiConstraint();
+                c.addToLHS(vp.x, 1.0);
+                c.addToLHS(vpN.x, -1.0);
+                c.setSense('=');
+                c.addToRHS(vp.aux_vvDist_cqs[4], 1.0);
+                executor.addConstraint(c);
+                executor.addGenConstraintAbs(vp.aux_vvDist_cqs[0], vp.aux_vvDist_cqs[4], "|vi.x - vj.x|_" + virtualPointVars.indexOf(vp));
+                c = new GurobiConstraint();
+                c.addToLHS(vp.y, 1.0);
+                c.addToLHS(vpN.y, -1.0);
+                c.setSense('=');
+                c.addToRHS(vp.aux_vvDist_cqs[5], 1.0);
+                executor.addConstraint(c);
+                executor.addGenConstraintAbs(vp.aux_vvDist_cqs[1], vp.aux_vvDist_cqs[5], "|vi.y - vj.y|_" + virtualPointVars.indexOf(vp));
+                executor.addGenConstraintMin(vp.aux_vvDist_cqs[2], new GurobiVariable[]{vp.aux_vvDist_cqs[0], vp.aux_vvDist_cqs[1]}, (double) M, "min(|vi.x - vj.x|, |vi.y - vj.y|)_" + virtualPointVars.indexOf(vp));
+                c = new GurobiConstraint();
+                c.addToLHS(vp.aux_vvDist_cqs[0], 1.0);
+                c.addToLHS(vp.aux_vvDist_cqs[1], -1.0);
+                c.setSense('=');
+                c.addToRHS(vp.aux_vvDist_cqs[6], 1.0);
+                executor.addConstraint(c);
+                executor.addGenConstraintAbs(vp.aux_vvDist_cqs[3], vp.aux_vvDist_cqs[6], "||vi.x - vj.x| - |vi.y - vj.y||_" + virtualPointVars.indexOf(vp));
+                /*
+                AAAA
+                d_ij
+                 */
 
 
+            }
+
+            /*
+            Connection with Slaves
+             */
+            GurobiConstraint vsCnn = new GurobiConstraint();
+            vsCnn.setSense('=');
+            vsCnn.setRHSConstant(1.0);
+            executor.addConstraint(vsCnn);
+            for (PseudoBase sv : slaves) {
+                //sv.1
+                vsCnn.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+
+                /*
+                d_is_j
+                VVVV
+                 */
+                c = new GurobiConstraint();
+                c.addToLHS(vp.vs_dist_cq.get(sv), 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.aux_vsDist_cqs.get(sv)[2], Math.sqrt(2));
+                c.addToRHS(vp.aux_vsDist_cqs.get(sv)[3], 1.0);
+                executor.addConstraint(c);
+                //aux
+                c = new GurobiConstraint();
+                c.addToLHS(vp.x, 1.0);
+                c.setLHSConstant(-sv.getX());
+                c.setSense('=');
+                c.addToRHS(vp.aux_vsDist_cqs.get(sv)[4], 1.0);
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.addToLHS(vp.y, 1.0);
+                c.setLHSConstant(-sv.getY());
+                c.setSense('=');
+                c.addToRHS(vp.aux_vsDist_cqs.get(sv)[5], 1.0);
+                executor.addConstraint(c);
+                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[0], vp.aux_vsDist_cqs.get(sv)[4], "|vi.x - sj.x|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[1], vp.aux_vsDist_cqs.get(sv)[5], "|vi.y - sj.y|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                executor.addGenConstraintMin(vp.aux_vsDist_cqs.get(sv)[2], new GurobiVariable[]{vp.aux_vsDist_cqs.get(sv)[0], vp.aux_vsDist_cqs.get(sv)[1]}, (double) M, " min(|vi.x - sj.x|, |vi.y - sj.y|)" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                c = new GurobiConstraint();
+                c.addToLHS(vp.aux_vsDist_cqs.get(sv)[0], 1.0);
+                c.addToLHS(vp.aux_vsDist_cqs.get(sv)[1], -1.0);
+                c.setSense('=');
+                c.addToRHS(vp.aux_vsDist_cqs.get(sv)[6], 1.0);
+                executor.addConstraint(c);
+                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[3], vp.aux_vsDist_cqs.get(sv)[6], "||vi.x - sj.x| - |vi.y - sj.y||" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                /*
+                AAAA
+                d_i_sj
+                 */
+
+                //sv.3
+                c = new GurobiConstraint();
+                c.addToLHS(vp.dist_cqs[1], 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
+                c.addToRHS(vp.vsCnn_q.get(sv), -M);
+                c.setRHSConstant(M);
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.addToLHS(vp.dist_cqs[1], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
+                c.addToRHS(vp.vsCnn_q.get(sv), M);
+                c.setRHSConstant(-M);
+                executor.addConstraint(c);
 
 
 
@@ -509,6 +627,18 @@ public class Processor {
             }
 
             /*
+            Auxiliary absolute values
+            0: |vi.x - vj.x|
+            1: |vi.y - vj.y|
+            2: min(|vi.x - vj.x|, |vi.y - vj.y|)
+            3: ||vi.x - vj.x| - |vi.y - vj.y||
+            4: vi.x - vj.x
+            5: vi.y - vj.y
+            6: |vi.x - vj.x| - |vi.y - vj.y|
+             */
+            vp.aux_vvDist_cqs = buildContinuousVar(0, M, "v" + i + "_auxCqs_", 7);
+
+            /*
             Regarding Slaves
              */
             for (PseudoBase sv : slaves) {
@@ -607,9 +737,26 @@ public class Processor {
                 vs_inDist_cqs
                 0: d_<-
                  */
-                vp.vs_inDist_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + ";" + sv.getName() + "_vs_inDist_cqs_", 1));
+                vp.vs_inDist_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_vs_inDist_cqs_", 1));
 
+                /*
+                Auxiliary absolute values: vs
+                0: |vi.x - sj.x|
+                1: |vi.y - sj.y|
+                2: min(|vi.x - sj.x|, |vi.y - sj.y|)
+                3: ||vi.x - sj.x| - |vi.y - sj.y||
+                4: vi.x - sj.x
+                5: vi.y - sj.y
+                6: |vi.x - sj.x| - |vi.y - sj.y|
+                 */
+                vp.aux_vsDist_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_aux_vsDist_cqs_", 1));
 
+                /*
+                d_i_sj
+                 */
+                cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + ";" + sv.getName() + "_d_i_sj");
+                executor.addVariable(cq);
+                vp.vs_dist_cq.put(sv, cq);
             }
 
         }
@@ -929,8 +1076,6 @@ public class Processor {
      */
     public void pseudoBaseVariablesDetermination(PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles) {
 
-        ArrayList<PseudoBase> bases = new ArrayList<>(slaves);
-        bases.add(master);
         for (Obstacle o : obstacles) {
             basicBinaryVariables(master, o, slaves);
             for (PseudoBase slave : slaves) {
@@ -944,22 +1089,22 @@ public class Processor {
                 if (!other_o.getName().equals(o.getName())) {
 
                     //OtL:
-                    if (o.down_AreaOverlap(other_o) && o.onTop(other_o)) {
+                    if (o.atL(other_o)) {
                         o.addTotLObstacles(other_o);
                     }
 
                     //OtR:
-                    if (o.up_AreaOverlap(other_o) && o.onTop(other_o)) {
+                    if (o.atR(other_o)) {
                         o.addTotRObstacles(other_o);
                     }
 
                     //ObL:
-                    if (o.up_AreaOverlap(other_o) && o.onBottom(other_o)) {
+                    if (o.abL(other_o)) {
                         o.addTobLObstacles(other_o);
                     }
 
                     //ObR:
-                    if (o.down_AreaOverlap(other_o) && o.onBottom(other_o)) {
+                    if (o.abR(other_o)) {
                         o.addTobRObstacles(other_o);
                     }
 

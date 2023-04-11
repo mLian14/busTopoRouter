@@ -13,6 +13,8 @@ public class Obstacle {
 
     private int minX, maxX, minY, maxY;
 
+    private double delta_x, delta_y, gradient;
+
     private PseudoBase lowerLeft, lowerRight, upperLeft, upperRight;
     private ArrayList<PseudoBase> baseArray;
 
@@ -28,6 +30,10 @@ public class Obstacle {
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
+
+        this.delta_x = this.maxX - this.minX;
+        this.delta_y = this.maxY - this.minY;
+        this.gradient = this.delta_y / this.delta_x;
 
         this.lowerLeft = new PseudoBase(minX, minY);
         this.lowerLeft.setType(BaseType.lowerLeft);
@@ -48,6 +54,18 @@ public class Obstacle {
 
     public ArrayList<PseudoBase> getBaseArray() {
         return baseArray;
+    }
+
+    public double getDelta_x() {
+        return delta_x;
+    }
+
+    public double getDelta_y() {
+        return delta_y;
+    }
+
+    public double getGradient() {
+        return gradient;
     }
 
     public PseudoBase getLowerLeft() {
@@ -195,6 +213,37 @@ public class Obstacle {
 
     public boolean bottomL_topR_oo(Obstacle other_o){
         return this.minX <= other_o.maxX && this.minY <= other_o.maxY;
+    }
+
+    public boolean aboveUp(PseudoBase base){
+        return base.getY() > this.gradient * (base.getX() - this.minX) + this.minY;
+    }
+    public boolean belowUp(PseudoBase base){
+        return base.getY() < this.gradient * (base.getX() - this.minX) + this.minY;
+    }
+
+    public boolean aboveDown(PseudoBase base){
+        return base.getY() > -this.gradient * (base.getX() - this.minX) + this.maxY;
+    }
+
+    public boolean belowDown (PseudoBase base){
+        return base.getY() < -this.gradient * (base.getX() - this.minX) + this.maxY;
+    }
+
+    public boolean atL(Obstacle other_o){
+        return down_AreaOverlap(other_o) && this.aboveUp(other_o.getUpperLeft());
+    }
+
+    public boolean abR(Obstacle other_o){
+        return down_AreaOverlap(other_o) && this.belowUp(other_o.getLowerRight());
+    }
+
+    public boolean atR(Obstacle other_o){
+        return up_AreaOverlap(other_o) && this.aboveDown(other_o.getUpperRight());
+    }
+
+    public boolean abL(Obstacle other_o){
+        return up_AreaOverlap(other_o) && this.belowDown(other_o.getLowerLeft());
     }
 
 

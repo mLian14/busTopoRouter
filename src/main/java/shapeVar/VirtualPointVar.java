@@ -120,14 +120,23 @@ public class VirtualPointVar {
 
     /*
     dist_cqs
-    0: vv dist
+    0: vv dist: d_ij
     1: v.corrS dist
     2: vm dist (only for 1st vp)
      */
     public GurobiVariable[] dist_cqs;
 
-
-
+    /*
+    Auxiliary absolute values: vv
+    0: |vi.x - vj.x|
+    1: |vi.y - vj.y|
+    2: min(|vi.x - vj.x|, |vi.y - vj.y|)
+    3: ||vi.x - vj.x| - |vi.y - vj.y||
+    4: vi.x - vj.x
+    5: vi.y - vj.y
+    6: |vi.x - vj.x| - |vi.y - vj.y|
+     */
+    public GurobiVariable[] aux_vvDist_cqs;
 
     /*
     Detour triggering regarding Slaves
@@ -202,6 +211,24 @@ public class VirtualPointVar {
     0: d_<-
      */
     public Map<PseudoBase, GurobiVariable[]> vs_inDist_cqs;//contVar
+
+    /*
+    d_i_sj
+     */
+    public Map<PseudoBase, GurobiVariable> vs_dist_cq;
+
+
+    /*
+    Auxiliary absolute values: vs
+    0: |vi.x - sj.x|
+    1: |vi.y - sj.y|
+    2: min(|vi.x - sj.x|, |vi.y - sj.y|)
+    3: ||vi.x - sj.x| - |vi.y - sj.y||
+    4: vi.x - sj.x
+    5: vi.y - sj.y
+    6: |vi.x - sj.x| - |vi.y - sj.y|
+     */
+    public Map<PseudoBase, GurobiVariable[]> aux_vsDist_cqs;
 
 
     public VirtualPointVar() {
