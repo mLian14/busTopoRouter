@@ -103,13 +103,16 @@ public class Processor {
             System.out.println("HH:IIS");
             //break;
         }
-        System.out.println("C975 = " + executor.getConstraints().get(975));
-        System.out.println("C975 = " + executor.getConstraints().get(978));
-        System.out.println("C975 = " + executor.getConstraints().get(979));
-        System.out.println("C975 = " + executor.getConstraints().get(980));
-        System.out.println("C975 = " + executor.getConstraints().get(991));
-        System.out.println("C975 = " + executor.getConstraints().get(1084));
-        System.out.println("C975 = " + executor.getConstraints().get(1497));
+//        System.out.println("C975 = " + executor.getConstraints().get(149));
+//        System.out.println("C975 = " + executor.getConstraints().get(214));
+//        System.out.println("C975 = " + executor.getConstraints().get(215));
+//        System.out.println("C975 = " + executor.getConstraints().get(216));
+//        System.out.println("C975 = " + executor.getConstraints().get(222));
+//        System.out.println("C975 = " + executor.getConstraints().get(288));
+//        System.out.println("C975 = " + executor.getConstraints().get(289));
+//        System.out.println("C975 = " + executor.getConstraints().get(304));
+//        System.out.println("C975 = " + executor.getConstraints().get(359));
+
 
 
 
@@ -937,9 +940,9 @@ public class Processor {
         for (int i = 0; i < slaves.size(); ++i) {
             VirtualPointVar vp = new VirtualPointVar();
             virtualPointVars.add(vp);
-            vp.x = new GurobiVariable(GRB.INTEGER, lb_x, ub_x, "x" + i);
+            vp.x = new GurobiVariable(GRB.INTEGER, -M, M, "x" + i);
             executor.addVariable(vp.x);
-            vp.y = new GurobiVariable(GRB.INTEGER, lb_y, ub_y, "y" + i);
+            vp.y = new GurobiVariable(GRB.INTEGER, -M, M, "y" + i);
             executor.addVariable(vp.y);
 
 
@@ -1006,7 +1009,7 @@ public class Processor {
                 0: x_m
                 1: y_m
                  */
-                vp.oCoordinate_iqs.put(o, buildIntVar(lb, ub, "v_" + i + ";" + o.getName() + "_oCoordinate_iqs_", 2));
+                vp.oCoordinate_iqs.put(o, buildIntVar(-M, M, "v_" + i + ";" + o.getName() + "_oCoordinate_iqs_", 2));
 
 
 
@@ -1188,7 +1191,7 @@ public class Processor {
                     executor.addVariable(q);
                     vs_inCnn_qMap.put(o, q);
 
-                    vs_oCoordinate_iqsMap.put(o, buildIntVar(lb, ub, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_oCoordinate_iqs_", 2));
+                    vs_oCoordinate_iqsMap.put(o, buildIntVar(-M, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_oCoordinate_iqs_", 2));
                     vs_dOmOn_cqsMap.put(o, vs_dOn_cqsMap);
                 }
                 vp.vs_relObstacles_qs.put(sv, vs_relObstacles_qsMap);

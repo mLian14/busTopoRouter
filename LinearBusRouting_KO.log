@@ -420,3 +420,125 @@ Computing Irreducible Inconsistent Subsystem (IIS)...
 
 IIS computed: 11 constraints, 7 bounds
 IIS runtime: 0.62 seconds (0.32 work units)
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 13:09:59 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 2658 rows, 8691 columns and 7756 nonzeros
+Model fingerprint: 0xff9b7ed4
+Model has 35 quadratic constraints
+Model has 844 general constraints
+Variable types: 3163 continuous, 5528 integer (4936 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 1132 rows and 7164 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Warning: general constraint name "abs(abs_x - abs_y)" has a space
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      3425         -         0      7510         -           0s
+       11        11        11         7         7         7           1s
+
+IIS computed: 11 constraints, 7 bounds
+IIS runtime: 0.63 seconds (0.32 work units)
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 13:14:52 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 2658 rows, 8691 columns and 7756 nonzeros
+Model fingerprint: 0xc4e80452
+Model has 35 quadratic constraints
+Model has 844 general constraints
+Variable types: 3163 continuous, 5528 integer (4936 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 1926 rows and 7939 columns
+Presolve time: 0.02s
+Presolved: 1103 rows, 864 columns, 3363 nonzeros
+Variable types: 404 continuous, 460 integer (429 binary)
+Found heuristic solution: objective 0.0000000
+
+Explored 1 nodes (0 simplex iterations) in 0.04 seconds (0.04 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "abs(abs_x - abs_y)" has a space
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 13:16:34 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 2658 rows, 8691 columns and 7756 nonzeros
+Model fingerprint: 0xeecc663f
+Model has 35 quadratic constraints
+Model has 844 general constraints
+Variable types: 3163 continuous, 5528 integer (4936 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 1926 rows and 7939 columns
+Presolve time: 0.03s
+Presolved: 1103 rows, 864 columns, 3363 nonzeros
+Variable types: 404 continuous, 460 integer (429 binary)
+Found heuristic solution: objective 0.0000000
+
+Explored 1 nodes (0 simplex iterations) in 0.05 seconds (0.04 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "abs(abs_x - abs_y)" has a space
