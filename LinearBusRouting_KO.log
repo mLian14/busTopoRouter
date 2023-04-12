@@ -16,3 +16,85 @@ Gurobi 10.0.0 (mac64[arm]) logging started Mon Apr 10 15:32:17 2023
 Set parameter LogFile to value "LinearBusRouting_KO.log"
 Set parameter MIPGap to value 0
 Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 11:23:10 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 11:23:39 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 11:23:57 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 11:25:24 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 11:25:55 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 12:19:24 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 12:26:18 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 2770 rows, 8691 columns and 8064 nonzeros
+Model fingerprint: 0x7ae6e72a
+Model has 35 quadratic constraints
+Model has 956 general constraints
+Variable types: 3163 continuous, 5528 integer (4936 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 1216 rows and 7136 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Warning: general constraint name "abs(abs_x - abs_y)" has a space
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      3649         -         0      7510         -           0s
+        9         9         9         6         6         6           1s
+
+IIS computed: 9 constraints, 6 bounds
+IIS runtime: 0.69 seconds (0.31 work units)

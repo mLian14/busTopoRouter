@@ -183,19 +183,17 @@ public class VirtualPointVar {
      */
     //vsCnn_q
     public Map<PseudoBase, GurobiVariable> vsCnn_q;//binaryVar
-    
-    //vsDist_cq
-    public Map<PseudoBase, GurobiVariable> vsDist_cq;
+
 
     /*
-    o_vs_relObstacles_qs
+    vs_relObstacles_qs
     0: ul->lr
     1: lr->ul
     2: ur->ll
     3: ll->ur
     4: relative obstacle: aux.2
      */
-    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> ovs_relObstacles_qs;//binary variables for (ul->lr.1) -- (ll->ur.1)
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_relObstacles_qs;//binary variables for (ul->lr.1) -- (ll->ur.1)
 
     /*
     vs_detour_qs
@@ -205,7 +203,7 @@ public class VirtualPointVar {
     3: ll->ur
     4: q_ij^d: detour trigger: aux.3
      */
-    public Map<PseudoBase, GurobiVariable[]> vsDetour_qs;//binary variables regarding Slaves for (ul->lr.2) -- (ll->ur.2)
+    public Map<PseudoBase, GurobiVariable[]> vs_detour_qs;//binary variables regarding Slaves for (ul->lr.2) -- (ll->ur.2)
 
 
 
@@ -213,44 +211,44 @@ public class VirtualPointVar {
     Path Length Computation regarding Slaves
      */
     /*
-    ovs_Corner_qs
+    vs_corner_qs
     0: ll
     1: ur
     2: ul
     3: lr
      */
-    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> ovs_Corner_qs;
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_corner_qs;
 
     /*
-    vs_ooCnn_q
+    vs_omOnCnn_q
     q_i_sj^m->n
      */
-    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable>>> vs_ooCnn_q;//binaryVar regarding Slaves for relObstacles' connection
+    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable>>> vs_omOnCnn_q;//binaryVar regarding Slaves for relObstacles' connection
 
     /*
-    ovs_inCnn_q
+    vs_inCnn_q
     sj<-
      */
-    public Map<PseudoBase, Map<Obstacle, GurobiVariable>> ovs_inCnn_q;//binaryVar regarding Slaves for starting and end point connection
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable>> vs_inCnn_q;//binaryVar regarding Slaves for starting and end point connection
 
     /*
-    ovs_oCoordinate_iqs
+    vs_oCoordinate_iqs
     0: x_m
     1: y_m
      */
-    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> ovs_oCoordinate_iqs;//intVar regarding Slaves: coordinates of the selected intermedia point
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_oCoordinate_iqs;//intVar regarding Slaves: coordinates of the selected intermedia point
 
     /*
-    vs_ooDist_cqs
+    vs_dOmOn_cqs
     0: d_m->n
      */
-    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable[]>>> vs_ooDist_cqs;//contVar: path length between o_m and o_n
+    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable[]>>> vs_dOmOn_cqs;//contVar: path length between o_m and o_n
 
     /*
-    vs_inDist_cqs
+    vs_dIn_cqs
     0: d_<-
      */
-    public Map<PseudoBase, GurobiVariable[]> vs_inDist_cqs;//contVar
+    public Map<PseudoBase, GurobiVariable[]> vs_dIn_cqs;//contVar
 
     /*
     d_i_sj
@@ -286,17 +284,20 @@ public class VirtualPointVar {
         this.dOmOn_cq = new HashMap<>();
         this.aux_dOut_cqs = new HashMap<>();
         this.aux_dOmOn_cqs = new HashMap<>();
+        this.aux_dIn_cqs = new HashMap<>();
+
 
         this.vsCnn_q = new HashMap<>();
-        this.vsDist_cq = new HashMap<>();
-        this.ovs_relObstacles_qs = new HashMap<>();
-        this.vsDetour_qs = new HashMap<>();
-        this.ovs_Corner_qs = new HashMap<>();
-        this.vs_ooCnn_q = new HashMap<>();
-        this.ovs_inCnn_q = new HashMap<>();
-        this.ovs_oCoordinate_iqs = new HashMap<>();
-        this.vs_ooDist_cqs = new HashMap<>();
-        this.vs_inDist_cqs = new HashMap<>();
+        this.vs_relObstacles_qs = new HashMap<>();
+        this.vs_detour_qs = new HashMap<>();
+        this.vs_corner_qs = new HashMap<>();
+        this.vs_omOnCnn_q = new HashMap<>();
+        this.vs_inCnn_q = new HashMap<>();
+        this.vs_oCoordinate_iqs = new HashMap<>();
+        this.vs_dOmOn_cqs = new HashMap<>();
+        this.vs_dIn_cqs = new HashMap<>();
+        this.aux_vsDist_cqs = new HashMap<>();
+        this.vs_dist_cq = new HashMap<>();
 
     }
 }

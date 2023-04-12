@@ -1,9 +1,6 @@
 package processor;
 
-import grb.GurobiConstraint;
-import grb.GurobiExecutor;
-import grb.GurobiQuadConstraint;
-import grb.GurobiVariable;
+import grb.*;
 import gurobi.GRB;
 import gurobi.GRBException;
 import parser.DocumentParser;
@@ -77,14 +74,36 @@ public class Processor {
         executor.setMIPGapAbs(0);
 
         //build Gurobi Variables
+        GurobiVariable busLength, branchLength;
+        busLength = new GurobiVariable(GRB.CONTINUOUS, 0, M, "busLength");
+        executor.addVariable(busLength);
+        branchLength = new GurobiVariable(GRB.CONTINUOUS, 0,M, "branchLength");
+        executor.addVariable(branchLength);
+
         ArrayList<VirtualPointVar> vps = new ArrayList<>();
         buildVars(obstacles, vps, slaves, master);
         executor.updateModelWithVars();
         System.out.println("#Variables = " + executor.getVariables().size());
 
-        buildCons(obstacles, vps, slaves, master);
+        //build Constraints
+        buildCons(obstacles, vps, slaves, master, busLength, branchLength);
         executor.updateModelWithCons();
         System.out.println("#Constraints = " + executor.getConstraints().size());
+
+        //Objective Function
+        GurobiObjConstraint objCons = new GurobiObjConstraint();
+        objCons.addToLHS(busLength, 1.0);
+        objCons.setGoal(GRB.MINIMIZE);
+        executor.setObjConstraint(objCons);
+
+        executor.startOptimization();
+        this.executor.getModel().write("debug.lp");
+        if (executor.getModel().get(GRB.IntAttr.Status) == GRB.INFEASIBLE) {
+            executor.whenInfeasibleWriteOutputTo("inf.ilp");
+            System.out.println("HH:IIS");
+            //break;
+        }
+
 
 
 
@@ -103,7 +122,7 @@ public class Processor {
         return output;
     }
 
-    public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master) throws GRBException {
+    public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master, GurobiVariable busLength, GurobiVariable branchLength) throws GRBException {
         double eps = 3;
 
         GurobiConstraint c;
@@ -114,6 +133,12 @@ public class Processor {
         double dTmp;
 
 
+        //busLength
+        GurobiConstraint c_busLength = new GurobiConstraint();
+        c_busLength.addToLHS(busLength, 1.0);
+        c_busLength.setSense('=');
+        executor.addConstraint(c_busLength);
+
         for (VirtualPointVar vp : virtualPointVars) {
 
             //cnn.4
@@ -121,6 +146,17 @@ public class Processor {
             c_vpOut.setSense('=');
             c_vpOut.addToRHS(vp.detour_qs[4], 1.0);
             executor.addConstraint(c_vpOut);
+            //pl
+            GurobiConstraint c_dij_detour = new GurobiConstraint();
+            c_dij_detour.addToLHS(vp.dist_cqs[0], 1.0);
+            c_dij_detour.setSense('>');
+            c_dij_detour.addToRHS(vp.dInOut_cqs[0], 1.0);
+            c_dij_detour.addToRHS(vp.dInOut_cqs[1], 1.0);
+            executor.addConstraint(c_dij_detour);
+
+            /*
+            Obstacle relative
+             */
             for (Obstacle o : obstacles) {
                 //nonl
                 c = new GurobiConstraint();
@@ -492,6 +528,9 @@ public class Processor {
                             //cnn.3
                             c_outCnn.addToRHS(vp.omOnCnn_q.get(o).get(on), vp.relObstacles_qs.get(on)[4], 1.0);
 
+                            //pl
+                            c_dij_detour.addToRHS(vp.dOmOn_cq.get(o).get(on), 1.0);
+
 
                         }
                     }
@@ -634,7 +673,7 @@ public class Processor {
                 vpN = virtualPointVars.get(virtualPointVars.indexOf(vp) + 1);
 
                 /*
-                d_ij
+                d_ij without Detour
                 VVVV
                  */
                 c = new GurobiConstraint();
@@ -670,6 +709,11 @@ public class Processor {
                 AAAA
                 d_ij
                  */
+
+                //busLength
+                c_busLength.addToRHS(vp.dist_cqs[0], 1.0);
+
+
 
 
             }
@@ -1004,80 +1048,75 @@ public class Processor {
                 executor.addVariable(q);
                 vp.vsCnn_q.put(sv, q);
 
-                //vsDist_cq
-                cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + "vsDist_cq" + sv.getName());
-                executor.addVariable(cq);
-                vp.vsDist_cq.put(sv, cq);
-
                 /*
-                ovs_relObstacles_qs
+                vs_relObstacles_qs
                 0: ul->lr
                 1: lr->ul
                 2: ur->ll
                 3: ll->ur
                 4: relative obstacle: aux.2
                 */
-                Map<Obstacle, GurobiVariable[]> ovs_relObstacle_qs = new HashMap<>();
+                Map<Obstacle, GurobiVariable[]> vs_relObstacles_qsMap = new HashMap<>();
                 /*
-                ovs_Corner_qs
+                vs_corner_qs
                 0: ll
                 1: ur
                 2: ul
                 3: lr
                  */
-                Map<Obstacle, GurobiVariable[]> ovs_Corner_qs = new HashMap<>();
+                Map<Obstacle, GurobiVariable[]> vs_corner_qsMap = new HashMap<>();
                 /*
-                vs_ooCnn_q
+                vs_omOnCnn_q
                 q_i_sj^m->n
                  */
-                Map<Obstacle, Map<Obstacle, GurobiVariable>> vs_ooCnn_q = new HashMap<>();
+                Map<Obstacle, Map<Obstacle, GurobiVariable>> vs_omOnCnn_qMap = new HashMap<>();
                 /*
-                ovs_inCnn_q
+                vs_inCnn_q
                 sj<-
                  */
-                Map<Obstacle, GurobiVariable> ovs_outCnn_qs = new HashMap<>();
+                Map<Obstacle, GurobiVariable> vs_inCnn_qMap = new HashMap<>();
                 /*
-                ovs_oCoordinate_iqs
+                vs_oCoordinate_iqs
                 0: x_m
                 1: y_m
                 */
-                Map<Obstacle, GurobiVariable[]> ovs_oCoordinate_iqs = new HashMap<>();
+                Map<Obstacle, GurobiVariable[]> vs_oCoordinate_iqsMap = new HashMap<>();
                 /*
-                vs_ooDist_cqs
+                vs_dOmOn_cqs
                 0: d_m->n
                  */
-                Map<Obstacle, Map<Obstacle, GurobiVariable[]>> vs_ooDist_cqs = new HashMap<>();
+                Map<Obstacle, Map<Obstacle, GurobiVariable[]>> vs_dOmOn_cqsMap = new HashMap<>();
 
 
                 for (Obstacle o : obstacles) {
-                    ovs_relObstacle_qs.put(o, buildBinaryVar("v" + i + ";" + o.getName() + ";" + sv.getName() + "_ovs_relObstacles_qs_", 5));
-                    ovs_Corner_qs.put(o, buildBinaryVar("v" + i + ";" + o.getName() + ";" + sv.getName() + "_ovs_Corner_qs_", 4));
+                    vs_relObstacles_qsMap.put(o, buildBinaryVar("v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_relObstacles_qs_", 5));
+                    vs_corner_qsMap.put(o, buildBinaryVar("v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_corner_qs_", 4));
 
 
-                    Map<Obstacle, GurobiVariable> vs_ooCnn_qMap = new HashMap<>();
-                    Map<Obstacle, GurobiVariable[]> vs_ooDist_cqsMap = new HashMap<>();
+                    Map<Obstacle, GurobiVariable> vs_onCnn_qMap = new HashMap<>();
+                    Map<Obstacle, GurobiVariable[]> vs_dOn_cqsMap = new HashMap<>();
                     for (Obstacle other_o : obstacles) {
-                        q = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_ooCnn_q");
+                        q = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_omOnCnn_q");
                         executor.addVariable(q);
-                        vs_ooCnn_qMap.put(other_o, q);
+                        vs_onCnn_qMap.put(other_o, q);
 
-                        vs_ooDist_cqsMap.put(other_o, buildContinuousVar(0, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_ooDist_cqs_", 1));
+                        vs_dOn_cqsMap.put(other_o, buildContinuousVar(0, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_dOmOn_cqs_", 1));
                     }
-                    vs_ooCnn_q.put(o, vs_ooCnn_qMap);
+                    vs_omOnCnn_qMap.put(o, vs_onCnn_qMap);
 
-                    q = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_ovs_inCnn_q");
+                    q = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_inCnn_q");
                     executor.addVariable(q);
-                    ovs_outCnn_qs.put(o, q);
+                    vs_inCnn_qMap.put(o, q);
 
-                    ovs_oCoordinate_iqs.put(o, buildIntVar(lb, ub, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_ovs_oCoordinate_iqs_", 2));
-                    vs_ooDist_cqs.put(o, vs_ooDist_cqsMap);
+                    vs_oCoordinate_iqsMap.put(o, buildIntVar(lb, ub, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_oCoordinate_iqs_", 2));
+                    vs_dOmOn_cqsMap.put(o, vs_dOn_cqsMap);
                 }
-                vp.ovs_relObstacles_qs.put(sv, ovs_relObstacle_qs);
-                vp.ovs_Corner_qs.put(sv, ovs_Corner_qs);
-                vp.vs_ooCnn_q.put(sv, vs_ooCnn_q);
-                vp.ovs_inCnn_q.put(sv, ovs_outCnn_qs);
-                vp.ovs_oCoordinate_iqs.put(sv, ovs_oCoordinate_iqs);
-                vp.vs_ooDist_cqs.put(sv, vs_ooDist_cqs);
+                vp.vs_relObstacles_qs.put(sv, vs_relObstacles_qsMap);
+                vp.vs_corner_qs.put(sv, vs_corner_qsMap);
+                vp.vs_omOnCnn_q.put(sv, vs_omOnCnn_qMap);
+                vp.vs_inCnn_q.put(sv, vs_inCnn_qMap);
+                vp.vs_oCoordinate_iqs.put(sv, vs_oCoordinate_iqsMap);
+                vp.vs_dOmOn_cqs.put(sv, vs_dOmOn_cqsMap);
 
 
                 /*
@@ -1088,13 +1127,13 @@ public class Processor {
                 3: ll->ur
                 4: q_ij^d: detour trigger: aux.3
                 */
-                vp.vsDetour_qs.put(sv, buildBinaryVar("v" + i + ";" + sv.getName() + "_vs_detour_qs_", 5));
+                vp.vs_detour_qs.put(sv, buildBinaryVar("v" + i + ";" + sv.getName() + "_vs_detour_qs_", 5));
 
                 /*
-                vs_inDist_cqs
+                vs_dIn_cqs
                 0: d_<-
                  */
-                vp.vs_inDist_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_vs_inDist_cqs_", 1));
+                vp.vs_dIn_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_vs_dIn_cqs_", 1));
 
                 /*
                 Auxiliary absolute values: vs
@@ -1106,7 +1145,7 @@ public class Processor {
                 5: vi.y - sj.y
                 6: |vi.x - sj.x| - |vi.y - sj.y|
                  */
-                vp.aux_vsDist_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_aux_vsDist_cqs_", 1));
+                vp.aux_vsDist_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_aux_vsDist_cqs_", 7));
 
                 /*
                 d_i_sj
