@@ -56,7 +56,7 @@ public class VirtualPointVar {
     1: lr->ul
     2: ur->ll
     3: ll->ur
-    4: relative obstacle: aux.2
+    4: relative obstacle: aux.1/cnn.4
      */
     public Map<Obstacle, GurobiVariable[]> o_vp_relObstacles_qs;//binary variables for (ul->lr.1) -- (ll->ur.1)
 
@@ -66,7 +66,7 @@ public class VirtualPointVar {
     1: lr->ul
     2: ur->ll
     3: ll->ur
-    4: q_ij^d: detour trigger: aux.3
+    4: q_ij^d: detour trigger: aux.2/cnn.4
      */
     public GurobiVariable[] vvDetour_qs;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
 
@@ -117,6 +117,30 @@ public class VirtualPointVar {
     1: d_<-
      */
     public GurobiVariable[] vv_inOutDist_cqs;//contVar
+
+    /*
+    Auxiliary absolute values
+    0: |vi.x - x_m|
+    1: |vi.y - y_m|
+    2: min(|vi.x - x_m|, |vi.y - y_m|)
+    3: ||vi.x - x_m| - |vi.y - y_m||
+    4: vi.x - x_m
+    5: vi.y - y_m
+    6: |vi.x - x_m| - |vi.y - y_m|
+     */
+    public Map<Obstacle, GurobiVariable[]> aux_ovv_inOutDist_cqs;
+
+    /*
+    Auxiliary absolute values
+    0: |vi.x - x_m|
+    1: |vi.y - y_m|
+    2: min(|vi.x - x_m|, |vi.y - y_m|)
+    3: ||vi.x - x_m| - |vi.y - y_m||
+    4: vi.x - x_m
+    5: vi.y - y_m
+    6: |vi.x - x_m| - |vi.y - y_m|
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> aux_vv_ooCnn_cqs;
 
     /*
     dist_cqs
@@ -244,6 +268,8 @@ public class VirtualPointVar {
         this.ovv_inOutCnn_qs = new HashMap<>();
         this.ovv_oCoordinate_iqs = new HashMap<>();
         this.vv_ooDist_cqs = new HashMap<>();
+        this.aux_ovv_inOutDist_cqs = new HashMap<>();
+        this.aux_vv_ooCnn_cqs = new HashMap<>();
 
         this.vsCnn_q = new HashMap<>();
         this.vsDist_cq = new HashMap<>();

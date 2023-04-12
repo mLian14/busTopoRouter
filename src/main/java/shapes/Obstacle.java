@@ -46,9 +46,13 @@ public class Obstacle {
         this.baseArray = new ArrayList<>(Arrays.asList(this.lowerLeft, this.lowerRight, this.upperLeft, this.upperRight));
 
         this.tLObstacles = new ArrayList<>();
+        this.tLObstacles.add(this);
         this.tRObstacles = new ArrayList<>();
+        this.tRObstacles.add(this);
         this.bLObstacles = new ArrayList<>();
+        this.bLObstacles.add(this);
         this.bRObstacles = new ArrayList<>();
+        this.bRObstacles.add(this);
 
     }
 
