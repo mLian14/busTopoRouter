@@ -2097,3 +2097,540 @@ Solution count 1: 11.8284
 Optimal solution found (tolerance 0.00e+00)
 Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
 Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 17:32:45 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 439 rows, 1035 columns and 1247 nonzeros
+Model fingerprint: 0x624719f2
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 376 rows and 957 columns
+Presolve time: 0.01s
+Presolved: 126 rows, 98 columns, 329 nonzeros
+Variable types: 43 continuous, 55 integer (48 binary)
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.92078    0    1   11.82843   10.92078  7.67%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (7 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
+Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 17:33:51 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 439 rows, 1035 columns and 1247 nonzeros
+Model fingerprint: 0x624719f2
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 376 rows and 957 columns
+Presolve time: 0.01s
+Presolved: 126 rows, 98 columns, 329 nonzeros
+Variable types: 43 continuous, 55 integer (48 binary)
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.92078    0    1   11.82843   10.92078  7.67%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (7 simplex iterations) in 0.02 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
+Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 17:33:55 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 439 rows, 1035 columns and 1247 nonzeros
+Model fingerprint: 0x624719f2
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 376 rows and 957 columns
+Presolve time: 0.00s
+Presolved: 126 rows, 98 columns, 329 nonzeros
+Variable types: 43 continuous, 55 integer (48 binary)
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.92078    0    1   11.82843   10.92078  7.67%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (7 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
+Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 17:35:18 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 439 rows, 1035 columns and 1247 nonzeros
+Model fingerprint: 0x624719f2
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 376 rows and 957 columns
+Presolve time: 0.01s
+Presolved: 126 rows, 98 columns, 329 nonzeros
+Variable types: 43 continuous, 55 integer (48 binary)
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.92078    0    1   11.82843   10.92078  7.67%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (7 simplex iterations) in 0.02 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
+Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 17:44:25 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 439 rows, 1035 columns and 1247 nonzeros
+Model fingerprint: 0x624719f2
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 376 rows and 957 columns
+Presolve time: 0.01s
+Presolved: 126 rows, 98 columns, 329 nonzeros
+Variable types: 43 continuous, 55 integer (48 binary)
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.92078    0    1   11.82843   10.92078  7.67%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (7 simplex iterations) in 0.02 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
+Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 17:44:40 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 439 rows, 1035 columns and 1247 nonzeros
+Model fingerprint: 0x624719f2
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 376 rows and 957 columns
+Presolve time: 0.01s
+Presolved: 126 rows, 98 columns, 329 nonzeros
+Variable types: 43 continuous, 55 integer (48 binary)
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.92078    0    1   11.82843   10.92078  7.67%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (7 simplex iterations) in 0.17 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
+Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 19:07:14 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 439 rows, 1035 columns and 1247 nonzeros
+Model fingerprint: 0x9dd8aa86
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 376 rows and 957 columns
+Presolve time: 0.01s
+Presolved: 126 rows, 98 columns, 329 nonzeros
+Variable types: 43 continuous, 55 integer (48 binary)
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.82843    0    1   11.82843   10.82843  8.45%     -    0s
+     0     0   10.92078    0    1   11.82843   10.92078  7.67%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (7 simplex iterations) in 0.04 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712407e+01, best bound 1.182842712407e+01, gap 0.0000%
+Warning: general constraint 452 and general constraint 456 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 19:23:52 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 487 rows, 1035 columns and 1391 nonzeros
+Model fingerprint: 0xdc7eff0d
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 402 rows and 947 columns
+Presolve time: 0.01s
+Presolved: 148 rows, 108 columns, 397 nonzeros
+Variable types: 41 continuous, 67 integer (60 binary)
+Found heuristic solution: objective 15.8284271
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 17 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    7   11.82843   10.82843  8.45%     -    0s
+
+Explored 1 nodes (17 simplex iterations) in 0.06 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 11.8284 15.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712402e+01, best bound 1.182842712402e+01, gap 0.0000%
+Warning: general constraint 500 and general constraint 504 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 19:31:52 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 487 rows, 1035 columns and 1391 nonzeros
+Model fingerprint: 0xdc7eff0d
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 402 rows and 947 columns
+Presolve time: 0.01s
+Presolved: 148 rows, 108 columns, 397 nonzeros
+Variable types: 41 continuous, 67 integer (60 binary)
+Found heuristic solution: objective 15.8284271
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 17 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    7   11.82843   10.82843  8.45%     -    0s
+
+Explored 1 nodes (17 simplex iterations) in 0.03 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 11.8284 15.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712402e+01, best bound 1.182842712402e+01, gap 0.0000%
+Warning: general constraint 500 and general constraint 504 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 19:32:56 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 487 rows, 1035 columns and 1391 nonzeros
+Model fingerprint: 0xdc7eff0d
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 402 rows and 947 columns
+Presolve time: 0.01s
+Presolved: 148 rows, 108 columns, 397 nonzeros
+Variable types: 41 continuous, 67 integer (60 binary)
+Found heuristic solution: objective 15.8284271
+Found heuristic solution: objective 11.8284271
+
+Root relaxation: objective 1.082843e+01, 17 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.82843    0    7   11.82843   10.82843  8.45%     -    0s
+
+Explored 1 nodes (17 simplex iterations) in 0.03 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 11.8284 15.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.182842712402e+01, best bound 1.182842712402e+01, gap 0.0000%
+Warning: general constraint 500 and general constraint 504 have the same name "absX_dOmOn"
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 12 19:36:15 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 487 rows, 1035 columns and 1391 nonzeros
+Model fingerprint: 0x4d636ba0
+Model has 9 quadratic constraints
+Model has 100 general constraints
+Variable types: 493 continuous, 542 integer (490 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  GenCon const rng [1e+06, 2e+06]
+Presolve removed 422 rows and 957 columns
+Presolve time: 0.02s
+Presolved: 128 rows, 98 columns, 331 nonzeros
+Variable types: 41 continuous, 57 integer (50 binary)
+Found heuristic solution: objective 25.8284271
+
+Root relaxation: objective 1.782843e+01, 8 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   17.82843    0    1   25.82843   17.82843  31.0%     -    0s
+     0     0     cutoff    0        25.82843   25.82843  0.00%     -    0s
+
+Cutting planes:
+  Learned: 1
+
+Explored 1 nodes (9 simplex iterations) in 0.04 seconds (0.00 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 25.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 2.582842712314e+01, best bound 2.582842712314e+01, gap 0.0000%
+Warning: general constraint 500 and general constraint 504 have the same name "absX_dOmOn"

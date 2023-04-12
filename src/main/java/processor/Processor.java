@@ -126,7 +126,10 @@ public class Processor {
             System.out.println("vp" + i + "=(" + vp.x.getIntResult() + ", " + vp.y.getIntResult() + ").");
             for (Obstacle o : obstacles){
                 System.out.print(o.getName() + " " + o.getMinX() + " " + o.getMaxX() + " " + o.getMinY() + " " + o.getMaxY() + "|| ");
-                System.out.println("nonL:" + convertGrbIntArrayToString(vp.non_qs.get(o)));
+                System.out.print(o.getGradient() + "|| ");
+                System.out.print("nonL:" + convertGrbIntArrayToString(vp.non_qs.get(o)) + "|| ");
+                System.out.print("rel_qs:" + convertGrbIntArrayToString(vp.rel_qs.get(o)) + "|| ");
+                System.out.println("diagonal_qs:" + convertGrbIntArrayToString(vp.diagonal_qs.get(o)) + "||");
             }
 
 
@@ -268,57 +271,105 @@ public class Processor {
                 //diagonal Sets
                 //rel.ul
                 c = new GurobiConstraint();
-                c.setName("rel.ul");
+                c.setName("rel.ul_1");
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.x, 1.0);
                 c.addToRHS(vp.rel_qs.get(o)[0], -M);
-                c.setRHSConstant(o.getMaxY() - o.getMinX() + eps);
+                c.setRHSConstant(o.getMaxY() - o.getMinX());
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("rel.ul_2");
+                c.addToLHS(vp.y, 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.x, 1.0);
+                c.addToRHS(vp.rel_qs.get(o)[0], -M);
+                c.setRHSConstant(o.getMaxY() - o.getMinX() + M);
                 executor.addConstraint(c);
                 //rel.ur
                 c = new GurobiConstraint();
-                c.setName("rel.ur");
+                c.setName("rel.ur_1");
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.x, -1.0);
                 c.addToRHS(vp.rel_qs.get(o)[1], -M);
-                c.setRHSConstant(o.getMaxY() + o.getMaxX() + eps);
+                c.setRHSConstant(o.getMaxY() + o.getMaxX());
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("rel.ur_2");
+                c.addToLHS(vp.y, 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.x, -1.0);
+                c.addToRHS(vp.rel_qs.get(o)[1], -M);
+                c.setRHSConstant(o.getMaxY() + o.getMaxX() + M);
                 executor.addConstraint(c);
                 //rel.lr
                 c = new GurobiConstraint();
-                c.setName("rel.lr");
+                c.setName("rel.lr_1");
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.x, 1.0);
                 c.addToRHS(vp.rel_qs.get(o)[2], -M);
-                c.setRHSConstant(o.getMinY() - o.getMaxX() + eps);
+                c.setRHSConstant(o.getMinY() - o.getMaxX());
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("rel.lr_2");
+                c.addToLHS(vp.y, 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.x, 1.0);
+                c.addToRHS(vp.rel_qs.get(o)[2], -M);
+                c.setRHSConstant(o.getMinY() - o.getMaxX() + M);
                 executor.addConstraint(c);
                 //rel.ll
                 c = new GurobiConstraint();
-                c.setName("rel.ll");
+                c.setName("rel.ll_1");
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.x, -1.0);
                 c.addToRHS(vp.rel_qs.get(o)[3], -M);
-                c.setRHSConstant(o.getMinY() + o.getMinX() + eps);
+                c.setRHSConstant(o.getMinY() + o.getMinX());
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("rel.ll_2");
+                c.addToLHS(vp.y, 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.x, -1.0);
+                c.addToRHS(vp.rel_qs.get(o)[3], -M);
+                c.setRHSConstant(o.getMinY() + o.getMinX() + M);
                 executor.addConstraint(c);
                 //rel.d
                 c = new GurobiConstraint();
-                c.setName("rel.d");
+                c.setName("rel.d_1");
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
-                c.addToRHS(vp.x, -o.getGradient());
+                c.addToRHS(vp.x, (-1) * o.getGradient());
                 c.addToRHS(vp.rel_qs.get(o)[4], -M);
-                c.setRHSConstant((-o.getGradient()) * o.getMinX() + o.getMaxY() + eps);
+                c.setRHSConstant(o.getGradient() * o.getMinX() + o.getMaxY());
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("rel.d_1");
+                c.addToLHS(vp.y, 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.x, (-1) * o.getGradient());
+                c.addToRHS(vp.rel_qs.get(o)[4], -M);
+                c.setRHSConstant(o.getGradient() * o.getMinX() + o.getMaxY() +M);
                 executor.addConstraint(c);
                 //rel.u
                 c = new GurobiConstraint();
-                c.setName("rel.u");
+                c.setName("rel.u_1");
                 c.addToLHS(vp.y, 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.x, o.getGradient());
                 c.addToRHS(vp.rel_qs.get(o)[5], -M);
-                c.setRHSConstant(o.getGradient() * o.getMinX() + o.getMinY() + eps);
+                c.setRHSConstant((-1) * o.getGradient() * o.getMinX() + o.getMinY());
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("rel.u_2");
+                c.addToLHS(vp.y, 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.x, o.getGradient());
+                c.addToRHS(vp.rel_qs.get(o)[5], -M);
+                c.setRHSConstant((-1) * o.getGradient() * o.getMinX() + o.getMinY() + M);
                 executor.addConstraint(c);
 
                 //tL
