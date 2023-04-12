@@ -93,6 +93,7 @@ public class Processor {
         //Objective Function
         GurobiObjConstraint objCons = new GurobiObjConstraint();
         objCons.addToLHS(busLength, 1.0);
+        objCons.addToLHS(branchLength, 1.0);
         objCons.setGoal(GRB.MINIMIZE);
         executor.setObjConstraint(objCons);
 
@@ -116,7 +117,34 @@ public class Processor {
 
 
 
+        /*
+        Retrieve
+         */
+        GurobiVariable q;
+        for (int i = 0; i < vps.size(); ++i){
+            VirtualPointVar vp = vps.get(i);
+            System.out.println("vp" + i + "=(" + vp.x.getIntResult() + ", " + vp.y.getIntResult() + ").");
+            for (Obstacle o : obstacles){
+                System.out.print(o.getName() + " " + o.getMinX() + " " + o.getMaxX() + " " + o.getMinY() + " " + o.getMaxY() + "|| ");
+                System.out.println("nonL:" + convertGrbIntArrayToString(vp.non_qs.get(o)));
+            }
 
+
+            System.out.println("vp" + i + "->Slave Relevant VVVVVVVVVVVVVVVVVVVVVVVVVV");
+            for (PseudoBase sv : slaves){
+                if (vp.vsCnn_q.get(sv).getIntResult() == 1){
+                    System.out.println("vp" + i + "=(" + vp.x.getIntResult() + ", " + vp.y.getIntResult() + ")->" + sv.getName() + ":(" + sv.getX() + ", " + sv.getY() + ")");
+                    System.out.println("d_v->CorrS= " + vp.dist_cqs[1].getContResult());
+                    System.out.println("aux_vsDist_cqs=" + convertGrbContArrayToString(vp.aux_vsDist_cqs.get(sv)));
+                }
+
+
+
+
+            }
+            System.out.println("vp" + i + "->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+        }
 
 
 
@@ -135,7 +163,7 @@ public class Processor {
     }
 
     public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master, GurobiVariable busLength, GurobiVariable branchLength) throws GRBException {
-        double eps = 3;
+        double eps = 1;
 
         GurobiConstraint c;
         GurobiQuadConstraint qc;
@@ -149,8 +177,30 @@ public class Processor {
         c_busLength.addToLHS(busLength, 1.0);
         c_busLength.setSense('=');
         executor.addConstraint(c_busLength);
+        //branchLength
+        GurobiConstraint c_branchLength = new GurobiConstraint();
+        c_branchLength.addToLHS(branchLength, 1.0);
+        c_branchLength.setSense('=');
+        executor.addConstraint(c_branchLength);
+
+        //sv.2
+
+        for (PseudoBase sv : slaves){
+            c = new GurobiConstraint();
+            for (VirtualPointVar vp : virtualPointVars){
+                c.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+            }
+            c.setSense('=');
+            c.setRHSConstant(1.0);
+            executor.addConstraint(c);
+        }
+
 
         for (VirtualPointVar vp : virtualPointVars) {
+
+            //branchLength
+            c_branchLength.addToRHS(vp.dist_cqs[1], 1.0);
+
 
             //cnn.4
             GurobiQuadConstraint c_vpOut = new GurobiQuadConstraint();
@@ -650,7 +700,7 @@ public class Processor {
                     c.addToRHS(vp.aux_dOut_cqs.get(o)[0], 1.0);
                     c.addToRHS(vp.aux_dOut_cqs.get(o)[1], -1.0);
                     executor.addConstraint(c);
-                    executor.addGenConstraintAbs(vp.aux_dOut_cqs.get(o)[3], vp.aux_dOut_cqs.get(o)[6], "abs(abs_x - abs_y)");
+                    executor.addGenConstraintAbs(vp.aux_dOut_cqs.get(o)[3], vp.aux_dOut_cqs.get(o)[6], "abs(abs_x-abs_y)");
                     executor.addGenConstraintMin(vp.aux_dOut_cqs.get(o)[2], new GurobiVariable[]{vp.aux_dOut_cqs.get(o)[0], vp.aux_dOut_cqs.get(o)[1]}, (double) 2 * M, "min_Out");
 
                     //d_ij: m->n (pl.2)
@@ -764,7 +814,7 @@ public class Processor {
                 c.setSense('=');
                 c.addToRHS(vp.aux_dist_cqs[4], 1.0);
                 executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_dist_cqs[0], vp.aux_dist_cqs[4], "|vi.x - vj.x|_" + virtualPointVars.indexOf(vp));
+                executor.addGenConstraintAbs(vp.aux_dist_cqs[0], vp.aux_dist_cqs[4], "|vi.x-vj.x|_" + virtualPointVars.indexOf(vp));
                 c = new GurobiConstraint();
                 c.setName("d_ij:woDetour:aux_Y");
                 c.addToLHS(vp.y, 1.0);
@@ -772,8 +822,8 @@ public class Processor {
                 c.setSense('=');
                 c.addToRHS(vp.aux_dist_cqs[5], 1.0);
                 executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_dist_cqs[1], vp.aux_dist_cqs[5], "|vi.y - vj.y|_" + virtualPointVars.indexOf(vp));
-                executor.addGenConstraintMin(vp.aux_dist_cqs[2], new GurobiVariable[]{vp.aux_dist_cqs[0], vp.aux_dist_cqs[1]}, (double) M, "min(|vi.x - vj.x|, |vi.y - vj.y|)_" + virtualPointVars.indexOf(vp));
+                executor.addGenConstraintAbs(vp.aux_dist_cqs[1], vp.aux_dist_cqs[5], "|vi.y-j.y|_" + virtualPointVars.indexOf(vp));
+                executor.addGenConstraintMin(vp.aux_dist_cqs[2], new GurobiVariable[]{vp.aux_dist_cqs[0], vp.aux_dist_cqs[1]}, (double) M, "min(|vi.x-vj.x|,|vi.y-j.y|)_" + virtualPointVars.indexOf(vp));
                 c = new GurobiConstraint();
                 c.setName("d_ij:woDetour:aux_XY");
                 c.addToLHS(vp.aux_dist_cqs[0], 1.0);
@@ -781,7 +831,7 @@ public class Processor {
                 c.setSense('=');
                 c.addToRHS(vp.aux_dist_cqs[6], 1.0);
                 executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_dist_cqs[3], vp.aux_dist_cqs[6], "||vi.x - vj.x| - |vi.y - vj.y||_" + virtualPointVars.indexOf(vp));
+                executor.addGenConstraintAbs(vp.aux_dist_cqs[3], vp.aux_dist_cqs[6], "||vi.x-vj.x|-|vi.y-j.y||_" + virtualPointVars.indexOf(vp));
                 /*
                 AAAA
                 d_ij
@@ -800,13 +850,14 @@ public class Processor {
             /*
             Connection with Slaves
              */
-            GurobiConstraint vsCnn = new GurobiConstraint();
-            vsCnn.setSense('=');
-            vsCnn.setRHSConstant(1.0);
-            executor.addConstraint(vsCnn);
+            GurobiConstraint c_vsCnn = new GurobiConstraint();
+            c_vsCnn.setSense('=');
+            c_vsCnn.setRHSConstant(1.0);
+            executor.addConstraint(c_vsCnn);
             for (PseudoBase sv : slaves) {
                 //sv.1
-                vsCnn.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+                c_vsCnn.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+
 
                 /*
                 d_is_j
@@ -834,9 +885,9 @@ public class Processor {
                 c.setSense('=');
                 c.addToRHS(vp.aux_vsDist_cqs.get(sv)[5], 1.0);
                 executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[0], vp.aux_vsDist_cqs.get(sv)[4], "|vi.x - sj.x|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
-                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[1], vp.aux_vsDist_cqs.get(sv)[5], "|vi.y - sj.y|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
-                executor.addGenConstraintMin(vp.aux_vsDist_cqs.get(sv)[2], new GurobiVariable[]{vp.aux_vsDist_cqs.get(sv)[0], vp.aux_vsDist_cqs.get(sv)[1]}, (double) M, " min(|vi.x - sj.x|, |vi.y - sj.y|)" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[0], vp.aux_vsDist_cqs.get(sv)[4], "|vi.x-sj.x|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[1], vp.aux_vsDist_cqs.get(sv)[5], "|vi.y-sj.y|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                executor.addGenConstraintMin(vp.aux_vsDist_cqs.get(sv)[2], new GurobiVariable[]{vp.aux_vsDist_cqs.get(sv)[0], vp.aux_vsDist_cqs.get(sv)[1]}, (double) M, "min(|vi.x-sj.x|,|vi.y-sj.y|)" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
                 c = new GurobiConstraint();
                 c.setName("d_is_j_woDetour:aux_XY");
                 c.addToLHS(vp.aux_vsDist_cqs.get(sv)[0], 1.0);
@@ -844,29 +895,35 @@ public class Processor {
                 c.setSense('=');
                 c.addToRHS(vp.aux_vsDist_cqs.get(sv)[6], 1.0);
                 executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[3], vp.aux_vsDist_cqs.get(sv)[6], "||vi.x - sj.x| - |vi.y - sj.y||" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
+                executor.addGenConstraintAbs(vp.aux_vsDist_cqs.get(sv)[3], vp.aux_vsDist_cqs.get(sv)[6], "||vi.x-sj.x|-|vi.y-sj.y||" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
                 /*
                 AAAA
                 d_i_sj
                  */
 
                 //sv.3
-                c = new GurobiConstraint();
-                c.setName("sv.3_1");
-                c.addToLHS(vp.dist_cqs[1], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
-                c.addToRHS(vp.vsCnn_q.get(sv), -M);
-                c.setRHSConstant(M);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("sv.3_2");
-                c.addToLHS(vp.dist_cqs[1], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
-                c.addToRHS(vp.vsCnn_q.get(sv), M);
-                c.setRHSConstant(-M);
-                executor.addConstraint(c);
+//                c = new GurobiConstraint();
+//                c.setName("sv.3_1");
+//                c.addToLHS(vp.dist_cqs[1], 1.0);
+//                c.setSense('<');
+//                c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
+//                c.addToRHS(vp.vsCnn_q.get(sv), -M);
+//                c.setRHSConstant(M);
+//                executor.addConstraint(c);
+//                c = new GurobiConstraint();
+//                c.setName("sv.3_2");
+//                c.addToLHS(vp.dist_cqs[1], 1.0);
+//                c.setSense('>');
+//                c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
+//                c.addToRHS(vp.vsCnn_q.get(sv), M);
+//                c.setRHSConstant(-M);
+//                executor.addConstraint(c);
+                qc = new GurobiQuadConstraint();
+                qc.setName("sv.3");
+                qc.addToLHS(vp.dist_cqs[1], 1.0);
+                qc.setSense('>');
+                qc.addToRHS(vp.vs_dist_cq.get(sv), vp.vsCnn_q.get(sv), 1.0);
+                executor.addConstraint(qc);
 
 
             }
@@ -1108,13 +1165,13 @@ public class Processor {
 
             /*
             Auxiliary absolute values: aux_dist_cqs
-            0: |vi.x - vj.x|
-            1: |vi.y - vj.y|
-            2: min(|vi.x - vj.x|, |vi.y - vj.y|)
-            3: ||vi.x - vj.x| - |vi.y - vj.y||
-            4: vi.x - vj.x
-            5: vi.y - vj.y
-            6: |vi.x - vj.x| - |vi.y - vj.y|
+            0: |vi.x-vj.x|
+            1: |vi.y-j.y|
+            2: min(|vi.x-vj.x|,|vi.y-j.y|)
+            3: ||vi.x-vj.x|-|vi.y-j.y||
+            4: vi.x-vj.x
+            5: vi.y-j.y
+            6: |vi.x-vj.x|-|vi.y-j.y|
              */
             vp.aux_dist_cqs = buildContinuousVar(0, M, "v" + i + "_aux_dist_cqs_", 7);
 
@@ -1220,13 +1277,13 @@ public class Processor {
 
                 /*
                 Auxiliary absolute values: vs
-                0: |vi.x - sj.x|
-                1: |vi.y - sj.y|
-                2: min(|vi.x - sj.x|, |vi.y - sj.y|)
-                3: ||vi.x - sj.x| - |vi.y - sj.y||
-                4: vi.x - sj.x
-                5: vi.y - sj.y
-                6: |vi.x - sj.x| - |vi.y - sj.y|
+                0: |vi.x-sj.x|
+                1: |vi.y-sj.y|
+                2: min(|vi.x-sj.x|,|vi.y-sj.y|)
+                3: ||vi.x-sj.x|-|vi.y-sj.y||
+                4: vi.x-sj.x
+                5: vi.y-sj.y
+                6: |vi.x-sj.x|-|vi.y-sj.y|
                  */
                 vp.aux_vsDist_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_aux_vsDist_cqs_", 7));
 
@@ -1702,6 +1759,25 @@ public class Processor {
             return true;
 
         return false;
+    }
+
+
+    public String convertGrbIntArrayToString(GurobiVariable[] grbIntArray) throws GRBException {
+        StringBuilder grbAsString = new StringBuilder("[");
+        for (GurobiVariable v : grbIntArray) {
+            grbAsString.append(v.getIntResult() + " ");
+        }
+        grbAsString.delete(grbAsString.length()-1, grbAsString.length()).append("]");
+        return grbAsString.toString();
+    }
+
+    public String convertGrbContArrayToString(GurobiVariable[] grbContArray) throws GRBException {
+        StringBuilder grbAsString = new StringBuilder("[");
+        for (GurobiVariable v : grbContArray) {
+            grbAsString.append(v.getContResult() + " ");
+        }
+        grbAsString.delete(grbAsString.length()-1, grbAsString.length()).append("]");
+        return grbAsString.toString();
     }
 
 }
