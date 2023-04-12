@@ -1,0 +1,33 @@
+\ Model (null)_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Minimize
+ 
+Subject To
+ C149: X106 - X141 - X260 = 0
+ C214: - X2 + X183 + X225 = 0
+ C215: - X3 + X184 + X226 = 0
+ C216: - X221 + X222 + X227 = 0
+ C222: - X106 + X183 - X200 = 0
+ C288: - 10 X254 - 12 X255 - 10 X256 - 12 X257 + X260 = 0
+ C289: - 5 X254 - 7 X255 - 7 X256 - 5 X257 + X261 = 0
+ C304: - X184 + X261 - X287 = 0
+ C359: X3 - X1086 = 2300
+Bounds
+ -infinity <= X2 <= 1952
+ X3 free
+ X106 free
+ X183 free
+ X184 free
+ X221 free
+ X222 free
+ X226 free
+ X260 free
+ X261 free
+Binaries
+ X254 X255 X256 X257
+Generals
+ X2 X3 X106 X183 X184 X260 X261
+General Constraints
+ abs_x_Out: X221 = ABS ( X225 )
+ abs_y_Out: X222 = ABS ( X226 )
+End

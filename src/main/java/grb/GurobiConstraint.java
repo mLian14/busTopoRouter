@@ -28,6 +28,7 @@ import java.util.Map;
 public class GurobiConstraint {
 
     protected char sense;
+    protected String name;
 
 
     protected Map<GurobiVariable, Double> leftHandSide;
@@ -45,6 +46,9 @@ public class GurobiConstraint {
         this.lhsConstant = this.rhsConstant = 0.0;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public double getLHSConstant() {
         return lhsConstant;
@@ -131,6 +135,7 @@ public class GurobiConstraint {
         return "GurobiConstraint{{Expression=\"" +
                 output +
                 "\", type=" + type +
+                "\", name=" + name +
                 '}';
     }
 }
