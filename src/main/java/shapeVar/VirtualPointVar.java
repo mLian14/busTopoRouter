@@ -228,9 +228,10 @@ public class VirtualPointVar {
 
     /*
     vs_inCnn_q
-    sj<-
+    0: vi_s ->
+    1: sj<-
      */
-    public Map<PseudoBase, Map<Obstacle, GurobiVariable>> vs_inCnn_q;//binaryVar regarding Slaves for starting and end point connection
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_inOutCnn_q;//binaryVar regarding Slaves for starting and end point connection
 
     /*
     vs_oCoordinate_iqs
@@ -247,7 +248,8 @@ public class VirtualPointVar {
 
     /*
     vs_dIn_cqs
-    0: d_<-
+    1: d_vs->
+    0: d_vs<-
      */
     public Map<PseudoBase, GurobiVariable[]> vs_dIn_cqs;//contVar
 
@@ -293,7 +295,7 @@ public class VirtualPointVar {
         this.vs_detour_qs = new HashMap<>();
         this.vs_corner_qs = new HashMap<>();
         this.vs_omOnCnn_q = new HashMap<>();
-        this.vs_inCnn_q = new HashMap<>();
+        this.vs_inOutCnn_q = new HashMap<>();
         this.vs_oCoordinate_iqs = new HashMap<>();
         this.vs_dOmOn_cqs = new HashMap<>();
         this.vs_dIn_cqs = new HashMap<>();

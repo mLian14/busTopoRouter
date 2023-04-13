@@ -3,7 +3,6 @@ package processor;
 import grb.*;
 import gurobi.GRB;
 import gurobi.GRBException;
-import org.bouncycastle.jcajce.provider.symmetric.util.GcmSpecUtil;
 import parser.DocumentParser;
 import parser.Document;
 import parser.OutputDocument;
@@ -217,6 +216,9 @@ public class Processor {
             c_dij_detour.addToRHS(vp.dInOut_cqs[0], 1.0);
             c_dij_detour.addToRHS(vp.dInOut_cqs[1], 1.0);
             executor.addConstraint(c_dij_detour);
+
+
+
 
             /*
             Obstacle relative rgd. NEXT virtualPoint
@@ -895,9 +897,12 @@ public class Processor {
             c_vsCnn.setSense('=');
             c_vsCnn.setRHSConstant(1.0);
             executor.addConstraint(c_vsCnn);
+
             for (PseudoBase sv : slaves) {
                 //sv.1
                 c_vsCnn.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+
+
 
 
                 /*
@@ -967,7 +972,16 @@ public class Processor {
                 executor.addConstraint(qc);
 
 
+                //vs_cnn.4
+                GurobiQuadConstraint c_vsOut = new GurobiQuadConstraint();
+                c_vsOut.setName("vs_cnn.4");
+                c_vsOut.setSense('=');
+                c_vsOut.addToRHS(vp.vs_detour_qs.get(sv)[4], vp.vsCnn_q.get(sv), 1.0);
+                executor.addConstraint(c_vsOut);
                 for (Obstacle om : obstacles){
+                    //vs_cnn.4
+                    c_vsOut.addToLHS(vp.vs_inOutCnn_q.get(sv).get(om)[0], vp.vs_relObstacles_qs.get(sv).get(om)[4], 1.0);
+
                     //1.(vs_ul->lr.1)
                     c_relOb = new GurobiConstraint();
                     c_relOb.setName("vs_ul->lr.1");
@@ -1132,6 +1146,15 @@ public class Processor {
                     c.setSense('=');
                     c.setRHSConstant(0.0);
                     executor.addConstraint(c);
+
+                    //vs_cnn.3
+                    GurobiQuadConstraint c_outCnn = new GurobiQuadConstraint();
+                    c_outCnn.setName("vs_cnn.3");
+                    c_outCnn.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[4], 1.0);
+                    c_outCnn.setSense('=');
+                    c_outCnn.addToRHS(vp.vs_inOutCnn_q.get(sv).get(om)[1], 1.0);
+                    executor.addConstraint(c_outCnn);
+
                     for (Obstacle on : obstacles){
                         if (!om.getName().equals(on.getName())){
                             //vs_cnn.2
@@ -1143,9 +1166,33 @@ public class Processor {
                             c.setRHSConstant(1.0);
                             executor.addConstraint(c);
 
-
+                            //cnn.3
+                            c_outCnn.addToRHS(vp.vs_omOnCnn_q.get(sv).get(om).get(on), vp.vs_relObstacles_qs.get(sv).get(on)[4], 1.0);
                         }
                     }
+
+                    //vs_cor.x
+                    c = new GurobiConstraint();
+                    c.setName("vs_cor.x");
+                    c.addToLHS(vp.vs_oCoordinate_iqs.get(sv).get(om)[0], 1.0);
+                    c.setSense('=');
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[0], om.getMinX());
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[2], om.getMinX());
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[1], om.getMaxX());
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[3], om.getMaxX());
+                    executor.addConstraint(c);
+                    //vs_cor.y
+                    c = new GurobiConstraint();
+                    c.setName("vs_cor.y");
+                    c.addToLHS(vp.vs_oCoordinate_iqs.get(sv).get(om)[1], 1.0);
+                    c.setSense('=');
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[0], om.getMinY());
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[3], om.getMinY());
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[1], om.getMaxY());
+                    c.addToRHS(vp.vs_corner_qs.get(sv).get(om)[2], om.getMaxY());
+                    executor.addConstraint(c);
+
+
 
 
 
@@ -1445,9 +1492,10 @@ public class Processor {
                 Map<Obstacle, Map<Obstacle, GurobiVariable>> vs_omOnCnn_qMap = new HashMap<>();
                 /*
                 vs_inCnn_q
-                sj<-
+                0: vi_s ->
+                1: sj<-
                  */
-                Map<Obstacle, GurobiVariable> vs_inCnn_qMap = new HashMap<>();
+                Map<Obstacle, GurobiVariable[]> vs_inOutCnn_qMap = new HashMap<>();
                 /*
                 vs_oCoordinate_iqs
                 0: x_m
@@ -1477,9 +1525,8 @@ public class Processor {
                     }
                     vs_omOnCnn_qMap.put(o, vs_onCnn_qMap);
 
-                    q = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_inCnn_q");
-                    executor.addVariable(q);
-                    vs_inCnn_qMap.put(o, q);
+                    vs_inOutCnn_qMap.put(o, buildBinaryVar("v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_inCnn_q_", 2));
+
 
                     vs_oCoordinate_iqsMap.put(o, buildIntVar(-M, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_oCoordinate_iqs_", 2));
                     vs_dOmOn_cqsMap.put(o, vs_dOn_cqsMap);
@@ -1487,7 +1534,7 @@ public class Processor {
                 vp.vs_relObstacles_qs.put(sv, vs_relObstacles_qsMap);
                 vp.vs_corner_qs.put(sv, vs_corner_qsMap);
                 vp.vs_omOnCnn_q.put(sv, vs_omOnCnn_qMap);
-                vp.vs_inCnn_q.put(sv, vs_inCnn_qMap);
+                vp.vs_inOutCnn_q.put(sv, vs_inOutCnn_qMap);
                 vp.vs_oCoordinate_iqs.put(sv, vs_oCoordinate_iqsMap);
                 vp.vs_dOmOn_cqs.put(sv, vs_dOmOn_cqsMap);
 
@@ -1504,9 +1551,10 @@ public class Processor {
 
                 /*
                 vs_dIn_cqs
-                0: d_<-
+                1: d_vs->
+                0: d_vs<-
                  */
-                vp.vs_dIn_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_vs_dIn_cqs_", 1));
+                vp.vs_dIn_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_vs_dIn_cqs_", 2));
 
                 /*
                 Auxiliary absolute values: vs
