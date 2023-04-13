@@ -39,16 +39,16 @@ public class VirtualPointVar {
     4: d
     5: u
      */
-    public Map<Obstacle, GurobiVariable[]> rel_qs;//binary variables for (rel.ul) -- (rel.u)
+    public Map<Obstacle, GurobiVariable[]> dir_qs;//binary variables for (rel.ul) -- (rel.u)
 
     /*
-    diagonal_qs
+    rel_qs
     0: o_tL
     1: o_tR
     2: o_bL
     3: o_bR
      */
-    public Map<Obstacle, GurobiVariable[]> diagonal_qs;//binary variables for (tL) -- (bR)
+    public Map<Obstacle, GurobiVariable[]> rel_qs;//binary variables for (tL) -- (bR)
 
     /*
     relObstacles_qs
@@ -178,6 +178,7 @@ public class VirtualPointVar {
 
 
 
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
     /*
     Detour triggering regarding Slaves
      */
@@ -272,8 +273,8 @@ public class VirtualPointVar {
     public VirtualPointVar() {
 
         this.non_qs = new HashMap<>();
+        this.dir_qs = new HashMap<>();
         this.rel_qs = new HashMap<>();
-        this.diagonal_qs = new HashMap<>();
         this.relObstacles_qs = new HashMap<>();
 
 
