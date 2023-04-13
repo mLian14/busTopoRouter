@@ -234,6 +234,39 @@ public class VirtualPointVar {
     public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_inOutCnn_q;//binaryVar regarding Slaves for starting and end point connection
 
     /*
+    vs_dInOut_cqs
+    1: d_vs->
+    0: d_vs<-
+     */
+    public Map<PseudoBase, GurobiVariable[]> vs_dInOut_cqs;//contVar
+
+    /*
+    Auxiliary absolute values: aux_vsdOut_cqs
+    0: |vi.x - x_m|
+    1: |vi.y - y_m|
+    2: min(|vi.x - x_m|, |vi.y - y_m|)
+    3: ||vi.x - x_m| - |vi.y - y_m||
+    4: vi.x - x_m
+    5: vi.y - y_m
+    6: |vi.x - x_m| - |vi.y - y_m|
+     */
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> aux_vsdOut_cqs;
+
+    /*
+    Auxiliary absolute values: aux_vsdIn_cqs
+    0: |x_m - sj.x|
+    1: |y_m - sj.y|
+    2: min(|x_m - sj.x|, |y_m - sj.y|)
+    3: ||x_m - sj.x| - |y_m - sj.y||
+    4: x_m - sj.x
+    5: y_m - sj.y
+    6: |x_m - sj.x| - |vi.y - sj.y|
+     */
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> aux_vsdIn_cqs;
+
+
+
+    /*
     vs_oCoordinate_iqs
     0: x_m
     1: y_m
@@ -242,16 +275,25 @@ public class VirtualPointVar {
 
     /*
     vs_dOmOn_cqs
-    0: d_m->n
+    d_m->n
      */
-    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable[]>>> vs_dOmOn_cqs;//contVar: path length between o_m and o_n
+    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable>>> vs_dOmOn_cqs;//contVar: path length between o_m and o_n
 
     /*
-    vs_dIn_cqs
-    1: d_vs->
-    0: d_vs<-
+    Auxiliary absolute values: aux_vsdOmOn_cqs
+    0: |x_m - x_n|
+    1: |y_m - y_n|
+    2: min(|x_m - x_n|, |y_m - y_n|)
+    3: ||x_m - x_n| - |y_m - y_n||
+    4: x_m - x_n
+    5: y_m - y_n
+    6: |x_m - x_n| - |y_m - y_n|
      */
-    public Map<PseudoBase, GurobiVariable[]> vs_dIn_cqs;//contVar
+    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable[]>>> aux_vsdOmOn_cqs;
+
+
+
+
 
     /*
     d_i_sj
@@ -260,7 +302,7 @@ public class VirtualPointVar {
 
 
     /*
-    Auxiliary absolute values: vs
+    Auxiliary absolute values: vsDist
     0: |vi.x - sj.x|
     1: |vi.y - sj.y|
     2: min(|vi.x - sj.x|, |vi.y - sj.y|)
@@ -288,6 +330,7 @@ public class VirtualPointVar {
         this.aux_dOut_cqs = new HashMap<>();
         this.aux_dOmOn_cqs = new HashMap<>();
         this.aux_dIn_cqs = new HashMap<>();
+        this.aux_vsdOmOn_cqs = new HashMap<>();
 
 
         this.vsCnn_q = new HashMap<>();
@@ -298,9 +341,11 @@ public class VirtualPointVar {
         this.vs_inOutCnn_q = new HashMap<>();
         this.vs_oCoordinate_iqs = new HashMap<>();
         this.vs_dOmOn_cqs = new HashMap<>();
-        this.vs_dIn_cqs = new HashMap<>();
+        this.vs_dInOut_cqs = new HashMap<>();
         this.aux_vsDist_cqs = new HashMap<>();
         this.vs_dist_cq = new HashMap<>();
+        this.aux_vsdIn_cqs = new HashMap<>();
+        this.aux_vsdOut_cqs = new HashMap<>();
 
     }
 }
