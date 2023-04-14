@@ -3623,3 +3623,1494 @@ Warning: max constraint violation (9.8282e+00) exceeds tolerance
          (model may be infeasible or unbounded - try turning presolve off)
 Best objective 1.599999999843e+01, best bound 1.599999999843e+01, gap 0.0000%
 Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:08:48 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4549 nonzeros
+Model fingerprint: 0x6f3359ff
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.03s
+Presolved: 1450 rows, 1135 columns, 4152 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 418 continuous, 717 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 680 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   31          -    0.00000      -     -    0s
+     0     0    0.00000    0   56          -    0.00000      -     -    0s
+     0     0    0.00000    0   64          -    0.00000      -     -    0s
+     0     0    0.00000    0   62          -    0.00000      -     -    0s
+     0     0    0.00000    0   20          -    0.00000      -     -    0s
+     0     0    0.00000    0   20          -    0.00000      -     -    0s
+     0     0    0.00000    0   20          -    0.00000      -     -    0s
+     0     0    0.00000    0   19          -    0.00000      -     -    0s
+     0     0    0.00000    0   21          -    0.00000      -     -    0s
+     0     0    0.00000    0   21          -    0.00000      -     -    0s
+     0     2    0.00000    0   24          -    0.00000      -     -    0s
+*  341   316              27      12.4142136    0.00000   100%  22.8    0s
+* 1039   400              34       9.4852814    5.60000  41.0%  22.3    0s
+
+Cutting planes:
+  Learned: 10
+  Gomory: 2
+  Cover: 26
+  Implied bound: 84
+  Clique: 6
+  MIR: 4
+  StrongCG: 1
+  Flow cover: 5
+  Inf proof: 4
+  Zero half: 1
+  RLT: 13
+  Relax-and-lift: 3
+  PSD: 2
+
+Explored 1332 nodes (28000 simplex iterations) in 0.52 seconds (0.41 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 9.48528 12.4142 
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (5.0000e+00) exceeds tolerance
+Warning: max general constraint violation (5.0000e+00) exceeds tolerance
+         (model may be infeasible or unbounded - try turning presolve off)
+Best objective 9.485281374239e+00, best bound 9.485281374239e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:13:28 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1703 rows, 1877 columns and 4569 nonzeros
+Model fingerprint: 0x6fd4e228
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 518 rows and 814 columns
+Presolve time: 0.04s
+Presolved: 1462 rows, 1147 columns, 4192 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 426 continuous, 721 integer (626 binary)
+
+Root relaxation: objective 0.000000e+00, 657 iterations, 0.01 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   58          -    0.00000      -     -    0s
+     0     0    0.00000    0   33          -    0.00000      -     -    0s
+     0     0    0.00000    0   53          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   20          -    0.00000      -     -    0s
+     0     0    0.00000    0   10          -    0.00000      -     -    0s
+     0     0    0.00000    0   11          -    0.00000      -     -    0s
+     0     0    0.00000    0    9          -    0.00000      -     -    0s
+     0     0    0.00000    0    6          -    0.00000      -     -    0s
+     0     0    0.00000    0    9          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     2    0.00000    0    8          -    0.00000      -     -    0s
+*  463   458              45      14.0710735    0.00000   100%  15.6    0s
+H 1004   576                       8.6568542    4.24264  51.0%  13.9    0s
+* 1029   566              37       8.0710678    4.24264  47.4%  13.8    0s
+* 1072   557              33       8.0000000    4.24264  47.0%  13.4    0s
+* 1248   539              56       5.2426463    4.24264  19.1%  12.7    0s
+* 2300   378              54       4.2426463    4.24265  0.00%  12.2    0s
+
+Cutting planes:
+  Learned: 18
+  Cover: 109
+  Implied bound: 88
+  MIR: 1
+  Flow cover: 1
+  Inf proof: 4
+  Zero half: 3
+  RLT: 6
+  Relax-and-lift: 5
+
+Explored 2559 nodes (35400 simplex iterations) in 0.66 seconds (0.55 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 6: 4.24265 5.24265 8 ... 14.0711
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (9.9289e-06) exceeds tolerance
+Best objective 4.242646344041e+00, best bound 4.242646344041e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:18:58 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1707 rows, 1877 columns and 4637 nonzeros
+Model fingerprint: 0xce9e18fc
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 606 rows and 870 columns
+Presolve time: 0.04s
+Presolved: 1366 rows, 1087 columns, 3930 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 426 continuous, 661 integer (566 binary)
+
+Root relaxation: objective 0.000000e+00, 599 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   46          -    0.00000      -     -    0s
+     0     0    0.00000    0   26          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   44          -    0.00000      -     -    0s
+     0     0    0.00000    0   52          -    0.00000      -     -    0s
+     0     0    0.00000    0    3          -    0.00000      -     -    0s
+     0     0    0.00000    0    3          -    0.00000      -     -    0s
+H    0     0                      14.8284271    0.00000   100%     -    0s
+     0     2    0.00000    0    3   14.82843    0.00000   100%     -    0s
+H   30    29                      14.8284271    0.00000   100%  17.2    0s
+*   31    29               6       0.0000000    0.00000  0.00%  16.8    0s
+
+Cutting planes:
+  Learned: 5
+  Gomory: 2
+  Cover: 3
+  Implied bound: 21
+  MIR: 2
+  StrongCG: 1
+  Flow cover: 2
+  Relax-and-lift: 3
+
+Explored 37 nodes (2834 simplex iterations) in 0.22 seconds (0.17 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 0 14.8284 
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (2.0000e+00) exceeds tolerance
+Warning: max general constraint violation (2.0000e+00) exceeds tolerance
+         (model may be infeasible or unbounded - try turning presolve off)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:20:33 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1703 rows, 1877 columns and 4573 nonzeros
+Model fingerprint: 0xac2504c3
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 139 rows and 339 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      1817         -         0      2442         -           0s
+       11        11        11        15        15        15           0s
+
+IIS computed: 11 constraints, 15 bounds
+IIS runtime: 0.39 seconds (0.20 work units)
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:20:42 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1703 rows, 1877 columns and 4573 nonzeros
+Model fingerprint: 0x262f7cf0
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 518 rows and 814 columns
+Presolve time: 0.03s
+Presolved: 1462 rows, 1147 columns, 4200 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 414 continuous, 733 integer (626 binary)
+
+Root relaxation: objective 0.000000e+00, 620 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   26          -    0.00000      -     -    0s
+     0     0    0.00000    0   34          -    0.00000      -     -    0s
+     0     0    0.00000    0   47          -    0.00000      -     -    0s
+     0     0    0.00000    0   49          -    0.00000      -     -    0s
+     0     0    0.00000    0   13          -    0.00000      -     -    0s
+     0     0    0.00000    0   39          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   34          -    0.00000      -     -    0s
+     0     0    0.00000    0   24          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   30          -    0.00000      -     -    0s
+     0     0    0.00000    0   30          -    0.00000      -     -    0s
+     0     2    0.00000    0   30          -    0.00000      -     -    0s
+*  354   469              57       6.6568542    0.00000   100%  12.3    0s
+*  730   538              42       0.0000000    0.00000  0.00%  12.0    0s
+
+Cutting planes:
+  Gomory: 1
+  Cover: 15
+  Implied bound: 49
+  Clique: 16
+  MIR: 12
+  Flow cover: 4
+  Inf proof: 3
+  RLT: 14
+  Relax-and-lift: 1
+
+Explored 818 nodes (13270 simplex iterations) in 0.46 seconds (0.35 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 0 6.65685 
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (4.0000e+00) exceeds tolerance
+Warning: max general constraint violation (4.0000e+00) exceeds tolerance
+         (model may be infeasible or unbounded - try turning presolve off)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:21:00 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Set parameter Presolve to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1703 rows, 1877 columns and 4573 nonzeros
+Model fingerprint: 0x262f7cf0
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Variable types: 1573 continuous, 1648 integer (1370 binary)
+
+Root relaxation: objective 0.000000e+00, 1025 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0  111          -    0.00000      -     -    0s
+     0     0    0.00000    0  117          -    0.00000      -     -    0s
+     0     0    0.00000    0  128          -    0.00000      -     -    0s
+     0     0    0.00000    0  112          -    0.00000      -     -    0s
+     0     0    0.00000    0  252          -    0.00000      -     -    0s
+     0     0    0.00000    0  248          -    0.00000      -     -    0s
+     0     0    0.00000    0  240          -    0.00000      -     -    0s
+     0     0    0.00000    0  237          -    0.00000      -     -    0s
+     0     0    0.00000    0   53          -    0.00000      -     -    0s
+     0     0    0.00000    0   59          -    0.00000      -     -    0s
+H    0     0                    222159.31371    0.00000   100%     -    0s
+     0     0    0.00000    0  107 222159.314    0.00000   100%     -    0s
+     0     0    0.00000    0  110 222159.314    0.00000   100%     -    0s
+     0     0    0.00000    0  111 222159.314    0.00000   100%     -    0s
+     0     0    0.00000    0   50 222159.314    0.00000   100%     -    0s
+     0     0    0.00000    0   82 222159.314    0.00000   100%     -    0s
+H    0     0                      62.2548340    0.00000   100%     -    0s
+     0     0    0.00000    0  127   62.25483    0.00000   100%     -    0s
+     0     0    0.00000    0   47   62.25483    0.00000   100%     -    0s
+     0     0    0.00000    0  147   62.25483    0.00000   100%     -    0s
+     0     0    0.00000    0  118   62.25483    0.00000   100%     -    0s
+     0     0    0.00000    0  215   62.25483    0.00000   100%     -    0s
+     0     0    0.00000    0  215   62.25483    0.00000   100%     -    0s
+     0     0    0.00000    0   64   62.25483    0.00000   100%     -    0s
+H    0     0                       0.0000000    0.00000  0.00%     -    0s
+
+Cutting planes:
+  Learned: 16
+  Gomory: 8
+  Cover: 14
+  Implied bound: 60
+  Clique: 23
+  MIR: 12
+  Flow cover: 9
+  RLT: 9
+  Relax-and-lift: 4
+
+Explored 1 nodes (6092 simplex iterations) in 0.44 seconds (0.40 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 3: 0 62.2548 222159 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:22:01 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1703 rows, 1877 columns and 4575 nonzeros
+Model fingerprint: 0x84518c40
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 518 rows and 814 columns
+Presolve time: 0.03s
+Presolved: 1462 rows, 1147 columns, 4201 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 408 continuous, 739 integer (626 binary)
+
+Root relaxation: objective 0.000000e+00, 629 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   22          -    0.00000      -     -    0s
+H    0     0                     137.4264069    0.00000   100%     -    0s
+     0     0    0.00000    0   33  137.42641    0.00000   100%     -    0s
+     0     0    0.00000    0   10  137.42641    0.00000   100%     -    0s
+     0     0    0.00000    0   36  137.42641    0.00000   100%     -    0s
+H    0     0                      32.6568542    0.00000   100%     -    0s
+     0     0    0.00000    0   19   32.65685    0.00000   100%     -    0s
+     0     0    0.00000    0   23   32.65685    0.00000   100%     -    0s
+     0     0    0.00000    0   23   32.65685    0.00000   100%     -    0s
+H    0     0                      32.6568542    0.00000   100%     -    0s
+     0     0    0.00000    0   57   32.65685    0.00000   100%     -    0s
+     0     0    0.00000    0   18   32.65685    0.00000   100%     -    0s
+     0     0    0.00000    0   16   32.65685    0.00000   100%     -    0s
+     0     2    0.00000    0   16   32.65685    0.00000   100%     -    0s
+H  131   210                      27.6568542    0.00000   100%  23.2    0s
+H  173   210                      24.2426407    0.00000   100%  21.8    0s
+*  202   210              10       0.0000000    0.00000  0.00%  21.8    0s
+
+Cutting planes:
+  Gomory: 5
+  Cover: 6
+  Implied bound: 29
+  Clique: 19
+  MIR: 11
+  Flow cover: 1
+  RLT: 25
+  Relax-and-lift: 1
+
+Explored 232 nodes (7115 simplex iterations) in 0.37 seconds (0.31 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 6: 0 24.2426 27.6569 ... 137.426
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (1.0000e+00) exceeds tolerance
+Warning: max general constraint violation (1.0000e+00) exceeds tolerance
+         (model may be infeasible or unbounded - try turning presolve off)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:23:46 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4559 nonzeros
+Model fingerprint: 0x624de8f5
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.04s
+Presolved: 1450 rows, 1135 columns, 4161 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 648 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   45          -    0.00000      -     -    0s
+     0     0    0.00000    0   50          -    0.00000      -     -    0s
+     0     0    0.00000    0   57          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   33          -    0.00000      -     -    0s
+     0     0    0.00000    0   22          -    0.00000      -     -    0s
+     0     0    0.00000    0   28          -    0.00000      -     -    0s
+     0     0    0.00000    0   27          -    0.00000      -     -    0s
+     0     0    0.00000    0    2          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     2    0.00000    0    8          -    0.00000      -     -    0s
+*  267   287              29      15.1421356    0.00000   100%  14.7    0s
+*  544   425              28      13.0000000    0.00000   100%  12.5    0s
+H  918   572                      12.2426407    0.00000   100%  12.3    0s
+H 1116   481                       7.6568542    0.00000   100%  11.3    0s
+H 1215   427                       7.6568542    0.00000   100%  11.3    0s
+H 1253   427                       7.6568542    0.00000   100%  12.1    0s
+H 1253   427                       7.6568542    0.00000   100%  12.1    0s
+H 1452   488                       7.6568542    0.00000   100%  14.0    0s
+H 1527   525                       5.4142136    0.00000   100%  14.9    0s
+H 1677   566                       2.0000000    0.00000   100%  15.3    0s
+H 1758   566                       2.0000000    0.00000   100%  15.2    0s
+* 1835   566              23       0.0000000    0.00000  0.00%  14.9    0s
+
+Cutting planes:
+  Learned: 7
+  Cover: 42
+  Implied bound: 57
+  Clique: 3
+  MIR: 2
+  Flow cover: 5
+  Inf proof: 5
+  RLT: 2
+  Relax-and-lift: 2
+
+Explored 1871 nodes (31257 simplex iterations) in 0.64 seconds (0.57 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 0 2 2 ... 12.2426
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:24:38 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4559 nonzeros
+Model fingerprint: 0x229da75e
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.03s
+Presolved: 1450 rows, 1135 columns, 4161 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 634 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   14          -    0.00000      -     -    0s
+     0     0    0.00000    0   17          -    0.00000      -     -    0s
+     0     0    0.00000    0   25          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   15          -    0.00000      -     -    0s
+     0     0    0.00000    0   17          -    0.00000      -     -    0s
+     0     0    0.00000    0   24          -    0.00000      -     -    0s
+     0     0    0.00000    0   21          -    0.00000      -     -    0s
+H    0     0                      25.2426407    0.00000   100%     -    0s
+     0     0    0.00000    0   14   25.24264    0.00000   100%     -    0s
+     0     0    0.00000    0   42   25.24264    0.00000   100%     -    0s
+     0     0    0.00000    0    3   25.24264    0.00000   100%     -    0s
+     0     0    0.00000    0    3   25.24264    0.00000   100%     -    0s
+H    0     0                      24.8284271    0.00000   100%     -    0s
+H    0     0                      22.2426407    0.00000   100%     -    0s
+     0     2    0.00000    0    3   22.24264    0.00000   100%     -    0s
+H  161   185                      17.2426407    0.00000   100%  27.9    0s
+H  163   185                       0.0000000    0.00000  0.00%  27.7    0s
+
+Cutting planes:
+  Gomory: 1
+  Cover: 7
+  Implied bound: 26
+  Clique: 1
+  MIR: 7
+  Flow cover: 1
+  Zero half: 3
+  RLT: 12
+  Relax-and-lift: 1
+
+Explored 215 nodes (8037 simplex iterations) in 0.33 seconds (0.28 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 5: 0 17.2426 22.2426 ... 25.2426
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (4.0000e+00) exceeds tolerance
+Warning: max general constraint violation (4.0000e+00) exceeds tolerance
+         (model may be infeasible or unbounded - try turning presolve off)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:27:34 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4559 nonzeros
+Model fingerprint: 0xafbb3752
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 1156 rows and 1146 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds (0.02 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      1813         -         0      2442         -           0s
+       37       319        45         0       545         -           5s
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:27:43 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4555 nonzeros
+Model fingerprint: 0xeebfad2a
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 522 rows and 818 columns
+Presolve time: 0.03s
+Presolved: 1454 rows, 1143 columns, 4171 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 404 continuous, 739 integer (626 binary)
+
+Root relaxation: objective 0.000000e+00, 627 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   70          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   67          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   31          -    0.00000      -     -    0s
+     0     0    0.00000    0   16          -    0.00000      -     -    0s
+     0     0    0.00000    0   14          -    0.00000      -     -    0s
+     0     0    0.00000    0   13          -    0.00000      -     -    0s
+     0     0    0.00000    0   17          -    0.00000      -     -    0s
+     0     0    0.00000    0   10          -    0.00000      -     -    0s
+     0     0    0.00000    0   25          -    0.00000      -     -    0s
+     0     0    0.00000    0   25          -    0.00000      -     -    0s
+     0     0    0.00000    0    9          -    0.00000      -     -    0s
+     0     0    0.00000    0   27          -    0.00000      -     -    0s
+     0     0    0.00000    0   24          -    0.00000      -     -    0s
+H    0     0                      54.7989899    0.00000   100%     -    0s
+     0     2    0.00000    0   24   54.79899    0.00000   100%     -    0s
+H   34    39                      50.3137085    6.00002  88.1%  52.2    0s
+H   38    39                      49.4852814    6.50001  86.9%  48.7    0s
+H   79    92                      47.4852814    9.19240  80.6%  32.3    0s
+H  138   139                      27.4852814    9.19240  66.6%  23.1    0s
+H  192   187                      21.8284271    9.19240  57.9%  18.5    0s
+*  315   197              36      20.0000000    9.48529  52.6%  15.3    0s
+*  659   290              33      19.4142192   11.00000  43.3%  12.9    0s
+* 1033   466              37      18.4142371   15.00000  18.5%  11.6    0s
+* 1041   466              38      16.6568755   15.00000  9.95%  11.5    0s
+*20728   975              42      16.6568542   16.65685  0.00%   4.6    1s
+
+Cutting planes:
+  Implied bound: 5
+
+Explored 20741 nodes (97350 simplex iterations) in 1.93 seconds (1.82 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 16.6569 16.6569 18.4142 ... 50.3137
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (8.1364e-06) exceeds tolerance
+Best objective 1.665685424949e+01, best bound 1.665685424949e+01, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:28:20 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4559 nonzeros
+Model fingerprint: 0xafbb3752
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 1156 rows and 1146 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds (0.02 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      1813         -         0      2442         -           0s
+       38       293        48         0       485         -           5s
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:28:30 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4559 nonzeros
+Model fingerprint: 0x624de8f5
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.03s
+Presolved: 1450 rows, 1135 columns, 4161 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 648 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   45          -    0.00000      -     -    0s
+     0     0    0.00000    0   50          -    0.00000      -     -    0s
+     0     0    0.00000    0   57          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   33          -    0.00000      -     -    0s
+     0     0    0.00000    0   22          -    0.00000      -     -    0s
+     0     0    0.00000    0   28          -    0.00000      -     -    0s
+     0     0    0.00000    0   27          -    0.00000      -     -    0s
+     0     0    0.00000    0    2          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     2    0.00000    0    8          -    0.00000      -     -    0s
+*  267   287              29      15.1421356    0.00000   100%  14.7    0s
+*  544   425              28      13.0000000    0.00000   100%  12.5    0s
+H  918   572                      12.2426407    0.00000   100%  12.3    0s
+H 1116   481                       7.6568542    0.00000   100%  11.3    0s
+H 1215   427                       7.6568542    0.00000   100%  11.3    0s
+H 1253   427                       7.6568542    0.00000   100%  12.1    0s
+H 1253   427                       7.6568542    0.00000   100%  12.1    0s
+H 1452   488                       7.6568542    0.00000   100%  14.0    0s
+H 1527   525                       5.4142136    0.00000   100%  14.9    0s
+H 1677   566                       2.0000000    0.00000   100%  15.3    0s
+H 1758   566                       2.0000000    0.00000   100%  15.2    0s
+* 1835   566              23       0.0000000    0.00000  0.00%  14.9    0s
+
+Cutting planes:
+  Learned: 7
+  Cover: 42
+  Implied bound: 57
+  Clique: 3
+  MIR: 2
+  Flow cover: 5
+  Inf proof: 5
+  RLT: 2
+  Relax-and-lift: 2
+
+Explored 1871 nodes (31257 simplex iterations) in 0.65 seconds (0.57 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 0 2 2 ... 12.2426
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:28:40 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4559 nonzeros
+Model fingerprint: 0x5bb7675d
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.03s
+Presolved: 1450 rows, 1135 columns, 4161 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 666 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+     0     0    0.00000    0   37          -    0.00000      -     -    0s
+     0     0    0.00000    0   41          -    0.00000      -     -    0s
+     0     0    0.00000    0   71          -    0.00000      -     -    0s
+     0     0    0.00000    0   71          -    0.00000      -     -    0s
+     0     0    0.00000    0   67          -    0.00000      -     -    0s
+     0     0    0.00000    0   13          -    0.00000      -     -    0s
+     0     0    0.00000    0   47          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     0    0.00000    0   10          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     2    0.00000    0    7          -    0.00000      -     -    0s
+*   84   115              15       0.0000000    0.00000  0.00%  24.4    0s
+
+Cutting planes:
+  Learned: 6
+  Gomory: 4
+  Cover: 7
+  Implied bound: 22
+  Clique: 8
+  MIR: 10
+  Flow cover: 8
+  Zero half: 3
+  RLT: 16
+  Relax-and-lift: 1
+
+Explored 125 nodes (7332 simplex iterations) in 0.34 seconds (0.28 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (1.0000e+00) exceeds tolerance
+Warning: max general constraint violation (1.0000e+00) exceeds tolerance
+         (model may be infeasible or unbounded - try turning presolve off)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:28:48 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4559 nonzeros
+Model fingerprint: 0x624de8f5
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.03s
+Presolved: 1450 rows, 1135 columns, 4161 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 648 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   45          -    0.00000      -     -    0s
+     0     0    0.00000    0   50          -    0.00000      -     -    0s
+     0     0    0.00000    0   57          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   33          -    0.00000      -     -    0s
+     0     0    0.00000    0   22          -    0.00000      -     -    0s
+     0     0    0.00000    0   28          -    0.00000      -     -    0s
+     0     0    0.00000    0   27          -    0.00000      -     -    0s
+     0     0    0.00000    0    2          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+     0     2    0.00000    0    8          -    0.00000      -     -    0s
+*  267   287              29      15.1421356    0.00000   100%  14.7    0s
+*  544   425              28      13.0000000    0.00000   100%  12.5    0s
+H  918   572                      12.2426407    0.00000   100%  12.3    0s
+H 1116   481                       7.6568542    0.00000   100%  11.3    0s
+H 1215   427                       7.6568542    0.00000   100%  11.3    0s
+H 1253   427                       7.6568542    0.00000   100%  12.1    0s
+H 1253   427                       7.6568542    0.00000   100%  12.1    0s
+H 1452   488                       7.6568542    0.00000   100%  14.0    0s
+H 1527   525                       5.4142136    0.00000   100%  14.9    0s
+H 1677   566                       2.0000000    0.00000   100%  15.3    0s
+H 1758   566                       2.0000000    0.00000   100%  15.2    0s
+* 1835   566              23       0.0000000    0.00000  0.00%  14.9    0s
+
+Cutting planes:
+  Learned: 7
+  Cover: 42
+  Implied bound: 57
+  Clique: 3
+  MIR: 2
+  Flow cover: 5
+  Inf proof: 5
+  RLT: 2
+  Relax-and-lift: 2
+
+Explored 1871 nodes (31257 simplex iterations) in 0.68 seconds (0.57 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 0 2 2 ... 12.2426
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:34:46 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4555 nonzeros
+Model fingerprint: 0xdf4711ca
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.03s
+Presolved: 1450 rows, 1135 columns, 4157 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 641 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   57          -    0.00000      -     -    0s
+     0     0    0.00000    0   59          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   21          -    0.00000      -     -    0s
+     0     0    0.00000    0   24          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+     0     0    0.00000    0   28          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     0    0.00000    0   15          -    0.00000      -     -    0s
+     0     0    0.00000    0   13          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0    5          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     2    0.00000    0    7          -    0.00000      -     -    0s
+*  434   308              21      20.6568542    0.00000   100%  14.3    0s
+*  668   438              28      19.4852814    0.00000   100%  14.5    0s
+H  883   447                      16.6568593    0.00000   100%  14.5    0s
+*  994   421              23      16.6568542    0.00000   100%  15.2    0s
+* 1168   494              24      14.3137212    0.00000   100%  16.4    0s
+* 1519   390              23      13.7279221    9.48528  30.9%  16.5    0s
+* 1693   390              20      12.4142187    9.48528  23.6%  16.1    0s
+
+Cutting planes:
+  Learned: 10
+  Cover: 48
+  Implied bound: 83
+  MIR: 16
+  Flow cover: 7
+  Inf proof: 4
+  RLT: 5
+
+Explored 2078 nodes (33528 simplex iterations) in 0.66 seconds (0.48 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 7: 12.4142 13.7279 14.3137 ... 20.6569
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (3.6001e-06) exceeds tolerance
+Best objective 1.241421865362e+01, best bound 1.241421865362e+01, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:36:18 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4555 nonzeros
+Model fingerprint: 0xf2f67cd6
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 566 rows and 842 columns
+Presolve time: 0.04s
+Presolved: 1410 rows, 1119 columns, 4073 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 388 continuous, 731 integer (618 binary)
+
+Root relaxation: objective 0.000000e+00, 612 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   21          -    0.00000      -     -    0s
+     0     0    0.00000    0   36          -    0.00000      -     -    0s
+     0     0    5.65685    0   53          -    5.65685      -     -    0s
+
+Cutting planes:
+  Learned: 13
+
+Explored 1 nodes (2111 simplex iterations) in 0.12 seconds (0.09 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      1813         -         0      2442         -           0s
+       17        17        17         0         0         0           2s
+
+IIS computed: 17 constraints, 0 bounds
+IIS runtime: 2.40 seconds (1.62 work units)
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:36:45 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4555 nonzeros
+Model fingerprint: 0xdf4711ca
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.05s
+Presolved: 1450 rows, 1135 columns, 4157 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 641 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   57          -    0.00000      -     -    0s
+     0     0    0.00000    0   59          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   21          -    0.00000      -     -    0s
+     0     0    0.00000    0   24          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+     0     0    0.00000    0   28          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     0    0.00000    0   15          -    0.00000      -     -    0s
+     0     0    0.00000    0   13          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0    5          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     2    0.00000    0    7          -    0.00000      -     -    0s
+*  434   308              21      20.6568542    0.00000   100%  14.3    0s
+*  668   438              28      19.4852814    0.00000   100%  14.5    0s
+H  883   447                      16.6568593    0.00000   100%  14.5    0s
+*  994   421              23      16.6568542    0.00000   100%  15.2    0s
+* 1168   494              24      14.3137212    0.00000   100%  16.4    0s
+* 1519   390              23      13.7279221    9.48528  30.9%  16.5    0s
+* 1693   390              20      12.4142187    9.48528  23.6%  16.1    0s
+
+Cutting planes:
+  Learned: 10
+  Cover: 48
+  Implied bound: 83
+  MIR: 16
+  Flow cover: 7
+  Inf proof: 4
+  RLT: 5
+
+Explored 2078 nodes (33528 simplex iterations) in 0.58 seconds (0.48 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 7: 12.4142 13.7279 14.3137 ... 20.6569
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (3.6001e-06) exceeds tolerance
+Best objective 1.241421865362e+01, best bound 1.241421865362e+01, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 16:41:23 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1699 rows, 1877 columns and 4555 nonzeros
+Model fingerprint: 0xdf4711ca
+Model has 25 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.04s
+Presolved: 1450 rows, 1135 columns, 4157 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 400 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 641 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   57          -    0.00000      -     -    0s
+     0     0    0.00000    0   59          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0   21          -    0.00000      -     -    0s
+     0     0    0.00000    0   24          -    0.00000      -     -    0s
+     0     0    0.00000    0   61          -    0.00000      -     -    0s
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+     0     0    0.00000    0   28          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     0    0.00000    0   15          -    0.00000      -     -    0s
+     0     0    0.00000    0   13          -    0.00000      -     -    0s
+     0     0    0.00000    0   23          -    0.00000      -     -    0s
+     0     0    0.00000    0    5          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     0    0.00000    0    7          -    0.00000      -     -    0s
+     0     2    0.00000    0    7          -    0.00000      -     -    0s
+*  434   308              21      20.6568542    0.00000   100%  14.3    0s
+*  668   438              28      19.4852814    0.00000   100%  14.5    0s
+H  883   447                      16.6568593    0.00000   100%  14.5    0s
+*  994   421              23      16.6568542    0.00000   100%  15.2    0s
+* 1168   494              24      14.3137212    0.00000   100%  16.4    0s
+* 1519   390              23      13.7279221    9.48528  30.9%  16.5    0s
+* 1693   390              20      12.4142187    9.48528  23.6%  16.1    0s
+
+Cutting planes:
+  Learned: 10
+  Cover: 48
+  Implied bound: 83
+  MIR: 16
+  Flow cover: 7
+  Inf proof: 4
+  RLT: 5
+
+Explored 2078 nodes (33528 simplex iterations) in 0.64 seconds (0.48 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 7: 12.4142 13.7279 14.3137 ... 20.6569
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (3.6001e-06) exceeds tolerance
+Best objective 1.241421865362e+01, best bound 1.241421865362e+01, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 17:42:52 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1703 rows, 1877 columns and 4567 nonzeros
+Model fingerprint: 0x63e1cf81
+Model has 29 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve removed 526 rows and 826 columns
+Presolve time: 0.03s
+Presolved: 1482 rows, 1143 columns, 4241 nonzeros
+Presolved model has 52 SOS constraint(s)
+Variable types: 408 continuous, 735 integer (622 binary)
+
+Root relaxation: objective 0.000000e+00, 656 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   32          -    0.00000      -     -    0s
+     0     0    0.00000    0  117          -    0.00000      -     -    0s
+     0     0    0.00000    0   87          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   29          -    0.00000      -     -    0s
+     0     0    0.00000    0   19          -    0.00000      -     -    0s
+     0     0    0.00000    0   18          -    0.00000      -     -    0s
+     0     0    0.00000    0   20          -    0.00000      -     -    0s
+     0     0    0.00000    0    9          -    0.00000      -     -    0s
+     0     0    0.00000    0    8          -    0.00000      -     -    0s
+H    0     0                      45.7989899    0.00000   100%     -    0s
+     0     0    0.00000    0   15   45.79899    0.00000   100%     -    0s
+     0     0    0.00000    0    9   45.79899    0.00000   100%     -    0s
+H    0     0                      45.7989899    0.00000   100%     -    0s
+     0     0    0.00000    0    9   45.79899    0.00000   100%     -    0s
+     0     0    0.00000    0   28   45.79899    0.00000   100%     -    0s
+     0     0    0.00000    0   28   45.79899    0.00000   100%     -    0s
+     0     2    0.00000    0   26   45.79899    0.00000   100%     -    0s
+H   33    38                      37.7279220    0.00000   100%  49.1    0s
+H   35    38                      30.3137085    0.00000   100%  49.5    0s
+H   76    73                      30.3137085    0.00001   100%  36.2    0s
+*  195   178              16      21.8284271    0.00001   100%  19.3    0s
+H  271   200                      21.8284271    0.00001   100%  16.9    0s
+H  276   200                      21.8284271    0.00001   100%  16.7    0s
+H  447   257                      21.8284271    0.00001   100%  14.6    0s
+H  599   352                      21.8284271    0.80247  96.3%  13.4    0s
+H 1795   452                      13.6569210   10.00001  26.8%  11.5    0s
+
+Cutting planes:
+  Learned: 7
+  Cover: 47
+  Implied bound: 128
+  Clique: 5
+  MIR: 3
+  Flow cover: 4
+  Inf proof: 4
+  RLT: 10
+  Relax-and-lift: 21
+
+Explored 2338 nodes (30403 simplex iterations) in 0.74 seconds (0.61 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 9: 13.6569 21.8284 21.8284 ... 45.799
+No other solutions better than 13.6569
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 6.828371320851e+00, best bound 1.365692101500e+01, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
+
+Gurobi 10.0.0 (mac64[arm]) logging started Fri Apr 14 18:02:05 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 1384 rows, 1877 columns and 3820 nonzeros
+Model fingerprint: 0xd871f75e
+Model has 130 quadratic constraints
+Model has 315 general constraints
+Variable types: 1169 continuous, 708 integer (656 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+Presolve added 468 rows and 0 columns
+Presolve removed 0 rows and 155 columns
+Presolve time: 0.04s
+Presolved: 2500 rows, 1912 columns, 7263 nonzeros
+Presolved model has 128 SOS constraint(s)
+Variable types: 955 continuous, 957 integer (833 binary)
+
+Root relaxation: objective 0.000000e+00, 758 iterations, 0.01 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0   35          -    0.00000      -     -    0s
+     0     0    0.00000    0   44          -    0.00000      -     -    0s
+     0     0    0.00000    0   38          -    0.00000      -     -    0s
+H    0     0                     258.4629867    0.00000   100%     -    0s
+H    0     0                     255.4629867    0.00000   100%     -    0s
+H    0     0                      58.3553390    0.00000   100%     -    0s
+     0     0    0.00000    0  119   58.35534    0.00000   100%     -    0s
+H    0     0                      58.3553390    0.00000   100%     -    0s
+     0     0    0.00000    0   32   58.35534    0.00000   100%     -    0s
+H    0     0                      36.5563491    0.00000   100%     -    0s
+     0     0    0.00000    0   30   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   25   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   16   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   17   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0    5   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   43   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   16   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   17   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   11   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   44   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   15   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   52   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   18   36.55635    0.00000   100%     -    0s
+     0     0    0.00000    0   10   36.55635    0.00000   100%     -    0s
+H    0     0                      31.2132034    0.00000   100%     -    0s
+     0     2    0.00000    0   10   31.21320    0.00000   100%     -    0s
+H   37    34                      26.3137085    0.00000   100%  68.9    0s
+H   69    71                      26.3137085    0.00000   100%  48.8    0s
+H   73    71                      25.1421356    0.00000   100%  47.2    0s
+H  117   105                      21.8284271    0.00000   100%  35.3    0s
+H  122   107                      10.2426407    0.00000   100%  34.0    0s
+
+Cutting planes:
+  Learned: 1
+  Cover: 16
+  Implied bound: 20
+  Clique: 6
+  MIR: 3
+  StrongCG: 1
+  Flow cover: 6
+  RLT: 8
+  Relax-and-lift: 1
+  PSD: 1
+
+Explored 303 nodes (12794 simplex iterations) in 0.63 seconds (0.54 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 10.2426 21.8284 25.1421 ... 258.463
+
+Optimal solution found (tolerance 0.00e+00)
+Warning: max constraint violation (6.0000e+00) exceeds tolerance
+Warning: max general constraint violation (5.0000e+00) exceeds tolerance
+         (model may be infeasible or unbounded - try turning presolve off)
+Best objective 1.024264068712e+01, best bound 1.024264068712e+01, gap 0.0000%
+Warning: general constraint name "d_i_sj:omOn_absX" has a colon
