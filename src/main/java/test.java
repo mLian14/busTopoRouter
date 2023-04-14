@@ -19,6 +19,7 @@ public class test {
         System.out.println("Program Starts at: " + DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS").format(start));
         Processor processor = new Processor();
 
+        //OutputDocument output = processor.processToOutputPre("input_busTopoRouter/case1_I2C4_SCL");
         OutputDocument output = processor.processToOutputPre("input_busTopoRouter/test");
         LocalDateTime end = LocalDateTime.now();
         Duration duration = Duration.between(start, end);

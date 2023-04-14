@@ -18,6 +18,85 @@ public class VirtualPointVar {
 
 
     /*
+    Connection with Master
+    VVVV
+     */
+
+    /*
+    VM:relObstacles_qs
+    0: ul->lr
+    1: lr->ul
+    2: ur->ll
+    3: ll->ur
+    4: relative obstacle: aux.1/cnn.4
+     */
+    public Map<Obstacle, GurobiVariable[]> vm_relObstacles_qs;//binary variables for (ul->lr.1) -- (ll->ur.1)
+    /*
+    VM:detour_qs
+    0: ul->lr
+    1: lr->ul
+    2: ur->ll
+    3: ll->ur
+    4: q_ij^d: detour trigger: aux.2/cnn.4
+     */
+    public GurobiVariable[] vm_detour_qs;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
+
+    /*
+    VM:corner_qs
+    0: ll
+    1: ur
+    2: ul
+    3: lr
+     */
+    public Map<Obstacle, GurobiVariable[]> vm_corner_qs;
+
+    /*
+    VM:omOnCnn_q
+    q_i_vj^m->n
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable>> vm_omOnCnn_q;//binaryVar regarding next virtualPoint for relObstacles' connection
+
+    /*
+    VM:inOutCnn_qs
+    0: vi->
+    1: vj<-
+     */
+    public Map<Obstacle, GurobiVariable[]> vm_inOutCnn_qs;//binaryVar regarding next virtualPoint for starting and end point connection
+
+    /*
+    VM:oCoordinate_iqs
+    0: x_m
+    1: y_m
+     */
+    public Map<Obstacle, GurobiVariable[]> vm_oCoordinate_iqs;//intVar regarding next virtualPoint: coordinates of the selected intermedia point
+
+    /*
+    VM:dOmOn_cq
+    0: d_m->n
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable>> vm_dOmOn_cq;//intVar: path length between o_m and o_n
+
+    /*todo
+    Auxiliary absolute values: aux_dOmOn_cqs
+    0: |x_m - x_n|
+    1: |y_m - y_n|
+    2: min(|x_m - x_n|, |y_m - y_n|)
+    3: ||x_m - x_n| - |y_m - y_n||
+    4: x_m - x_n
+    5: y_m - y_n
+    6: |x_m - x_n| - |y_m - y_n|
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> vm_aux_dOmOn_cqs;
+    public Map<Obstacle, Map<Obstacle, GurobiVariable>> auxQ_vmdOmOn;
+    /*
+    AAAA
+    Connection with Master
+     */
+
+
+
+
+    /*
     Detour triggering regarding NEXT VirtualPoint
      */
 
@@ -28,7 +107,7 @@ public class VirtualPointVar {
     2: nonT
     3: nonB
      */
-    public Map<Obstacle, GurobiVariable[]> non_qs;//binary variables for nonoverlapping
+    public Map<Obstacle, GurobiVariable[]> non_qs;//binary variables for non-overlapping
 
     /*
     rel_qs
@@ -110,6 +189,7 @@ public class VirtualPointVar {
     0: d_m->n
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable>> dOmOn_cq;//intVar: path length between o_m and o_n
+
     /*
     Auxiliary absolute values: aux_dOmOn_cqs
     0: |x_m - x_n|
@@ -362,6 +442,13 @@ public class VirtualPointVar {
         this.auxQ_vsdIn = new HashMap<>();
         this.auxQ_vsdOmOn = new HashMap<>();
         this.auxQ_vsDist = new HashMap<>();
+
+        this.vm_relObstacles_qs = new HashMap<>();
+        this.vm_corner_qs = new HashMap<>();
+        this.vm_omOnCnn_q = new HashMap<>();
+        this.vm_inOutCnn_qs = new HashMap<>();
+        this.vm_oCoordinate_iqs = new HashMap<>();
+
 
     }
 }
