@@ -56,6 +56,15 @@ public class GurobiExecutor {
     }
 
     /**
+     *
+     * @param presolve
+     * @throws GRBException
+     */
+    public void setPresolve(int presolve) throws GRBException {
+        this.model.set(GRB.IntParam.Presolve, presolve);
+    }
+
+    /**
      * Limits the total time expended (in seconds). Optimization returns with a TIME_LIMIT status if the limit is exceeded (see the Status Code section for further details).
      *
      * @param time Minimum value:	0 and	Maximum value:	Infinity

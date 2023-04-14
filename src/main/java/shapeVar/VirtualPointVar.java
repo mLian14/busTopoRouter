@@ -121,6 +121,7 @@ public class VirtualPointVar {
     6: |x_m - x_n| - |y_m - y_n|
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> aux_dOmOn_cqs;
+    public Map<Obstacle, Map<Obstacle, GurobiVariable>> auxQ_dOmOn;
 
 
     /*
@@ -140,6 +141,7 @@ public class VirtualPointVar {
     6: |vi.x - x_m| - |vi.y - y_m|
      */
     public Map<Obstacle, GurobiVariable[]> aux_dOut_cqs;
+    public Map<Obstacle, GurobiVariable> auxQ_dOut;
     /*
     Auxiliary absolute values: aux_dIn_cqs
     0: |vj.x - x_n|
@@ -151,6 +153,7 @@ public class VirtualPointVar {
     6: |vj.x - x_n| - |vj.y - y_n|
      */
     public Map<Obstacle, GurobiVariable[]> aux_dIn_cqs;
+    public Map<Obstacle, GurobiVariable> auxQ_dIn;
 
     /*
     dist_cqs
@@ -171,6 +174,7 @@ public class VirtualPointVar {
     6: |vi.x - vj.x| - |vi.y - vj.y|
      */
     public GurobiVariable[] aux_dist_cqs;
+    public GurobiVariable auxQ_dist;
 
 
 
@@ -251,6 +255,7 @@ public class VirtualPointVar {
     6: |vi.x - x_m| - |vi.y - y_m|
      */
     public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> aux_vsdOut_cqs;
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable>> auxQ_vsdOut;
 
     /*
     Auxiliary absolute values: aux_vsdIn_cqs
@@ -263,6 +268,7 @@ public class VirtualPointVar {
     6: |x_m - sj.x| - |vi.y - sj.y|
      */
     public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> aux_vsdIn_cqs;
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable>> auxQ_vsdIn;
 
 
 
@@ -290,7 +296,7 @@ public class VirtualPointVar {
     6: |x_m - x_n| - |y_m - y_n|
      */
     public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable[]>>> aux_vsdOmOn_cqs;
-
+    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable>>> auxQ_vsdOmOn;
 
 
 
@@ -312,6 +318,7 @@ public class VirtualPointVar {
     6: |vi.x - sj.x| - |vi.y - sj.y|
      */
     public Map<PseudoBase, GurobiVariable[]> aux_vsDist_cqs;
+    public Map<PseudoBase, GurobiVariable> auxQ_vsDist;
 
 
     public VirtualPointVar() {
@@ -346,6 +353,15 @@ public class VirtualPointVar {
         this.vs_dist_cq = new HashMap<>();
         this.aux_vsdIn_cqs = new HashMap<>();
         this.aux_vsdOut_cqs = new HashMap<>();
+
+
+        this.auxQ_dOmOn = new HashMap<>();
+        this.auxQ_dOut = new HashMap<>();
+        this.auxQ_dIn = new HashMap<>();
+        this.auxQ_vsdOut = new HashMap<>();
+        this.auxQ_vsdIn = new HashMap<>();
+        this.auxQ_vsdOmOn = new HashMap<>();
+        this.auxQ_vsDist = new HashMap<>();
 
     }
 }
