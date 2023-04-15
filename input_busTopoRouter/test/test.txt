@@ -9,6 +9,7 @@ MS 0 0
 Slave
 s1 -2 6
 s2 7 8
+s3 3 4
 FIN
 slaveC 1
 busC 1
