@@ -169,8 +169,9 @@ public class Processor {
                     System.out.println("vp" + i + "=(" + vp.x.getIntResult() + ", " + vp.y.getIntResult() + ")->" + sv.getName() + ":(" + sv.getX() + ", " + sv.getY() + ")");
                     System.out.print("d_v->CorrS= " + vp.dist_cqs[1].getContResult());
                     System.out.println("|| d_vi_sj = " + vp.vs_dist_cq.get(sv).getContResult());
-                    System.out.println("aux_vsDist_cqs=" + convertGrbContArrayToString(vp.aux_vsDist_iqs.get(sv)));
-                    System.out.println("auxQ_vsDist=" + vp.auxQ_vsDist.get(sv).getIntResult());
+                    double dtmp = Math.sqrt(2) * vp.aux_vsDist_iqs.get(sv)[2].getContResult() + vp.aux_vsDist_iqs.get(sv)[3].getContResult();
+                    System.out.println("aux_vsDist_cqs=" + convertGrbContArrayToString(vp.aux_vsDist_iqs.get(sv)) + ": " + dtmp);
+                    //System.out.println("auxQ_vsDist=" + vp.auxQ_vsDist.get(sv).getIntResult());
                     System.out.print("vs_detour_qs:" + convertGrbIntArrayToString(vp.vs_detour_qs.get(sv)) + "|| ");
                     System.out.println("vs_dInOut_cqs:" + convertGrbContArrayToString(vp.vs_dInOut_cqs.get(sv)) + "|| ");
 
@@ -1479,15 +1480,9 @@ public class Processor {
             c_vsCnn.setSense('=');
             c_vsCnn.setRHSConstant(1.0);
             executor.addConstraint(c_vsCnn);
-
             for (PseudoBase sv : slaves) {
                 //sv.1
                 c_vsCnn.addToLHS(vp.vsCnn_q.get(sv), 1.0);
-
-
-
-
-
                 /*
                 d_is_j
                 VVVV
@@ -1559,35 +1554,35 @@ public class Processor {
                  */
 
                 //sv.3
-                c = new GurobiConstraint();
+                /*c = new GurobiConstraint();
                 c.setName("sv.3_1");
                 c.addToLHS(vp.dist_cqs[1], 1.0);
                 c.setSense('<');
                 c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
                 c.addToRHS(vp.vsCnn_q.get(sv), -M);
                 c.setRHSConstant(M);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
+                executor.addConstraint(c);*/
+                /*c = new GurobiConstraint();
                 c.setName("sv.3_2");
                 c.addToLHS(vp.dist_cqs[1], 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.vs_dist_cq.get(sv), 1.0);
                 c.addToRHS(vp.vsCnn_q.get(sv), M);
                 c.setRHSConstant(-M);
-                executor.addConstraint(c);
-//                qc = new GurobiQuadConstraint();
-//                qc.setName("sv.3");
-//                qc.addToLHS(vp.dist_cqs[1], 1.0);
-//                qc.setSense('>');
-//                qc.addToRHS(vp.vs_dist_cq.get(sv), vp.vsCnn_q.get(sv), 1.0);
-//                executor.addConstraint(qc);
+                executor.addConstraint(c);*/
+                qc = new GurobiQuadConstraint();
+                qc.setName("sv.3");
+                qc.addToLHS(vp.dist_cqs[1], 1.0);
+                qc.setSense('>');
+                qc.addToRHS(vp.vs_dist_cq.get(sv), vp.vsCnn_q.get(sv), 1.0);
+                executor.addConstraint(qc);
 
 
                 //vs_cnn.4
                 GurobiQuadConstraint c_vsOut = new GurobiQuadConstraint();
                 c_vsOut.setName("vs_cnn.4");
                 c_vsOut.setSense('=');
-                c_vsOut.addToRHS(vp.vs_detour_qs.get(sv)[4], vp.vsCnn_q.get(sv), 1.0);
+                c_vsOut.addToRHS(vp.vs_detour_qs.get(sv)[4], 1.0);
                 executor.addConstraint(c_vsOut);
                 //pl
                 GurobiConstraint c_vs_dij = new GurobiConstraint();
