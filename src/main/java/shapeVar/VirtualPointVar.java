@@ -372,7 +372,7 @@ public class VirtualPointVar {
 
     /*
     vs_inCnn_q
-    0: vi_s ->
+    0: vi_s->
     1: sj<-
      */
     public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_inOutCnn_q;//binaryVar regarding Slaves for starting and end point connection

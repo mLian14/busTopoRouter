@@ -196,11 +196,19 @@ public class Obstacle {
     }
 
     public boolean down_AreaOverlap(Obstacle other_o){
-        return other_o.minY + other_o.minX < this.maxY + this.maxX || other_o.maxY + other_o.maxX > this.minY + this.minX;
+        if(other_o.minY + other_o.minX > this.maxY + this.maxX || other_o.maxY + other_o.maxX < this.minY + this.minX){
+            return false;
+        }else {
+            return true;
+        }
     }
 
     public boolean up_AreaOverlap(Obstacle other_o){
-        return other_o.minY - other_o.maxX < this.maxY - this.maxX || other_o.maxY - other_o.minX > this.minY - this.maxX;
+        if (other_o.maxY - other_o.minX <= this.minY - this.maxX || other_o.minY - other_o.maxX >= this.maxY - this.minX){
+            return false;
+        }else {
+            return true;
+        }
     }
 
     public boolean topL_bottomR_oo(Obstacle other_o){
