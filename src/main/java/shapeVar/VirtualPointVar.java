@@ -363,17 +363,17 @@ public class VirtualPointVar {
     public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable>>> vs_omOnCnn_q;//binaryVar regarding Slaves for relObstacles' connection
 
     /*
-    vs_dOmOn_cqs
+    vs_dOmOn_cq
     d_m->n
      */
-    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable>>> vs_dOmOn_cqs;//contVar: path length between o_m and o_n
+    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable>>> vs_dOmOn_cq;//contVar: path length between o_m and o_n
 
     /*
-    vs_inCnn_q
+    vs_inOutCnn_qs
     0: vi_s->
     1: sj<-
      */
-    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_inOutCnn_q;//binaryVar regarding Slaves for starting and end point connection
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_inOutCnn_qs;//binaryVar regarding Slaves for starting and end point connection
 
     /*
     vs_dInOut_cqs
@@ -478,9 +478,9 @@ public class VirtualPointVar {
         this.vs_detour_qs = new HashMap<>();
         this.vs_corner_qs = new HashMap<>();
         this.vs_omOnCnn_q = new HashMap<>();
-        this.vs_inOutCnn_q = new HashMap<>();
+        this.vs_inOutCnn_qs = new HashMap<>();
         this.vs_oCoordinate_iqs = new HashMap<>();
-        this.vs_dOmOn_cqs = new HashMap<>();
+        this.vs_dOmOn_cq = new HashMap<>();
         this.vs_dInOut_cqs = new HashMap<>();
         this.aux_vsDist_iqs = new HashMap<>();
         this.vs_dist_cq = new HashMap<>();
