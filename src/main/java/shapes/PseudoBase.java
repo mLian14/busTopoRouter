@@ -20,9 +20,10 @@ public class PseudoBase {
     1: oqUR
     2: oqLR
     3: oqLL
-    4: oqD
-    5: oqU
-
+    4: oqL
+    5: oqR
+    6: oqT
+    7: oqB
      */
     private Map<Obstacle, int[]> pseudo_oDir_qs;
 
