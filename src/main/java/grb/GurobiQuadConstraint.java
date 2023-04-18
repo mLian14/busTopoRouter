@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GurobiQuadConstraint extends GurobiConstraint {
+    String name;
     Map<GurobiVariables, Double> leftHandSideVars;
     Map<GurobiVariables, Double> rightHandSideVars;
     private ConstraintType lhsType = ConstraintType.LINEAR;
@@ -34,6 +35,18 @@ public class GurobiQuadConstraint extends GurobiConstraint {
         this.leftHandSideVars = new HashMap<>();
         this.rightHandSideVars = new HashMap<>();
         this.type = ConstraintType.QUADRATIC;
+    }
+
+    public GurobiQuadConstraint(String name) {
+        this.name = name;
+        this.leftHandSideVars = new HashMap<>();
+        this.rightHandSideVars = new HashMap<>();
+        this.type = ConstraintType.QUADRATIC;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void addToLHS(GurobiVariable v1, GurobiVariable v2, double coefficient) {
@@ -126,6 +139,7 @@ public class GurobiQuadConstraint extends GurobiConstraint {
         return "GurobiQuadConstraint{Expression=\"" +
                 output +
                 "\", type=" + type +
+                "\", name=" + name +
                 '}';
     }
 
