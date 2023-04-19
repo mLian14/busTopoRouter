@@ -16651,3 +16651,64 @@ Solution count 7: 28.7279 31.0711 36.3848 ... 112.912
 
 Optimal solution found (tolerance 0.00e+00)
 Best objective 2.872792206027e+01, best bound 2.872792206027e+01, gap 0.0000%
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 15:40:44 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 3025 rows, 3960 columns and 8765 nonzeros
+Model fingerprint: 0x79b348ee
+Model has 204 quadratic constraints
+Model has 756 general constraints
+Variable types: 252 continuous, 3708 integer (1331 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  QRHS range       [1e+00, 3e+00]
+Presolve removed 56 rows and 1058 columns
+Presolve time: 0.06s
+Presolved: 3480 rows, 3054 columns, 10500 nonzeros
+Presolved model has 144 SOS constraint(s)
+Variable types: 168 continuous, 2886 integer (1301 binary)
+Found heuristic solution: objective 38.0416306
+
+Root relaxation: objective 5.242641e+00, 1339 iterations, 0.01 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    5.24264    0  123   38.04163    5.24264  86.2%     -    0s
+H    0     0                      30.4852814    5.24264  82.8%     -    0s
+H    0     0                      23.4852814    5.24264  77.7%     -    0s
+     0     0   10.89950    0  162   23.48528   10.89950  53.6%     -    0s
+H    0     0                      20.4852814   10.89950  46.8%     -    0s
+     0     0   16.72792    0   17   20.48528   16.72792  18.3%     -    0s
+     0     0   16.72792    0   17   20.48528   16.72792  18.3%     -    0s
+     0     0   16.72792    0   12   20.48528   16.72792  18.3%     -    0s
+     0     0   16.72792    0   12   20.48528   16.72792  18.3%     -    0s
+     0     2   16.72792    0   12   20.48528   16.72792  18.3%     -    0s
+*  221   401              40      17.4852814   16.72792  4.33%  55.9    0s
+*  350   401              30      16.7279221   16.72792  0.00%  48.8    0s
+
+Cutting planes:
+  Cover: 1
+  Implied bound: 33
+  RLT: 1
+
+Explored 458 nodes (21400 simplex iterations) in 0.52 seconds (0.42 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 6: 16.7279 17.4853 20.4853 ... 38.0416
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.672792205982e+01, best bound 1.672792205982e+01, gap 0.0000%
