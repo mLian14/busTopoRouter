@@ -158,7 +158,7 @@ public class VirtualPointVar {
     public Map<Obstacle, GurobiVariable[]> non_qs;//binary variables for non-overlapping
 
     /*
-    rel_qs
+    dir_qs
     0: ul
     1: ur
     2: lr
