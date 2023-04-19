@@ -128,7 +128,7 @@ public class Obstacle {
         this.maxY = maxY;
     }
 
-    public ArrayList<Obstacle> gettLObstacles() {
+    public ArrayList<Obstacle> get_tLObstacles() {
         return tLObstacles;
     }
 
@@ -136,7 +136,7 @@ public class Obstacle {
         this.tLObstacles.add(o);
     }
 
-    public ArrayList<Obstacle> gettRObstacles() {
+    public ArrayList<Obstacle> get_tRObstacles() {
         return tRObstacles;
     }
 
@@ -144,7 +144,7 @@ public class Obstacle {
         this.tRObstacles.add(o);
     }
 
-    public ArrayList<Obstacle> getbLObstacles() {
+    public ArrayList<Obstacle> get_bLObstacles() {
         return bLObstacles;
     }
 
@@ -152,7 +152,7 @@ public class Obstacle {
         this.bLObstacles.add(o);
     }
 
-    public ArrayList<Obstacle> getbRObstacles() {
+    public ArrayList<Obstacle> get_bRObstacles() {
         return bRObstacles;
     }
 

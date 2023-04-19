@@ -293,7 +293,21 @@ public class VirtualPointVar {
     1: v.corrS dist
     2: vm dist (only for 1st vp)
      */
-    public GurobiVariable[] dist_cqs;
+    //public GurobiVariable[] dist_cqs;
+
+    /*
+    dist_cq: vv dist
+     */
+    public GurobiVariable dist_cq;
+    /*
+    vs_corDist_cq: dist between virtualPoint and corresponding slave
+     */
+    public GurobiVariable vs_corDist_cq;
+
+    /*
+    Only for 1st vp: vm dist
+     */
+    public GurobiVariable vm_dist_cq;
 
     /*
     Auxiliary absolute values: vv
