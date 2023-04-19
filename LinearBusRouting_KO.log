@@ -16712,3 +16712,233 @@ Solution count 6: 16.7279 17.4853 20.4853 ... 38.0416
 
 Optimal solution found (tolerance 0.00e+00)
 Best objective 1.672792205982e+01, best bound 1.672792205982e+01, gap 0.0000%
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:28:28 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:30:55 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:31:05 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:31:15 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:31:25 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:31:37 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:31:46 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:31:57 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:32:05 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:32:22 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:32:30 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:32:42 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:33:00 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:33:09 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:33:18 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:33:29 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:33:37 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:37:01 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 2881 rows, 3960 columns and 8765 nonzeros
+Model fingerprint: 0xa041e4f8
+Model has 204 quadratic constraints
+Model has 756 general constraints
+Variable types: 252 continuous, 3708 integer (1331 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  QRHS range       [1e+00, 3e+00]
+Presolve added 1 rows and 0 columns
+Presolve removed 0 rows and 1124 columns
+Presolve time: 0.12s
+Presolved: 3393 rows, 2988 columns, 10260 nonzeros
+Presolved model has 144 SOS constraint(s)
+Variable types: 168 continuous, 2820 integer (1235 binary)
+
+Root relaxation: objective 5.242641e+00, 1237 iterations, 0.03 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    5.24264    0   14          -    5.24264      -     -    0s
+H    0     0                      16.7279221    5.24264  68.7%     -    0s
+H    0     0                      16.7279221   10.89950  34.8%     -    0s
+     0     0   10.89950    0   30   16.72792   10.89950  34.8%     -    0s
+     0     0   11.07110    0   35   16.72792   11.07110  33.8%     -    0s
+     0     0   11.07110    0   48   16.72792   11.07110  33.8%     -    0s
+     0     0   11.07110    0   19   16.72792   11.07110  33.8%     -    0s
+H    0     0                      10.8994959   10.89950  0.00%     -    0s
+     0     0   11.07110    0   16   10.89950   10.89950  0.00%     -    0s
+
+Cutting planes:
+  Implied bound: 11
+  MIR: 1
+  RLT: 4
+  Relax-and-lift: 2
+
+Explored 1 nodes (2502 simplex iterations) in 0.55 seconds (0.18 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 3: 10.8995 16.7279 16.7279 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.089949593669e+01, best bound 1.089949593669e+01, gap 0.0000%
+
+Gurobi 10.0.0 (mac64[arm]) logging started Wed Apr 19 16:37:37 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 2953 rows, 3960 columns and 9125 nonzeros
+Model fingerprint: 0x4b1808b7
+Model has 204 quadratic constraints
+Model has 756 general constraints
+Variable types: 252 continuous, 3708 integer (1331 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+06]
+  RHS range        [1e+00, 1e+06]
+  QRHS range       [1e+00, 3e+00]
+Presolve removed 17 rows and 1070 columns
+Presolve time: 0.18s
+Presolved: 3447 rows, 3042 columns, 10499 nonzeros
+Presolved model has 144 SOS constraint(s)
+Variable types: 168 continuous, 2874 integer (1289 binary)
+Found heuristic solution: objective 35.2132034
+
+Root relaxation: objective 5.242641e+00, 1337 iterations, 0.02 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    5.24264    0    9   35.21320    5.24264  85.1%     -    0s
+H    0     0                      24.3137085    5.24264  78.4%     -    0s
+     0     0   10.89951    0   29   24.31371   10.89951  55.2%     -    0s
+     0     0   16.72792    0   31   24.31371   16.72792  31.2%     -    0s
+     0     0   16.72792    0   31   24.31371   16.72792  31.2%     -    0s
+     0     0   16.72792    0   15   24.31371   16.72792  31.2%     -    0s
+     0     0   16.72792    0    7   24.31371   16.72792  31.2%     -    0s
+     0     0   16.72792    0    6   24.31371   16.72792  31.2%     -    0s
+     0     0   16.72792    0    5   24.31371   16.72792  31.2%     -    0s
+     0     0   16.72792    0    5   24.31371   16.72792  31.2%     -    0s
+     0     2   16.72792    0    5   24.31371   16.72792  31.2%     -    0s
+H   31    33                      16.7279221   16.72792  0.00%  17.0    0s
+
+Cutting planes:
+  Learned: 1
+  Gomory: 7
+  Cover: 10
+  Implied bound: 21
+  Clique: 3
+  MIR: 13
+  StrongCG: 1
+  Flow cover: 3
+  Zero half: 1
+  RLT: 5
+  Relax-and-lift: 4
+
+Explored 39 nodes (3020 simplex iterations) in 0.73 seconds (0.22 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 3: 16.7279 24.3137 35.2132 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.672792205973e+01, best bound 1.672792205973e+01, gap 0.0000%
