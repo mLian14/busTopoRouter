@@ -454,6 +454,7 @@ public class VirtualPointVar {
     public Map<PseudoBase, GurobiVariable> vs_dist_cq;
 
 
+
     /*
     Auxiliary absolute values: vsDist
     0: |vi.x - sj.x|
