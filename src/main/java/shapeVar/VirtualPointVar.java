@@ -174,6 +174,14 @@ public class VirtualPointVar {
     3: o_bR
      */
     public Map<Obstacle, GurobiVariable[]> rel_qs;//binary variables for (tL) -- (bR)
+    /*
+    rel_AusQs
+    0: nonL * nonT
+    1: nonR * nonT
+    2: nonL * nonB
+    3: nonR * nonB
+     */
+    public Map<Obstacle, GurobiVariable[]> rel_AusQs;
 
     /*
     relObstacles_qs
@@ -474,6 +482,7 @@ public class VirtualPointVar {
         this.non_qs = new HashMap<>();
         this.dir_qs = new HashMap<>();
         this.rel_qs = new HashMap<>();
+        this.rel_AusQs = new HashMap<>();
         this.relObstacles_qs = new HashMap<>();
 
 
