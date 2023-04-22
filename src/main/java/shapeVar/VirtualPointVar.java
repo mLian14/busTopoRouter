@@ -70,12 +70,20 @@ public class VirtualPointVar {
      */
     public Map<Obstacle, GurobiVariable[]> vm_oCoordinate_iqs;//intVar regarding next virtualPoint: coordinates of the selected intermedia point
 
+
     /*
-    VM:dInOut_cqs
-    0: d_i_ms->
-    1: d_i_ms<-
+    VM: dOut_cqs
+    0: d_i_ms->: Min
+    1: d_i_ms->: Diff
      */
-    public GurobiVariable[] vm_dInOut_cqs;//contVar
+    public Map<Obstacle, GurobiVariable[]> vm_dOut_cqs;
+    /*
+    VM: dIn_cqs
+    0: d_i_ms<-: Min
+    1: d_i_ms<-: Diff
+     */
+    public Map<Obstacle, GurobiVariable[]> vm_dIn_cqs;
+
     /*
     Auxiliary absolute values: aux_vmdOut_iqs
     0: |vi.x - x_m|
@@ -103,12 +111,13 @@ public class VirtualPointVar {
 
 
 
-
     /*
-    VM:dOmOn_cq
-    0: d_m->n
+    VM:dOmOn_cqs
+    0: d_m->n:MIN
+    1: d_m->n:DIFF
      */
-    public Map<Obstacle, Map<Obstacle, GurobiVariable>> vm_dOmOn_cq;//intVar: path length between o_m and o_n
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> vm_dOmOn_cqs;//intVar: path length between o_m and o_n
+
 
     /*
     Auxiliary absolute values: aux_vmdOmOn_iqs
@@ -135,6 +144,14 @@ public class VirtualPointVar {
      */
     public GurobiVariable[] aux_vmDist_iqs;
     public GurobiVariable auxQ_vmDist;
+
+
+    /*
+    vm_dist_cqs:
+    0: vm_dist: MIN
+    1: vm_dist: DIFF
+     */
+    public GurobiVariable[] vm_dist_cqs;
 
     /*
     AAAA
@@ -312,10 +329,7 @@ public class VirtualPointVar {
      */
     public GurobiVariable vs_corDist_cq;
 
-    /*
-    Only for 1st vp: vm dist
-     */
-    public GurobiVariable vm_dist_cq;
+
 
     /*
     Auxiliary absolute values: vv
@@ -525,7 +539,6 @@ public class VirtualPointVar {
         this.vm_omOnCnn_q = new HashMap<>();
         this.vm_inOutCnn_qs = new HashMap<>();
         this.vm_oCoordinate_iqs = new HashMap<>();
-        this.vm_dOmOn_cq = new HashMap<>();
 
         this.aux_vmdOut_iqs = new HashMap<>();
         this.auxQ_vmdOut = new HashMap<>();
@@ -533,6 +546,11 @@ public class VirtualPointVar {
         this.auxQ_vmdIn = new HashMap<>();
         this.aux_vmdOmOn_iqs = new HashMap<>();
         this.auxQ_vmdOmOn = new HashMap<>();
+
+
+        this.vm_dIn_cqs = new HashMap<>();
+        this.vm_dOut_cqs = new HashMap<>();
+        this.vm_dOmOn_cqs = new HashMap<>();
 
     }
 }
