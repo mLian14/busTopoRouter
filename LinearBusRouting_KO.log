@@ -37784,3 +37784,235 @@ Solution count 5: 24.7279 31.799 40.6274 ... 65722.8
 
 Optimal solution found (tolerance 0.00e+00)
 Best objective 2.472792206136e+01, best bound 2.472792206136e+01, gap 0.0000%
+
+Gurobi 10.0.0 (mac64[arm]) logging started Mon Apr 24 20:30:54 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Set parameter TimeLimit to value 36000
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 3467 rows, 4008 columns and 10731 nonzeros
+Model fingerprint: 0x12c8a21d
+Model has 204 quadratic constraints
+Model has 756 general constraints
+Variable types: 252 continuous, 3756 integer (1379 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+05]
+  RHS range        [1e+00, 1e+05]
+  QRHS range       [1e+00, 3e+00]
+Presolve removed 880 rows and 756 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds (0.01 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      4016         -         0      5258         -           0s
+        3      3205        59         0      3816         -           5s
+        7      3197        68         0      3810         -          10s
+       11      3169        81         0      3784         -          15s
+       14      3136        84         0      3773         -          20s
+       17      2980        86         0      3680         -          25s
+       24      2861        96         0      3611         -          30s
+       29      2737        98         0      3538         -          35s
+       37      2515       105         0      3386         -          40s
+       49      2244       111         0      3109         -          45s
+       66      1347       107         0      2118         -          50s
+       92       513       110         0       869         -          55s
+      108       108       108         0       105       105          60s
+      108       108       108        41        41        41          62s
+
+IIS computed: 108 constraints, 41 bounds
+IIS runtime: 62.43 seconds (48.15 work units)
+
+IIS computed: 108 constraints, 41 bounds
+IIS runtime: 0.00 seconds (0.00 work units)
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 3466 rows, 4008 columns and 10728 nonzeros
+Model fingerprint: 0x502e233d
+Model has 204 quadratic constraints
+Model has 756 general constraints
+Variable types: 252 continuous, 3756 integer (1379 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+05]
+  RHS range        [1e+00, 1e+05]
+  QRHS range       [1e+00, 3e+00]
+Presolve removed 880 rows and 756 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds (0.01 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Computing Irreducible Inconsistent Subsystem (IIS)...
+
+           Constraints          |            Bounds           |  Runtime
+      Min       Max     Guess   |   Min       Max     Guess   |
+--------------------------------------------------------------------------
+        0      4015         -         0      5258         -           0s
+        5      3091        68         0      3788         -           5s
+
+Gurobi 10.0.0 (mac64[arm]) logging started Mon Apr 24 20:32:10 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Set parameter TimeLimit to value 36000
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 3458 rows, 4008 columns and 10713 nonzeros
+Model fingerprint: 0xb0177efd
+Model has 204 quadratic constraints
+Model has 756 general constraints
+Variable types: 252 continuous, 3756 integer (1379 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+05]
+  RHS range        [1e+00, 1e+05]
+  QRHS range       [1e+00, 3e+00]
+Presolve removed 995 rows and 1764 columns
+Presolve time: 0.03s
+Presolved: 2525 rows, 2262 columns, 7247 nonzeros
+Variable types: 168 continuous, 2094 integer (592 binary)
+Found heuristic solution: objective 18.4852814
+
+Root relaxation: objective 5.242641e+00, 830 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    5.24264    0    8   18.48528    5.24264  71.6%     -    0s
+     0     0   11.07114    0   14   18.48528   11.07114  40.1%     -    0s
+     0     0   18.48528    0   11   18.48528   18.48528  0.00%     -    0s
+
+Cutting planes:
+  Implied bound: 2
+  MIR: 2
+
+Explored 1 nodes (1873 simplex iterations) in 0.09 seconds (0.09 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 18.4853 
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.848528137405e+01, best bound 1.848528137405e+01, gap 0.0000%
+
+Gurobi 10.0.0 (mac64[arm]) logging started Mon Apr 24 20:32:58 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Set parameter TimeLimit to value 36000
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 3458 rows, 4008 columns and 10713 nonzeros
+Model fingerprint: 0x3eff9bc0
+Model has 204 quadratic constraints
+Model has 756 general constraints
+Variable types: 252 continuous, 3756 integer (1379 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+05]
+  RHS range        [1e+00, 1e+05]
+  QRHS range       [1e+00, 3e+00]
+Presolve added 217 rows and 0 columns
+Presolve removed 0 rows and 883 columns
+Presolve time: 0.07s
+Presolved: 3993 rows, 3209 columns, 12062 nonzeros
+Variable types: 168 continuous, 3041 integer (1083 binary)
+
+Root relaxation: objective 0.000000e+00, 1329 iterations, 0.02 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0  397          -    0.00000      -     -    0s
+     0     0    0.00000    0  517          -    0.00000      -     -    0s
+H    0     0                    100044.11270    0.00000   100%     -    0s
+     0     0    0.00000    0  474 100044.113    0.00000   100%     -    0s
+     0     0    0.00000    0   62 100044.113    0.00000   100%     -    0s
+H    0     0                      37.6274170    0.00000   100%     -    0s
+H    0     0                      34.6274170    0.00000   100%     -    0s
+H    0     0                      26.1421356    0.00000   100%     -    0s
+     0     0    0.00000    0  226   26.14214    0.00000   100%     -    0s
+H    0     0                      24.7279221    0.00000   100%     -    0s
+     0     0    0.00000    0   97   24.72792    0.00000   100%     -    0s
+     0     0    0.00000    0   90   24.72792    0.00000   100%     -    0s
+     0     0    0.00000    0  107   24.72792    0.00000   100%     -    0s
+     0     0    0.00000    0  119   24.72792    0.00000   100%     -    0s
+     0     0    0.00000    0  123   24.72792    0.00000   100%     -    0s
+     0     0    0.00000    0  104   24.72792    0.00000   100%     -    0s
+     0     0    0.00000    0   96   24.72792    0.00000   100%     -    0s
+     0     2    0.00000    0   58   24.72792    0.00000   100%     -    0s
+H  141   113                      23.8994949    1.42307  94.0%  52.0    0s
+H  357   299                      23.4852814    1.42307  93.9%  36.0    0s
+H  374   299                      23.3137085    1.42307  93.9%  35.0    0s
+H  833   503                      20.7279221    1.72222  91.7%  27.8    1s
+H 1547   508                      19.8994949    5.86655  70.5%  27.3    1s
+H 2111   546                      19.0710678    6.57465  65.5%  26.9    1s
+* 3811   898             102      18.4852814   10.72541  42.0%  32.8    3s
+H 4519   602                      17.8994949   13.07107  27.0%  31.7    3s
+H 4541   559                      17.6568542   13.07107  26.0%  31.7    3s
+  6744   887     cutoff   32        17.65685   14.92792  15.5%  30.9    5s
+
+Cutting planes:
+  Learned: 17
+  Gomory: 3
+  Cover: 11
+  Implied bound: 31
+  Clique: 6
+  MIR: 7
+  StrongCG: 1
+  Flow cover: 2
+  RLT: 15
+  Relax-and-lift: 10
+
+Explored 17122 nodes (455053 simplex iterations) in 8.83 seconds (9.81 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 17.6569 17.8995 18.4853 ... 24.7279
+
+Optimal solution found (tolerance 0.00e+00)
+Best objective 1.765685424935e+01, best bound 1.765685424935e+01, gap 0.0000%

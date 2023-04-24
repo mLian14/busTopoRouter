@@ -1991,11 +1991,11 @@ public class Processor {
 
 
                 //todo:d_i_sj < q_i_sj * M
-                c = new GurobiConstraint();
-                c.addToLHS(vp.vs_dist_cq.get(sv), 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.vsCnn_q.get(sv), M);
-                executor.addConstraint(c);
+//                c = new GurobiConstraint();
+//                c.addToLHS(vp.vs_dist_cq.get(sv), 1.0);
+//                c.setSense('<');
+//                c.addToRHS(vp.vsCnn_q.get(sv), M);
+//                executor.addConstraint(c);
 
                 /*
                 d_is_j
@@ -2781,8 +2781,10 @@ public class Processor {
             VirtualPointVar vp = new VirtualPointVar();
             virtualPointVars.add(vp);
             vp.x = new GurobiVariable(GRB.INTEGER, lb_x, ub_x, "x" + i);
+//            vp.x = new GurobiVariable(GRB.INTEGER, 3, 3, "x" + i);
             executor.addVariable(vp.x);
             vp.y = new GurobiVariable(GRB.INTEGER, lb_y, ub_y, "y" + i);
+//            vp.y = new GurobiVariable(GRB.INTEGER, 4, 4, "y" + i);
             executor.addVariable(vp.y);
 
 
