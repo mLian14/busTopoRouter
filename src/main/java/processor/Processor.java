@@ -21,7 +21,7 @@ public class Processor {
 
     private GurobiExecutor executor;
     private final DocumentParser parser;
-    private final static int M = 999999;
+    private final static int M = 99999;
     private OutputDocument output;
 
     enum SortType {
@@ -112,9 +112,9 @@ public class Processor {
 
         //build Gurobi Variables
         GurobiVariable busLength, branchLength;
-        busLength = new GurobiVariable(GRB.INTEGER, 0, M, "busLength");
+        busLength = new GurobiVariable(GRB.CONTINUOUS, 0, M, "busLength");
         executor.addVariable(busLength);
-        branchLength = new GurobiVariable(GRB.INTEGER, 0, M, "branchLength");
+        branchLength = new GurobiVariable(GRB.CONTINUOUS, 0, M, "branchLength");
         executor.addVariable(branchLength);
 
         ArrayList<VirtualPointVar> vps = new ArrayList<>();
@@ -387,8 +387,8 @@ public class Processor {
         }*/
 
         // Dispose of model and environment
-//        executor.getModel().dispose();
-//        executor.getEnv().dispose();
+        executor.getModel().dispose();
+        executor.getEnv().dispose();
 
         return output;
     }
@@ -402,13 +402,6 @@ public class Processor {
 
         VirtualPointVar vpN;
         int itmp;
-
-        c = new GurobiConstraint();
-        c.addToLHS(busLength, 1.0);
-        c.addToLHS(branchLength, 1.0);
-        c.setSense('<');
-        c.setRHSConstant(4000);
-        //executor.addConstraint(c);
 
 
         //busLength
@@ -512,9 +505,7 @@ public class Processor {
                 c.setName("VM_dist");
                 c.addToLHS(vp.vm_dist_cq, 1.0);
                 c.setSense('>');
-                //c.addToRHS(vp.aux_vmDist_iqs[2], Math.sqrt(2));
-                //todo:sqrt2
-                c.addToRHS(vp.aux_vmDist_iqs[2], 2.0);
+                c.addToRHS(vp.aux_vmDist_iqs[2], Math.sqrt(2));
                 c.addToRHS(vp.aux_vmDist_iqs[3], 1.0);
                 executor.addConstraint(c);
                 //auxiliary
@@ -1290,9 +1281,7 @@ public class Processor {
                     c.setName("VM_d_i_ms->");
                     c.addToLHS(vp.vm_dInOut_cqs[0], 1.0);
                     c.setSense('>');
-                    //c.addToRHS(vp.aux_vmdOut_iqs.get(om)[2], Math.sqrt(2));
-                    //todo:sqrt2
-                    c.addToRHS(vp.aux_vmdOut_iqs.get(om)[2], 2.0);
+                    c.addToRHS(vp.aux_vmdOut_iqs.get(om)[2], Math.sqrt(2));
                     c.addToRHS(vp.aux_vmdOut_iqs.get(om)[3], 1.0);
                     c.addToRHS(vp.vm_inOutCnn_qs.get(om)[0], M);
                     c.setRHSConstant(-M);
@@ -1341,9 +1330,7 @@ public class Processor {
                     c = new GurobiConstraint();
                     c.addToLHS(vp.vm_dInOut_cqs[1], 1.0);
                     c.setSense('>');
-                    //c.addToRHS(vp.aux_vmdIn_iqs.get(om)[2], Math.sqrt(2));
-                    //todo:sqrt2
-                    c.addToRHS(vp.aux_vmdIn_iqs.get(om)[2], 2.0);
+                    c.addToRHS(vp.aux_vmdIn_iqs.get(om)[2], Math.sqrt(2));
                     c.addToRHS(vp.aux_vmdIn_iqs.get(om)[3], 1.0);
                     c.addToRHS(vp.vm_inOutCnn_qs.get(om)[1], M);
                     c.setRHSConstant(-M);
@@ -1693,9 +1680,7 @@ public class Processor {
                                 c.setName("VM_d_i_msdOmOn");
                                 c.addToLHS(vp.vm_dOmOn_cq.get(om).get(on), 1.0);
                                 c.setSense('>');
-                                //c.addToRHS(vp.aux_vmdOmOn_iqs.get(om).get(on)[2], Math.sqrt(2));
-                                //todo:sqrt2
-                                c.addToRHS(vp.aux_vmdOmOn_iqs.get(om).get(on)[2], 2.0);
+                                c.addToRHS(vp.aux_vmdOmOn_iqs.get(om).get(on)[2], Math.sqrt(2));
                                 c.addToRHS(vp.aux_vmdOmOn_iqs.get(om).get(on)[3], 1.0);
                                 c.addToRHS(vp.vm_omOnCnn_q.get(om).get(on), M);
                                 c.setRHSConstant(-M);
@@ -1763,9 +1748,7 @@ public class Processor {
                             c.setName("d_ij: m->n (pl.2)");
                             c.addToLHS(vp.dOmOn_cq.get(om).get(on), 1.0);
                             c.setSense('>');
-                            //c.addToRHS(vp.aux_dOmOn_iqs.get(om).get(on)[2], Math.sqrt(2));
-                            //todo:sqrt2
-                            c.addToRHS(vp.aux_dOmOn_iqs.get(om).get(on)[2], 2.0);
+                            c.addToRHS(vp.aux_dOmOn_iqs.get(om).get(on)[2], Math.sqrt(2));
                             c.addToRHS(vp.aux_dOmOn_iqs.get(om).get(on)[3], 1.0);
                             c.addToRHS(vp.omOnCnn_q.get(om).get(on), M);
                             c.setRHSConstant(-M);
@@ -1874,9 +1857,7 @@ public class Processor {
                     c.setName("d_ij:-> (pl.1)");
                     c.addToLHS(vp.dInOut_cqs[0], 1.0);
                     c.setSense('>');
-                    //c.addToRHS(vp.aux_dOut_iqs.get(om)[2], Math.sqrt(2));
-                    //todo:sqrt2
-                    c.addToRHS(vp.aux_dOut_iqs.get(om)[2], 2.0);
+                    c.addToRHS(vp.aux_dOut_iqs.get(om)[2], Math.sqrt(2));
                     c.addToRHS(vp.aux_dOut_iqs.get(om)[3], 1.0);
                     c.addToRHS(vp.inOutCnn_qs.get(om)[0], M);
                     c.setRHSConstant(-M);
@@ -1927,9 +1908,7 @@ public class Processor {
                     c.setName("d_ij: <-");
                     c.addToLHS(vp.dInOut_cqs[1], 1.0);
                     c.setSense('>');
-                    //c.addToRHS(vp.aux_dIn_iqs.get(om)[2], Math.sqrt(2));
-                    //todo:sqrt2
-                    c.addToRHS(vp.aux_dIn_iqs.get(om)[2], 2.0);
+                    c.addToRHS(vp.aux_dIn_iqs.get(om)[2], Math.sqrt(2));
                     c.addToRHS(vp.aux_dIn_iqs.get(om)[3], 1.0);
                     c.addToRHS(vp.inOutCnn_qs.get(om)[1], M);
                     c.setRHSConstant(-M);
@@ -2027,9 +2006,7 @@ public class Processor {
                 c.setName("d_is_j_woDetour_>");
                 c.addToLHS(vp.vs_dist_cq.get(sv), 1.0);
                 c.setSense('>');
-                //c.addToRHS(vp.aux_vsDist_iqs.get(sv)[2], Math.sqrt(2));
-                //todo:sqrt2
-                c.addToRHS(vp.aux_vsDist_iqs.get(sv)[2], 2.0);
+                c.addToRHS(vp.aux_vsDist_iqs.get(sv)[2], Math.sqrt(2));
                 c.addToRHS(vp.aux_vsDist_iqs.get(sv)[3], 1.0);
                 //todo
                 c.addToRHS(vp.vsCnn_q.get(sv), M);
@@ -2441,9 +2418,7 @@ public class Processor {
                             c.setName("d_i_sj_omOn");
                             c.addToLHS(vp.vs_dOmOn_cq.get(sv).get(om).get(on), 1.0);
                             c.setSense('>');
-                            //c.addToRHS(vp.aux_vsdOmOn_iqs.get(sv).get(om).get(on)[2], Math.sqrt(2));
-                            //todo:sqrt2
-                            c.addToRHS(vp.aux_vsdOmOn_iqs.get(sv).get(om).get(on)[2], 2.0);
+                            c.addToRHS(vp.aux_vsdOmOn_iqs.get(sv).get(om).get(on)[2], Math.sqrt(2));
                             c.addToRHS(vp.aux_vsdOmOn_iqs.get(sv).get(om).get(on)[3], 1.0);
                             c.addToRHS(vp.vs_omOnCnn_q.get(sv).get(om).get(on), M);
                             c.setRHSConstant(-M);
@@ -2565,9 +2540,7 @@ public class Processor {
                     c.setName("d_i_sj_->");
                     c.addToLHS(vp.vs_dInOut_cqs.get(sv)[0], 1.0);
                     c.setSense('>');
-                    //c.addToRHS(vp.aux_vsdOut_iqs.get(sv).get(om)[2], Math.sqrt(2));
-                    //todo:sqrt2
-                    c.addToRHS(vp.aux_vsdOut_iqs.get(sv).get(om)[2], 2.0);
+                    c.addToRHS(vp.aux_vsdOut_iqs.get(sv).get(om)[2], Math.sqrt(2));
                     c.addToRHS(vp.aux_vsdOut_iqs.get(sv).get(om)[3], 1.0);
                     c.addToRHS(vp.vs_inOutCnn_qs.get(sv).get(om)[0], M);
                     c.setRHSConstant(-M);
@@ -2618,9 +2591,7 @@ public class Processor {
                     c.setName("d_i_sj_<-");
                     c.addToLHS(vp.vs_dInOut_cqs.get(sv)[1], 1.0);
                     c.setSense('>');
-                    //c.addToRHS(vp.aux_vsdIn_iqs.get(sv).get(om)[2], Math.sqrt(2));
-                    //todo:sqrt2
-                    c.addToRHS(vp.aux_vsdIn_iqs.get(sv).get(om)[2], 2.0);
+                    c.addToRHS(vp.aux_vsdIn_iqs.get(sv).get(om)[2], Math.sqrt(2));
                     c.addToRHS(vp.aux_vsdIn_iqs.get(sv).get(om)[3], 1.0);
                     c.addToRHS(vp.vs_inOutCnn_qs.get(sv).get(om)[1], M);
                     c.setRHSConstant(-M);
@@ -2688,9 +2659,7 @@ public class Processor {
                 c.setName("d_ij:woDetour");
                 c.addToLHS(vp.dist_cq, 1.0);
                 c.setSense('>');
-                //c.addToRHS(vp.aux_dist_iqs[2], Math.sqrt(2));
-                //todo:sqrt2
-                c.addToRHS(vp.aux_dist_iqs[2], 2.0);
+                c.addToRHS(vp.aux_dist_iqs[2], Math.sqrt(2));
                 c.addToRHS(vp.aux_dist_iqs[3], 1.0);
                 executor.addConstraint(c);
                 //aux
@@ -2915,10 +2884,9 @@ public class Processor {
 
                         /*cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "_vm_dOmOn_cq");
                         executor.addVariable(cq);*/
-                        //todo:Cont->Int
-                        q = new GurobiVariable(GRB.INTEGER, 0, M, "_vm_dOmOn_cq");
-                        executor.addVariable(q);
-                        vm_dOmOn_cqMap.put(on, q);
+                        cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "_vm_dOmOn_cq");
+                        executor.addVariable(cq);
+                        vm_dOmOn_cqMap.put(on, cq);
 
                         aux_vmdOmOn_iqsMap.put(on, buildAuxIntVar("v_" + i + ";" + om.getName() + "->" + on.getName() + "_aux_vmdOmOn_cqs_"));
                         q = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + om.getName() + "->" + on.getName() + "_auxQ_vmdOmOn");
@@ -3037,10 +3005,9 @@ public class Processor {
 
                     /*cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v_" + i + ";" + om.getName() + "->" + on.getName() + "_dOmOn_cq_");
                     executor.addVariable(cq);*/
-                    //todo:Cont->Int
-                    q = new GurobiVariable(GRB.INTEGER, 0, M, "v_" + i + ";" + om.getName() + "->" + on.getName() + "_dOmOn_cq_");
-                    executor.addVariable(q);
-                    dOmOn_cqMap.put(on, q);
+                    cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v_" + i + ";" + om.getName() + "->" + on.getName() + "_dOmOn_cq_");
+                    executor.addVariable(cq);
+                    dOmOn_cqMap.put(on, cq);
 
                     //aux_dOmOn_iqsMap.put(on, buildContinuousVar(-M, M, "v_" + i + ";" + o.getName() + "->" + on.getName() + "_aux_dOmOn_iqs_", 7));
                     aux_dOmOn_iqsMap.put(on, buildAuxIntVar("v_" + i + ";" + om.getName() + "->" + on.getName() + "_aux_dOmOn_iqs_"));
@@ -3108,8 +3075,7 @@ public class Processor {
                 1: d_i_ms<-
                  */
                 //vp.vm_dInOut_cqs = buildContinuousVar(0, M, "v" + i + "_vm_dInOut_cqs_", 2);
-                //todo:Cont->Int
-                vp.vm_dInOut_cqs = buildIntVar(0, M, "v" + i + "_vm_dInOut_cqs_", 2);
+                vp.vm_dInOut_cqs = buildContinuousVar(0, M, "v" + i + "_vm_dInOut_cqs_", 2);
 
                 /*
                 Auxiliary absolute values: aux_vmDist_iqs
@@ -3142,8 +3108,7 @@ public class Processor {
             1: d_<-
              */
             //vp.dInOut_cqs = buildContinuousVar(0, M, "v" + i + "_dInOut_cqs_", 2);
-            //todo:Cont->Int
-            vp.dInOut_cqs = buildIntVar(0, M, "v" + i + "_dInOut_cqs_", 2);
+            vp.dInOut_cqs = buildContinuousVar(0, M, "v" + i + "_dInOut_cqs_", 2);
 
 
             /*
@@ -3162,16 +3127,14 @@ public class Processor {
             dist_cq: vv dist
              */
             //vp.dist_cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + "dist_cq");
-            //todo:Cont->Int
-            vp.dist_cq = new GurobiVariable(GRB.INTEGER, 0, M, "v" + i + "dist_cq");
+            vp.dist_cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + "dist_cq");
             executor.addVariable(vp.dist_cq);
 
             /*
             vs_corDist_cq: dist between virtualPoint and corresponding slave
              */
             //vp.vs_corDist_cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + "corDist_cq");
-            //todo:Cont->Int
-            vp.vs_corDist_cq = new GurobiVariable(GRB.INTEGER, 0, M, "v" + i + "corDist_cq");
+            vp.vs_corDist_cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + "corDist_cq");
             executor.addVariable(vp.vs_corDist_cq);
 
             /*
@@ -3179,8 +3142,7 @@ public class Processor {
              */
             if (i == 0){
 //                vp.vm_dist_cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "vm_dist_cq");
-                //todo:Cont->Int
-                vp.vm_dist_cq = new GurobiVariable(GRB.INTEGER, 0, M, "vm_dist_cq");
+                vp.vm_dist_cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "vm_dist_cq");
                 executor.addVariable(vp.vm_dist_cq);
             }
 
@@ -3306,10 +3268,9 @@ public class Processor {
 
                         /*cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + ";" + other_o.getName() +"_vs_dOmOn_cqs");
                         executor.addVariable(cq);*/
-                        //todo:Cont->Int
-                        q = new GurobiVariable(GRB.INTEGER, 0, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + ";" + other_o.getName() +"_vs_dOmOn_cqs");
-                        executor.addVariable(q);
-                        vs_dOn_cqsMap.put(other_o, q);
+                        cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + ";" + other_o.getName() +"_vs_dOmOn_cqs");
+                        executor.addVariable(cq);
+                        vs_dOn_cqsMap.put(other_o, cq);
 
                         //aux_vsdOn_iqsMap.put(other_o, buildContinuousVar(-M, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_aux_vsdOut_iqs_", 7));
                         aux_vsdOn_iqsMap.put(other_o, buildAuxIntVar("v" + i + ";" + o.getName() + ";" + sv.getName() + other_o.getName() +"_aux_vsdOmOn_iqs_"));
@@ -3372,8 +3333,7 @@ public class Processor {
                 0: d_vs<-
                  */
 //                vp.vs_dInOut_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_vs_dInOut_cqs_", 2));
-                //todo:Cont->Int
-                vp.vs_dInOut_cqs.put(sv, buildIntVar(0, M, "v" + i + ";" + sv.getName() + "_vs_dInOut_cqs_", 2));
+                vp.vs_dInOut_cqs.put(sv, buildContinuousVar(0, M, "v" + i + ";" + sv.getName() + "_vs_dInOut_cqs_", 2));
 
                 /*
                 Auxiliary absolute values: aux_vsDist_iqs
@@ -3396,10 +3356,9 @@ public class Processor {
                  */
                 /*cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + ";" + sv.getName() + "_d_i_sj");
                 executor.addVariable(cq);*/
-                //todo:Cont->Int
-                q = new GurobiVariable(GRB.INTEGER, 0, M, "v" + i + ";" + sv.getName() + "_d_i_sj");
-                executor.addVariable(q);
-                vp.vs_dist_cq.put(sv, q);
+                cq = new GurobiVariable(GRB.CONTINUOUS, 0, M, "v" + i + ";" + sv.getName() + "_d_i_sj");
+                executor.addVariable(cq);
+                vp.vs_dist_cq.put(sv, cq);
 
             }
 
