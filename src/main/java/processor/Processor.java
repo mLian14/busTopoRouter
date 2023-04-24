@@ -21,7 +21,7 @@ public class Processor {
 
     private GurobiExecutor executor;
     private final DocumentParser parser;
-    private final static int M = 44444;
+    private final static int M = 99999;
     private OutputDocument output;
 
     enum SortType {
@@ -106,7 +106,7 @@ public class Processor {
         executor = new GurobiExecutor("LinearBusRouting_KO");
         executor.setMIPGap(0);
         executor.setMIPGapAbs(0);
-        executor.setTimeLimit(36000);
+        executor.setTimeLimit(3600);
         //executor.setPresolve(0);
 
 
@@ -3097,8 +3097,10 @@ public class Processor {
             VirtualPointVar vp = new VirtualPointVar();
             virtualPointVars.add(vp);
             vp.x = new GurobiVariable(GRB.INTEGER, lb_x, ub_x, "x" + i);
+            //vp.x = new GurobiVariable(GRB.INTEGER, 3, 3, "x" + i);
             executor.addVariable(vp.x);
             vp.y = new GurobiVariable(GRB.INTEGER, lb_y, ub_y, "y" + i);
+            //vp.y = new GurobiVariable(GRB.INTEGER, 4, 4, "y" + i);
             executor.addVariable(vp.y);
 
 
