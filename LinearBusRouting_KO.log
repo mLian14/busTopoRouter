@@ -38100,3 +38100,66 @@ Solution count 10: 17.6569 17.8995 18.4853 ... 24.7279
 
 Optimal solution found (tolerance 0.00e+00)
 Best objective 1.765685424935e+01, best bound 1.765685424935e+01, gap 0.0000%
+
+Gurobi 10.0.0 (mac64[arm]) logging started Thu Apr 27 15:37:29 2023
+
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Set parameter TimeLimit to value 36000
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 8938 rows, 8668 columns and 26394 nonzeros
+Model fingerprint: 0x82f8aaa8
+Model has 488 quadratic constraints
+Model has 1512 general constraints
+Variable types: 521 continuous, 8147 integer (3244 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+05]
+  RHS range        [1e+00, 1e+05]
+  QRHS range       [1e+00, 3e+00]
+Presolve removed 1202 rows and 2235 columns
+Presolve time: 0.12s
+Presolved: 8277 rows, 6557 columns, 25258 nonzeros
+Variable types: 363 continuous, 6194 integer (2227 binary)
+
+Root relaxation: objective 0.000000e+00, 3464 iterations, 0.04 seconds (0.04 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0  329          -    0.00000      -     -    0s
+     0     0    0.00000    0 1175          -    0.00000      -     -    0s
+     0     0    0.00000    0  997          -    0.00000      -     -    0s
+     0     0    0.00000    0  462          -    0.00000      -     -    0s
+     0     0    0.00000    0  441          -    0.00000      -     -    0s
+     0     0    0.00000    0  679          -    0.00000      -     -    0s
+     0     0    0.00000    0  850          -    0.00000      -     -    0s
+     0     0    0.00000    0  964          -    0.00000      -     -    1s
+H    0     0                    149138.32578    0.00000   100%     -    1s
+     0     0    0.00000    0  944 149138.326    0.00000   100%     -    1s
+H    0     0                    51865.562508    0.00000   100%     -    1s
+H    0     2                    51448.562508    0.00000   100%     -    1s
+     0     2    0.00000    0  923 51448.5625    0.00000   100%     -    1s
+H   31    39                    50779.688267    0.00000   100%   545    1s
+H   32    39                    11532.514929    0.00000   100%   528    1s
+H   35    39                    11096.937152    0.00000   100%   484    1s
+H  249   453                    9386.0629099    0.00000   100%   123    2s
+H  302   453                    8985.8404718    0.00000   100%   104    2s
+H  688   774                    8913.2029535    0.00000   100%  76.5    2s
+H 1324  1330                    8669.8131265    0.00000   100%  62.4    3s
+H 1609  1893                    8608.3572824    0.00000   100%  56.7    3s
+H 1682  1893                    8592.6587976    0.00000   100%  55.5    3s
+H 2701  2377                    8579.7714960    0.00000   100%  49.8    4s
+  2894  2911 infeasible  178      8579.77150    0.00000   100%  50.6    5s
+H 2920  2911                    8557.3572824    0.00000   100%  50.6    5s
+H 3014  2911                    8556.7714960    0.00000   100%  50.6    5s
+H 3128  2911                    8529.9897501    0.00000   100%  50.6    5s
+  3684  2938   27.06892   90  467 8529.98975   27.06892   100%  60.4   10s
