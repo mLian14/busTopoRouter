@@ -21,7 +21,7 @@ public class Processor {
 
     private GurobiExecutor executor;
     private final DocumentParser parser;
-    private final static int M = 9999;
+    private final static int M = 99999;
     private OutputDocument output;
 
     enum SortType {
@@ -415,7 +415,7 @@ public class Processor {
     }
 
     public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master, GurobiVariable busMin, GurobiVariable busDiff, GurobiVariable branchMin, GurobiVariable branchDiff) throws GRBException {
-        double eps = 3;
+        double eps = 1;
         double minDist = 1;
 
         GurobiConstraint c;
@@ -607,6 +607,7 @@ public class Processor {
                 /*
                 Connection with Master
                  */
+
                 //VM_cnn.3_1
                 GurobiQuadConstraint c_vmOutCnn = new GurobiQuadConstraint();
                 //VM_cnn.3_2
@@ -2243,11 +2244,11 @@ public class Processor {
                         }
                     }
                     //todo: aux
-                    c = new GurobiConstraint();
-                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[0], 1.0);
-                    c.setSense('<');
-                    c.setRHSConstant(itmp);
-                    executor.addConstraint(c);
+//                    c = new GurobiConstraint();
+//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[0], 1.0);
+//                    c.setSense('<');
+//                    c.setRHSConstant(itmp);
+//                    executor.addConstraint(c);
 
 
                     //2.vs_lr->ul
@@ -2283,11 +2284,11 @@ public class Processor {
                         }
                     }
                     //todo: aux
-                    c = new GurobiConstraint();
-                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[1], 1.0);
-                    c.setSense('<');
-                    c.setRHSConstant(itmp);
-                    executor.addConstraint(c);
+//                    c = new GurobiConstraint();
+//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[1], 1.0);
+//                    c.setSense('<');
+//                    c.setRHSConstant(itmp);
+//                    executor.addConstraint(c);
 
                     //3.vs_ur->ll
                     c = new GurobiConstraint();
@@ -2322,11 +2323,11 @@ public class Processor {
                         }
                     }
                     //todo:aux
-                    c = new GurobiConstraint();
-                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[2], 1.0);
-                    c.setSense('<');
-                    c.setRHSConstant(itmp);
-                    executor.addConstraint(c);
+//                    c = new GurobiConstraint();
+//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[2], 1.0);
+//                    c.setSense('<');
+//                    c.setRHSConstant(itmp);
+//                    executor.addConstraint(c);
 
 
                     //4.vs_ll->ur
@@ -2362,11 +2363,11 @@ public class Processor {
                         }
                     }
                     //todo
-                    c = new GurobiConstraint();
-                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[3], 1.0);
-                    c.setSense('<');
-                    c.setRHSConstant(itmp);
-                    executor.addConstraint(c);
+//                    c = new GurobiConstraint();
+//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(om)[3], 1.0);
+//                    c.setSense('<');
+//                    c.setRHSConstant(itmp);
+//                    executor.addConstraint(c);
 
 
                     //vs_aux.1
