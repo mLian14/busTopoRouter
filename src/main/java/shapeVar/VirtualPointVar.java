@@ -33,13 +33,9 @@ public class VirtualPointVar {
     public Map<Obstacle, GurobiVariable[]> vm_relObstacles_qs;//binary variables for (ul->lr.1) -- (ll->ur.1)
     /*
     VM:detour_qs
-    0: ul->lr
-    1: lr->ul
-    2: ur->ll
-    3: ll->ur
-    4: q_ij^d: detour trigger: aux.2/cnn.4
+    q_ij^d: detour trigger: aux.2/cnn.4
      */
-    public GurobiVariable[] vm_detour_qs;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
+    public GurobiVariable vm_detour_q;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
 
     /*
     VM:corner_qs
@@ -212,13 +208,9 @@ public class VirtualPointVar {
 
     /*
     detour_qs
-    0: ul->lr
-    1: lr->ul
-    2: ur->ll
-    3: ll->ur
-    4: q_ij^d: detour trigger: aux.2/cnn.4
+    q_ij^d: detour trigger: aux.2/cnn.4
      */
-    public GurobiVariable[] detour_qs;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
+    public GurobiVariable detour_q;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
 
 
 
@@ -382,13 +374,9 @@ public class VirtualPointVar {
 
     /*
     vs_detour_qs
-    0: ul->lr
-    1: lr->ul
-    2: ur->ll
-    3: ll->ur
-    4: q_ij^d: detour trigger: aux.3
+    q_ij^d: detour trigger: aux.3
      */
-    public Map<PseudoBase, GurobiVariable[]> vs_detour_qs;//binary variables regarding Slaves for (ul->lr.2) -- (ll->ur.2)
+    public Map<PseudoBase, GurobiVariable> vs_detour_q;//binary variables regarding Slaves for (ul->lr.2) -- (ll->ur.2)
 
 
 
@@ -540,7 +528,7 @@ public class VirtualPointVar {
 
 
         this.vs_relObstacles_qs = new HashMap<>();
-        this.vs_detour_qs = new HashMap<>();
+        this.vs_detour_q = new HashMap<>();
         this.vs_corner_qs = new HashMap<>();
         this.vs_omOnCnn_q = new HashMap<>();
         this.vs_inOutCnn_qs = new HashMap<>();
