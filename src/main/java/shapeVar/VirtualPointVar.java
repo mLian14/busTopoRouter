@@ -33,13 +33,9 @@ public class VirtualPointVar {
     public Map<Obstacle, GurobiVariable[]> vm_relObstacles_qs;//binary variables for (ul->lr.1) -- (ll->ur.1)
     /*
     VM:detour_qs
-    0: ul->lr
-    1: lr->ul
-    2: ur->ll
-    3: ll->ur
-    4: q_ij^d: detour trigger: aux.2/cnn.4
+    q_ij^d: detour trigger: aux.2/cnn.4
      */
-    public GurobiVariable[] vm_detour_qs;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
+    public GurobiVariable vm_detour_q;//binary variables regarding next virtualPoint for (ul->lr.2) -- (ll->ur.2)
 
     /*
     VM:corner_qs
