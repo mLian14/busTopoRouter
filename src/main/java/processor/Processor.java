@@ -819,244 +819,98 @@ public class Processor {
                 executor.addConstraint(c);
 
                 //tL
-                qc = new GurobiQuadConstraint();
-                qc.setName("tL.1");
-                qc.addToLHS(vp.dir_qs.get(om)[1], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[0], vp.non_qs.get(om)[2], 1.0);
-                qc.setSense('<');
-                qc.addToRHS(vp.rel_qs.get(om)[0], -3.0);
-                qc.setRHSConstant(3.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("tL.linear.1");
+                c = new GurobiQuadConstraint();
+                c.setName("tL.1");
                 c.addToLHS(vp.dir_qs.get(om)[1], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
                 c.setSense('<');
-                c.addToRHS(vp.rel_qs.get(om)[0], -3.0);
-                c.setRHSConstant(3.0);
-                executor.addConstraint(c);*/
-                qc = new GurobiQuadConstraint();
-                qc.setName("tL.2");
-                qc.addToLHS(vp.dir_qs.get(om)[1], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[0], vp.non_qs.get(om)[2], 1.0);
-                qc.setSense('>');
-                qc.addToRHS(vp.rel_qs.get(om)[0], -1.0);
-                qc.setRHSConstant(1.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("tL.linear.2");
+                c.addToRHS(vp.rel_qs.get(om)[0], -4.0);
+                c.setRHSConstant(4.0);
+                executor.addConstraint(c);
+                c = new GurobiQuadConstraint();
+                c.setName("tL.2");
                 c.addToLHS(vp.dir_qs.get(om)[1], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[0],  1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.rel_qs.get(om)[0], -1.0);
                 c.setRHSConstant(1.0);
-                executor.addConstraint(c);*/
-                //aux
-                /*c = new GurobiConstraint();
-                c.setName("tL.aux_l");
-                c.addToLHS(vp.rel_AusQs.get(om)[0], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[0], 1.0);
                 executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("tL.aux_t");
-                c.addToLHS(vp.rel_AusQs.get(om)[0], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[2], 1.0);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("tL.aux_tl");
-                c.addToLHS(vp.rel_AusQs.get(om)[0], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.dir_qs.get(om)[0], 1.0);
-                c.addToRHS(vp.dir_qs.get(om)[2], 1.0);
-                c.setRHSConstant(-1.0);
-                executor.addConstraint(c);*/
+
 
 
                 //tR
-                qc = new GurobiQuadConstraint();
-                qc.setName("tR.1");
-                qc.addToLHS(vp.dir_qs.get(om)[0], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[1], vp.non_qs.get(om)[2], 1.0);
-                qc.setSense('<');
-                qc.addToRHS(vp.rel_qs.get(om)[1], -3.0);
-                qc.setRHSConstant(3.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("tR.linear.1");
+                c = new GurobiQuadConstraint();
+                c.setName("tR.1");
                 c.addToLHS(vp.dir_qs.get(om)[0], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
                 c.setSense('<');
-                c.addToRHS(vp.rel_qs.get(om)[1], -3.0);
-                c.setRHSConstant(3.0);
-                executor.addConstraint(c);*/
-                qc = new GurobiQuadConstraint();
-                qc.setName("tR.2");
-                qc.addToLHS(vp.dir_qs.get(om)[0], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[1], vp.non_qs.get(om)[2], 1.0);
-                qc.setSense('>');
-                qc.addToRHS(vp.rel_qs.get(om)[1], -1.0);
-                qc.setRHSConstant(1.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("tR.linear.2");
+                c.addToRHS(vp.rel_qs.get(om)[1], -4.0);
+                c.setRHSConstant(4.0);
+                executor.addConstraint(c);
+
+                c = new GurobiQuadConstraint();
+                c.setName("tR.2");
                 c.addToLHS(vp.dir_qs.get(om)[0], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.rel_qs.get(om)[1], -1.0);
                 c.setRHSConstant(1.0);
-                executor.addConstraint(c);*/
-                //aux
-                /*c = new GurobiConstraint();
-                c.setName("tR.aux.r");
-                c.addToLHS(vp.rel_AusQs.get(om)[1], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[1], 1.0);
                 executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("tR.aux.t");
-                c.addToLHS(vp.rel_AusQs.get(om)[1], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[2], 1.0);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("tR.aux.tr");
-                c.addToLHS(vp.rel_AusQs.get(om)[1], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.dir_qs.get(om)[1], 1.0);
-                c.addToRHS(vp.dir_qs.get(om)[2], 1.0);
-                c.setRHSConstant(-1.0);
-                executor.addConstraint(c);*/
+
 
 
                 //bL
-                qc = new GurobiQuadConstraint();
-                qc.setName("bL.1");
-                qc.addToLHS(vp.dir_qs.get(om)[0], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[0], vp.non_qs.get(om)[3], 1.0);
-                qc.setSense('<');
-                qc.addToRHS(vp.rel_qs.get(om)[2], -3.0);
-                qc.setRHSConstant(3.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("bL.linear.1");
+                c = new GurobiQuadConstraint();
+                c.setName("bL.1");
                 c.addToLHS(vp.dir_qs.get(om)[0], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[2], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
                 c.setSense('<');
-                c.addToRHS(vp.rel_qs.get(om)[2], -3.0);
-                c.setRHSConstant(3.0);
-                executor.addConstraint(c);*/
-
-                qc = new GurobiQuadConstraint();
-                qc.setName("bL.2");
-                qc.addToLHS(vp.dir_qs.get(om)[0], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[0], vp.non_qs.get(om)[3], 1.0);
-                qc.setSense('>');
-                qc.addToRHS(vp.rel_qs.get(om)[2], -1.0);
-                qc.setRHSConstant(1.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("bL.linear.2");
+                c.addToRHS(vp.rel_qs.get(om)[2], -4.0);
+                c.setRHSConstant(4.0);
+                executor.addConstraint(c);
+                c = new GurobiQuadConstraint();
+                c.setName("bL.2");
                 c.addToLHS(vp.dir_qs.get(om)[0], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[2], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[2], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.rel_qs.get(om)[2], -1.0);
                 c.setRHSConstant(1.0);
-                executor.addConstraint(c);*/
-                //aux
-                /*c = new GurobiConstraint();
-                c.setName("bL.aux.l");
-                c.addToLHS(vp.rel_AusQs.get(om)[2], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[0], 1.0);
                 executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("bL.aux.b");
-                c.addToLHS(vp.rel_AusQs.get(om)[2], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[3], 1.0);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("bL.aux.bl");
-                c.addToLHS(vp.rel_AusQs.get(om)[2], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.dir_qs.get(om)[0], 1.0);
-                c.addToRHS(vp.dir_qs.get(om)[3], 1.0);
-                c.setRHSConstant(-1.0);
-                executor.addConstraint(c);*/
+
 
                 //bR
-                qc = new GurobiQuadConstraint();
-                qc.setName("bR.1");
-                qc.addToLHS(vp.dir_qs.get(om)[1], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[1], vp.non_qs.get(om)[3], 1.0);
-                qc.setSense('<');
-                qc.addToRHS(vp.rel_qs.get(om)[3], -3.0);
-                qc.setRHSConstant(3.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("bR.linear.1");
+                c = new GurobiQuadConstraint();
+                c.setName("bR.1");
                 c.addToLHS(vp.dir_qs.get(om)[1], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[3], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
                 c.setSense('<');
-                c.addToRHS(vp.rel_qs.get(om)[3], -3.0);
-                c.setRHSConstant(3.0);
-                executor.addConstraint(c);*/
-
-                qc = new GurobiQuadConstraint();
-                qc.setName("bR.2");
-                qc.addToLHS(vp.dir_qs.get(om)[1], 1.0);
-                qc.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                qc.addToLHS(vp.non_qs.get(om)[1], vp.non_qs.get(om)[3], 1.0);
-                qc.setSense('>');
-                qc.addToRHS(vp.rel_qs.get(om)[3], -1.0);
-                qc.setRHSConstant(1.0);
-                executor.addConstraint(qc);
-                /*c = new GurobiConstraint();
-                c.setName("bR.linear.2");
+                c.addToRHS(vp.rel_qs.get(om)[3], -4.0);
+                c.setRHSConstant(4.0);
+                executor.addConstraint(c);
+                c = new GurobiQuadConstraint();
+                c.setName("bR.2");
                 c.addToLHS(vp.dir_qs.get(om)[1], 1.0);
                 c.addToLHS(vp.dir_qs.get(om)[3], 1.0);
-                c.addToLHS(vp.rel_AusQs.get(om)[3], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.rel_qs.get(om)[3], -1.0);
                 c.setRHSConstant(1.0);
-                executor.addConstraint(c);*/
-                //aux
-                /*c = new GurobiConstraint();
-                c.setName("bR.aux.r");
-                c.addToLHS(vp.rel_AusQs.get(om)[3], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[1], 1.0);
                 executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("bR.aux.b");
-                c.addToLHS(vp.rel_AusQs.get(om)[3], 1.0);
-                c.setSense('<');
-                c.addToRHS(vp.dir_qs.get(om)[3], 1.0);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("bR.aux.br");
-                c.addToLHS(vp.rel_AusQs.get(om)[3], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.dir_qs.get(om)[1], 1.0);
-                c.addToRHS(vp.dir_qs.get(om)[3], 1.0);
-                c.setRHSConstant(-1.0);
-                executor.addConstraint(c);*/
 
                 //Directly Opposite Relations
                 //L
