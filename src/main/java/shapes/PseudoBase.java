@@ -28,10 +28,16 @@ public class PseudoBase {
     private Map<Obstacle, int[]> pseudo_oDir_qs;
 
     /*
+    opposite relation: 45-degree
     0: oqtL
     1: oqtR
     2: oqbL
     3: oqbR
+    opposite relation: rectangular
+    4: oqdL
+    5: oqdR
+    6: oqdT
+    7: oqdB
      */
     private Map<Obstacle, int[]> pseudo_oRel_qs;
 
@@ -41,17 +47,12 @@ public class PseudoBase {
      */
     private Map<Obstacle, int[]> pseudo_iVars;
 
-    private ArrayList<Obstacle> oULd;
-    private ArrayList<Obstacle> oURd;
-    private ArrayList<Obstacle> oLLd;
-    private ArrayList<Obstacle> oLRd;
 
     /*
     0: L
     1: R
     2: Top
     3: Bottom
-
      */
     private Map<PseudoBase, int[]> pseudo_pDir_qs;
 
@@ -66,10 +67,7 @@ public class PseudoBase {
 
         this.pseudo_pDir_qs = new HashMap<>();
 
-        this.oULd = new ArrayList<>();
-        this.oURd = new ArrayList<>();
-        this.oLLd = new ArrayList<>();
-        this.oLRd = new ArrayList<>();
+
 
 
     }
@@ -80,10 +78,7 @@ public class PseudoBase {
         this.pseudo_oRel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
 
-        this.oULd = new ArrayList<>();
-        this.oURd = new ArrayList<>();
-        this.oLLd = new ArrayList<>();
-        this.oLRd = new ArrayList<>();
+
     }
 
     public BaseType getType() {
@@ -143,37 +138,6 @@ public class PseudoBase {
     }
 
 
-    public ArrayList<Obstacle> getOULd() {
-        return oULd;
-    }
-
-    public void addToOULd(Obstacle o) {
-        this.oULd.add(o);
-    }
-
-    public ArrayList<Obstacle> getOURd() {
-        return oURd;
-    }
-
-    public void addToOURd(Obstacle o) {
-        this.oURd.add(o);
-    }
-
-    public ArrayList<Obstacle> getOLLd() {
-        return oLLd;
-    }
-
-    public void addToOLLd(Obstacle o) {
-        this.oLLd.add(o);
-    }
-
-    public ArrayList<Obstacle> getOLRd() {
-        return oLRd;
-    }
-
-    public void addToOLRd(Obstacle o) {
-        this.oLRd.add(o);
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -4084,29 +4084,43 @@ public class Processor {
         /*
         oRel_q:
          */
-        int[] orel_q = new int[4];
+        int[] orel_q = new int[8];
         //UpperLeft
-        if (odir_q[3] + odir_q[1] + odir_q[4] * odir_q[6] == 0) {
+        if (odir_q[3] + odir_q[1] + odir_q[4] + odir_q[6] == 0) {
             orel_q[0] = 1;
-            base.addToOULd(o);
         } else orel_q[0] = 0;
         //UpperRight
-        if (odir_q[0] + odir_q[2] + odir_q[5] * odir_q[6] == 0) {
+        if (odir_q[0] + odir_q[2] + odir_q[5] + odir_q[6] == 0) {
             orel_q[1] = 1;
-            base.addToOURd(o);
         } else orel_q[1] = 0;
         //LowerLeft
-        if (odir_q[0] + odir_q[2] + odir_q[4] * odir_q[7] == 0) {
+        if (odir_q[0] + odir_q[2] + odir_q[4] + odir_q[7] == 0) {
             orel_q[2] = 1;
-            base.addToOLLd(o);
         } else orel_q[2] = 0;
         //LowerRight
-        if (odir_q[1] + odir_q[3] + odir_q[5] * odir_q[7] == 0) {
+        if (odir_q[1] + odir_q[3] + odir_q[5] + odir_q[7] == 0) {
             orel_q[3] = 1;
-            base.addToOLRd(o);
         } else orel_q[3] = 0;
-        base.addToPseudo_oRel_qs(o, orel_q);
 
+        //d_Left
+        if (odir_q[5] + odir_q[6] + odir_q[7] == 3){
+            orel_q[4] = 1;
+        }else orel_q[4] = 0;
+        //d_Right
+        if (odir_q[4] + odir_q[6] + odir_q[7] == 3){
+            orel_q[5] = 1;
+        }else orel_q[5] = 0;
+        //d_Top
+        if (odir_q[4] + odir_q[5] + odir_q[7] == 3){
+            orel_q[6] = 1;
+        }else orel_q[6] = 0;
+        //d_Bottom
+        if (odir_q[4] + odir_q[5] + odir_q[6] == 3){
+            orel_q[7] = 1;
+        }else orel_q[7] = 0;
+
+
+        base.addToPseudo_oRel_qs(o, orel_q);
 
     }
 
