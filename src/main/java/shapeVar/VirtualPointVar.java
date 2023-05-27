@@ -532,6 +532,7 @@ public class VirtualPointVar {
         this.non_qs = new HashMap<>();
         this.dir_qs = new HashMap<>();
         this.rel_qs = new HashMap<>();
+        this.relD_qs = new HashMap<>();
         this.rel_AusQs = new HashMap<>();
         this.relObstacles_qs = new HashMap<>();
 

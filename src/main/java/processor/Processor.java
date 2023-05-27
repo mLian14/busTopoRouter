@@ -745,7 +745,7 @@ public class Processor {
                 executor.addConstraint(c);
 
 
-                //diagonal Sets
+                //diagonal
                 //rel.ul
                 c = new GurobiConstraint();
                 c.setName("rel.ul_1");
@@ -1057,6 +1057,84 @@ public class Processor {
                 c.addToRHS(vp.dir_qs.get(om)[3], 1.0);
                 c.setRHSConstant(-1.0);
                 executor.addConstraint(c);*/
+
+                //Directly Opposite Relations
+                //L
+                c = new GurobiConstraint();
+                c.setName("dL.1");
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.relD_qs.get(om)[0], 3.0);
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("dL.2");
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.relD_qs.get(om)[0], 1.0);
+                c.setRHSConstant(2.0);
+                executor.addConstraint(c);
+
+                //R
+                c = new GurobiConstraint();
+                c.setName("dR.1");
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.relD_qs.get(om)[1], 3.0);
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("dR.2");
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.relD_qs.get(om)[1], 1.0);
+                c.setRHSConstant(2.0);
+                executor.addConstraint(c);
+
+                //T
+                c = new GurobiConstraint();
+                c.setName("dT.1");
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.relD_qs.get(om)[2], 3.0);
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("dT.2");
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[3], 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.relD_qs.get(om)[2], 1.0);
+                c.setRHSConstant(2.0);
+                executor.addConstraint(c);
+
+                //B
+                c = new GurobiConstraint();
+                c.setName("dB.1");
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.relD_qs.get(om)[3], 3.0);
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("dB.2");
+                c.addToLHS(vp.non_qs.get(om)[0], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[1], 1.0);
+                c.addToLHS(vp.non_qs.get(om)[2], 1.0);
+                c.setSense('<');
+                c.addToRHS(vp.relD_qs.get(om)[3], 1.0);
+                c.setRHSConstant(2.0);
+                executor.addConstraint(c);
+
 
                 /*
                     Connection with Master
@@ -1497,7 +1575,6 @@ public class Processor {
                 /*
                 Connection with next virtualPoint
                  */
-
                 if (i < virtualPointVars.size() - 1) {
                     vpN = virtualPointVars.get(virtualPointVars.indexOf(vp) + 1);
 
@@ -3243,6 +3320,15 @@ public class Processor {
                 3: o_bR
                  */
                 vp.rel_qs.put(om, buildBinaryVar("v_" + i + ";" + om.getName() + "_rel_qs_", 4));
+                /*
+                relD_qs
+                0: o_L
+                1: o_R
+                2: o_T
+                3: o_B
+                 */
+                vp.relD_qs.put(om, buildBinaryVar("v_" + i + ";" + om.getName() + "_relD_qs_", 4));
+
                 /*
                 rel_AusQs
                 0: nonL * nonT
