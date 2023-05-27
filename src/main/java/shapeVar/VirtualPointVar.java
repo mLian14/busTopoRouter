@@ -379,13 +379,9 @@ public class VirtualPointVar {
 
     /*
     vs_detour_qs
-    0: ul->lr
-    1: lr->ul
-    2: ur->ll
-    3: ll->ur
-    4: q_ij^d: detour trigger: aux.3
+    q_ij^d: detour trigger: aux.3
      */
-    public Map<PseudoBase, GurobiVariable[]> vs_detour_q;//binary variables regarding Slaves for (ul->lr.2) -- (ll->ur.2)
+    public Map<PseudoBase, GurobiVariable> vs_detour_q;//binary variables regarding Slaves for (ul->lr.2) -- (ll->ur.2)
 
 
 
