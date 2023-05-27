@@ -106,8 +106,8 @@ public class Processor {
         executor = new GurobiExecutor("LinearBusRouting_KO");
         executor.setMIPGap(0);
         executor.setMIPGapAbs(0);
-        executor.setTimeLimit(3600);
-        //executor.setPresolve(0);
+//        executor.setTimeLimit(3600);
+//        executor.setPresolve(0);
 
 
         //build Gurobi Variables
