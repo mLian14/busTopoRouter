@@ -202,15 +202,6 @@ public class VirtualPointVar {
 
 
     /*
-    rel_AusQs
-    0: nonL * nonT
-    1: nonR * nonT
-    2: nonL * nonB
-    3: nonR * nonB
-     */
-    public Map<Obstacle, GurobiVariable[]> rel_AusQs;
-
-    /*
     relObstacles_qs
     0: ul->lr
     1: lr->ul
@@ -533,7 +524,6 @@ public class VirtualPointVar {
         this.dir_qs = new HashMap<>();
         this.rel_qs = new HashMap<>();
         this.relD_qs = new HashMap<>();
-        this.rel_AusQs = new HashMap<>();
         this.relObstacles_qs = new HashMap<>();
 
 

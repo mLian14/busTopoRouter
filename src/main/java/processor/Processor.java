@@ -3184,15 +3184,6 @@ public class Processor {
                 vp.relD_qs.put(om, buildBinaryVar("v_" + i + ";" + om.getName() + "_relD_qs_", 4));
 
                 /*
-                rel_AusQs
-                0: nonL * nonT
-                1: nonR * nonT
-                2: nonL * nonB
-                3: nonR * nonB
-                 */
-                vp.rel_AusQs.put(om, buildBinaryVar("v_" + i + ";" + om.getName() + "_rel_AuxQs_", 4));
-
-                /*
                 o_vp_relObstacles_qs
                 0: ul->lr
                 1: lr->ul
