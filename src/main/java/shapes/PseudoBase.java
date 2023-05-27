@@ -48,14 +48,6 @@ public class PseudoBase {
     private Map<Obstacle, int[]> pseudo_iVars;
 
 
-    /*
-    0: L
-    1: R
-    2: Top
-    3: Bottom
-     */
-    private Map<PseudoBase, int[]> pseudo_pDir_qs;
-
 
 
     public PseudoBase(int x, int y) {
@@ -65,18 +57,7 @@ public class PseudoBase {
         this.pseudo_oRel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
 
-        this.pseudo_pDir_qs = new HashMap<>();
 
-
-
-
-    }
-
-    public PseudoBase() {
-
-        this.pseudo_oDir_qs = new HashMap<>();
-        this.pseudo_oRel_qs = new HashMap<>();
-        this.pseudo_iVars = new HashMap<>();
 
 
     }
@@ -128,15 +109,6 @@ public class PseudoBase {
     public void addToPseudo_oRel_qs(Obstacle o, int[] q) {
         this.pseudo_oRel_qs.put(o, q);
     }
-
-    public Map<PseudoBase, int[]> getPseudo_pDir_qs() {
-        return pseudo_pDir_qs;
-    }
-
-    public void addToPseudo_pDir_qs(PseudoBase base, int[] q) {
-        this.pseudo_pDir_qs.put(base, q);
-    }
-
 
 
     @Override
