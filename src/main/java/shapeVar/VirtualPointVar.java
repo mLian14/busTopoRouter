@@ -192,6 +192,16 @@ public class VirtualPointVar {
      */
     public Map<Obstacle, GurobiVariable[]> rel_qs;//binary variables for (tL) -- (bR)
     /*
+    relD_qs
+    0: o_L
+    1: o_R
+    2: o_T
+    3: o_B
+     */
+    public Map<Obstacle, GurobiVariable[]> relD_qs;//binary variables for (L) (R) (T) (B)
+
+
+    /*
     rel_AusQs
     0: nonL * nonT
     1: nonR * nonT
