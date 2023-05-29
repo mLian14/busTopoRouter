@@ -85,22 +85,23 @@ public class Processor {
         for (Obstacle o : obstacles) {
             System.out.println(o.getName() + " " + o.getMinX() + " " + o.getMaxX() + " " + o.getMinY() + " " + o.getMaxY());
             System.out.print("O_tL: ");
-            for (Obstacle on : o.get_tLObstacles()) {
-                System.out.print(on.getName() + "; ");
-            }
+            System.out.print(convertObstacleArrayToString(o.get_tLObstacles()));
             System.out.print("O_tR: ");
-            for (Obstacle on : o.get_tRObstacles()) {
-                System.out.print(on.getName() + "; ");
-            }
+            System.out.print(convertObstacleArrayToString(o.get_tRObstacles()));
             System.out.print("O_bL: ");
-            for (Obstacle on : o.get_bLObstacles()) {
-                System.out.print(on.getName() + "; ");
-            }
+            System.out.print(convertObstacleArrayToString(o.get_bLObstacles()));
             System.out.print("O_bR: ");
-            for (Obstacle on : o.get_bRObstacles()) {
-                System.out.print(on.getName() + "; ");
-            }
+            System.out.print(convertObstacleArrayToString(o.get_bRObstacles()));
             System.out.println();
+            System.out.print("O_L: ");
+            System.out.print(convertObstacleArrayToString(o.get_dLObstacles()));
+            System.out.print("O_R: ");
+            System.out.print(convertObstacleArrayToString(o.get_dRObstacles()));
+            System.out.print("O_T: ");
+            System.out.print(convertObstacleArrayToString(o.get_dTObstacles()));
+            System.out.print("O_B: ");
+            System.out.println(convertObstacleArrayToString(o.get_dBObstacles()));
+
         }
 
 
@@ -3820,23 +3821,40 @@ public class Processor {
                 if (!other_o.getName().equals(o.getName())) {
 
                     //OtL:
-                    if (o.atL(other_o)) {
+                    if (o.otL(other_o)) {
                         o.addTotLObstacles(other_o);
                     }
 
                     //OtR:
-                    if (o.atR(other_o)) {
+                    if (o.otR(other_o)) {
                         o.addTotRObstacles(other_o);
                     }
 
                     //ObL:
-                    if (o.abL(other_o)) {
+                    if (o.obL(other_o)) {
                         o.addTobLObstacles(other_o);
                     }
 
                     //ObR:
-                    if (o.abR(other_o)) {
+                    if (o.obR(other_o)) {
                         o.addTobRObstacles(other_o);
+                    }
+
+                    //OdL:
+                    if (o.odL(other_o)){
+                        o.addTodLObstacles(other_o);
+                    }
+                    //OdR:
+                    if (o.odR(other_o)){
+                        o.addTodRObstacles(other_o);
+                    }
+                    //OdT:
+                    if (o.odT(other_o)){
+                        o.addTodTObstacles(other_o);
+                    }
+                    //OdB:
+                    if (o.odB(other_o)){
+                        o.addTodBObstacles(other_o);
                     }
 
 
@@ -4001,6 +4019,16 @@ public class Processor {
         }
         grbAsString.delete(grbAsString.length() - 1, grbAsString.length()).append("]");
         return grbAsString.toString();
+    }
+
+    public String convertObstacleArrayToString(ArrayList<Obstacle> obstacles) {
+
+        StringBuilder arrayAsString = new StringBuilder(":");
+        for (Obstacle o : obstacles) {
+            arrayAsString.append(o.getName() + "; ");
+        }
+        arrayAsString.append("||");
+        return arrayAsString.toString();
     }
 
 }
