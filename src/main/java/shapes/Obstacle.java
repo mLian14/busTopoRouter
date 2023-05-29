@@ -339,10 +339,10 @@ public class Obstacle {
 
     //Conference rectangular Set
     public boolean below(Obstacle on){
-        return on.minY > this.maxY;
+        return on.minY >= this.maxY;
     }
     public boolean above(Obstacle on){
-        return on.maxY < this.minY;
+        return on.maxY <= this.minY;
     }
 
 
@@ -358,10 +358,10 @@ public class Obstacle {
     }
 
      public boolean right(Obstacle on){
-        return on.maxX < this.minX;
+        return on.maxX <= this.minX;
      }
      public boolean left(Obstacle on){
-        return on.minX > this.maxX;
+        return on.minX >= this.maxX;
      }
 
 
