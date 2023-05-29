@@ -854,6 +854,10 @@ public class Processor {
                     c.addToLHS(vp.relObstacles_qs.get(o)[1], 1.0);
                     c.addToLHS(vp.relObstacles_qs.get(o)[2], 1.0);
                     c.addToLHS(vp.relObstacles_qs.get(o)[3], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[0], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[1], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[2], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[3], 1.0);
                     c.setSense('<');
                     c.addToRHS(vp.relObstacles_q.get(o), 4.0);
                     executor.addConstraint(c);
@@ -863,6 +867,10 @@ public class Processor {
                     c.addToLHS(vp.relObstacles_qs.get(o)[1], 1.0);
                     c.addToLHS(vp.relObstacles_qs.get(o)[2], 1.0);
                     c.addToLHS(vp.relObstacles_qs.get(o)[3], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[0], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[1], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[2], 1.0);
+                    c.addToLHS(vp.relObstaclesD_qs.get(o)[3], 1.0);
                     c.setSense('>');
                     c.addToRHS(vp.relObstacles_q.get(o), 1.0);
                     executor.addConstraint(c);
