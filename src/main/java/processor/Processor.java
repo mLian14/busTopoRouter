@@ -857,7 +857,7 @@ public class Processor {
                     c.addToLHS(vp.relObstaclesD_qs.get(o)[2], 1.0);
                     c.addToLHS(vp.relObstaclesD_qs.get(o)[3], 1.0);
                     c.setSense('<');
-                    c.addToRHS(vp.relObstacles_q.get(o), 4.0);
+                    c.addToRHS(vp.relObstacles_q.get(o), 8.0);
                     executor.addConstraint(c);
                     c = new GurobiConstraint();
                     c.setName("aux.1.2");
@@ -2529,7 +2529,7 @@ public class Processor {
             c.addToLHS(vp.vm_relObstaclesD_qs.get(o)[2], 1.0);
             c.addToLHS(vp.vm_relObstaclesD_qs.get(o)[3], 1.0);
             c.setSense('<');
-            c.addToRHS(vp.vm_relObstacles_q.get(o), 4.0);
+            c.addToRHS(vp.vm_relObstacles_q.get(o), 8.0);
             executor.addConstraint(c);
             c = new GurobiConstraint();
             c.setName("VM_aux1.2");
