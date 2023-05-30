@@ -1346,45 +1346,7 @@ public class Processor {
                 executor.addConstraint(c);
 
 
-                //aux
-                c = new GurobiConstraint();
-                c.setName("dvs_woDetour:aux_X");
-                c.addToLHS(vp.x, 1.0);
-                c.setLHSConstant(-sv.getX());
-                c.setSense('=');
-                c.addToRHS(vp.aux_vsDist_iqs.get(sv)[4], 1.0);
-                executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_vsDist_iqs.get(sv)[0], vp.aux_vsDist_iqs.get(sv)[4], "|vi.x-sj.x|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
-                c = new GurobiConstraint();
-                c.setName("dvs_woDetour:aux_Y");
-                c.addToLHS(vp.y, 1.0);
-                c.setLHSConstant(-sv.getY());
-                c.setSense('=');
-                c.addToRHS(vp.aux_vsDist_iqs.get(sv)[5], 1.0);
-                executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_vsDist_iqs.get(sv)[1], vp.aux_vsDist_iqs.get(sv)[5], "|vi.y-sj.y|" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
-                c = new GurobiConstraint();
-                c.setName("dvs_woDetour:aux_XY");
-                c.addToLHS(vp.aux_vsDist_iqs.get(sv)[0], 1.0);
-                c.addToLHS(vp.aux_vsDist_iqs.get(sv)[1], -1.0);
-                c.setSense('=');
-                c.addToRHS(vp.aux_vsDist_iqs.get(sv)[6], 1.0);
-                executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_vsDist_iqs.get(sv)[3], vp.aux_vsDist_iqs.get(sv)[6], "||vi.x-sj.x|-|vi.y-sj.y||" + "v" + virtualPointVars.indexOf(vp) + "->" + sv.getName());
-                //Min_linear
-                c = new GurobiConstraint();
-                c.addToLHS(vp.aux_vsDist_iqs.get(sv)[2], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.aux_vsDist_iqs.get(sv)[0], 1.0);
-                c.addToRHS(vp.auxQ_vsDist.get(sv), M);
-                c.setRHSConstant(-M);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.addToLHS(vp.aux_vsDist_iqs.get(sv)[2], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.aux_vsDist_iqs.get(sv)[1], 1.0);
-                c.addToRHS(vp.auxQ_vsDist.get(sv), -M);
-                executor.addConstraint(c);
+                auxiliaryVarBase(vp.x, vp.y, sv, "dvs_woDetour:v" + String.valueOf(virtualPointVars.indexOf(vp)), vp.aux_vsDist_iqs.get(sv), vp.auxQ_vsDist.get(sv));
                 /*
                 AAAA
                 d_i_sj
@@ -1874,45 +1836,8 @@ public class Processor {
                 c.addToRHS(vp.aux_dist_iqs[3], 1.0);
                 executor.addConstraint(c);
 
-                //aux
-                c = new GurobiConstraint();
-                c.setName("d_ij:woDetour:aux_x");
-                c.addToLHS(vp.x, 1.0);
-                c.addToLHS(vpN.x, -1.0);
-                c.setSense('=');
-                c.addToRHS(vp.aux_dist_iqs[4], 1.0);
-                executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_dist_iqs[0], vp.aux_dist_iqs[4], "|vi.x-vj.x|_" + virtualPointVars.indexOf(vp));
-                c = new GurobiConstraint();
-                c.setName("d_ij:woDetour:aux_Y");
-                c.addToLHS(vp.y, 1.0);
-                c.addToLHS(vpN.y, -1.0);
-                c.setSense('=');
-                c.addToRHS(vp.aux_dist_iqs[5], 1.0);
-                executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_dist_iqs[1], vp.aux_dist_iqs[5], "|vi.y-j.y|_" + virtualPointVars.indexOf(vp));
-                //Min
-                c = new GurobiConstraint();
-                c.addToLHS(vp.aux_dist_iqs[2], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.aux_dist_iqs[0], 1.0);
-                c.addToRHS(vp.auxQ_dist, M);
-                c.setRHSConstant(-M);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.addToLHS(vp.aux_dist_iqs[2], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.aux_dist_iqs[1], 1.0);
-                c.addToRHS(vp.auxQ_dist, -M);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("d_ij:woDetour:aux_XY");
-                c.addToLHS(vp.aux_dist_iqs[0], 1.0);
-                c.addToLHS(vp.aux_dist_iqs[1], -1.0);
-                c.setSense('=');
-                c.addToRHS(vp.aux_dist_iqs[6], 1.0);
-                executor.addConstraint(c);
-                executor.addGenConstraintAbs(vp.aux_dist_iqs[3], vp.aux_dist_iqs[6], "||vi.x-vj.x|-|vi.y-j.y||_" + virtualPointVars.indexOf(vp));
+                auxiliaryVarVar(vp.x, vpN.x, vp.y, vpN.y, "d_ij_woDetour" + String.valueOf(virtualPointVars.indexOf(vp)), vp.aux_dist_iqs, vp.auxQ_dist);
+
                 /*
                 AAAA
                 d_ij
@@ -1941,6 +1866,92 @@ public class Processor {
         }
 
 
+    }
+
+    private void auxiliaryVarBase(GurobiVariable x, GurobiVariable y, PseudoBase base, String nickName, GurobiVariable[] aux_dist_iqs, GurobiVariable auxQ_dist) throws GRBException {
+        GurobiConstraint c;
+        //aux
+        c = new GurobiConstraint();
+        c.setName(nickName + "_aux_X");
+        c.addToLHS(x, 1.0);
+        c.setLHSConstant(-base.getX());
+        c.setSense('=');
+        c.addToRHS(aux_dist_iqs[4], 1.0);
+        executor.addConstraint(c);
+        executor.addGenConstraintAbs(aux_dist_iqs[0], aux_dist_iqs[4], nickName + "->" + base.getName() + "_absX");
+        c = new GurobiConstraint();
+        c.setName(nickName + "_aux_Y");
+        c.addToLHS(y, 1.0);
+        c.setLHSConstant(-base.getY());
+        c.setSense('=');
+        c.addToRHS(aux_dist_iqs[5], 1.0);
+        executor.addConstraint(c);
+        executor.addGenConstraintAbs(aux_dist_iqs[1], aux_dist_iqs[5], nickName + "->" + base.getName() + "_absY");
+        c = new GurobiConstraint();
+        c.setName(nickName + "_aux_XY");
+        c.addToLHS(aux_dist_iqs[0], 1.0);
+        c.addToLHS(aux_dist_iqs[1], -1.0);
+        c.setSense('=');
+        c.addToRHS(aux_dist_iqs[6], 1.0);
+        executor.addConstraint(c);
+        executor.addGenConstraintAbs(aux_dist_iqs[3], aux_dist_iqs[6], nickName + "->" + base.getName() + "_absXY");
+        //Min_linear
+        c = new GurobiConstraint();
+        c.addToLHS(aux_dist_iqs[2], 1.0);
+        c.setSense('>');
+        c.addToRHS(aux_dist_iqs[0], 1.0);
+        c.addToRHS(auxQ_dist, M);
+        c.setRHSConstant(-M);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.addToLHS(aux_dist_iqs[2], 1.0);
+        c.setSense('>');
+        c.addToRHS(aux_dist_iqs[1], 1.0);
+        c.addToRHS(auxQ_dist, -M);
+        executor.addConstraint(c);
+    }
+
+    private void auxiliaryVarVar(GurobiVariable x1, GurobiVariable x2, GurobiVariable y1, GurobiVariable y2, String nickName, GurobiVariable[] aux_dist_iqs, GurobiVariable auxQ_dist) throws GRBException {
+        GurobiConstraint c;
+
+        c = new GurobiConstraint();
+        c.setName(nickName + "_aux_x");
+        c.addToLHS(x1, 1.0);
+        c.addToLHS(x2, -1.0);
+        c.setSense('=');
+        c.addToRHS(aux_dist_iqs[4], 1.0);
+        executor.addConstraint(c);
+        executor.addGenConstraintAbs(aux_dist_iqs[0], aux_dist_iqs[4], nickName + "absX");
+        c = new GurobiConstraint();
+        c.setName(nickName + "_aux_Y");
+        c.addToLHS(y1, 1.0);
+        c.addToLHS(y2, -1.0);
+        c.setSense('=');
+        c.addToRHS(aux_dist_iqs[5], 1.0);
+        executor.addConstraint(c);
+        executor.addGenConstraintAbs(aux_dist_iqs[1], aux_dist_iqs[5], nickName + "absY");
+        //Min
+        c = new GurobiConstraint();
+        c.addToLHS(aux_dist_iqs[2], 1.0);
+        c.setSense('>');
+        c.addToRHS(aux_dist_iqs[0], 1.0);
+        c.addToRHS(auxQ_dist, M);
+        c.setRHSConstant(-M);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.addToLHS(aux_dist_iqs[2], 1.0);
+        c.setSense('>');
+        c.addToRHS(aux_dist_iqs[1], 1.0);
+        c.addToRHS(auxQ_dist, -M);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName(nickName + "_aux_XY");
+        c.addToLHS(aux_dist_iqs[0], 1.0);
+        c.addToLHS(aux_dist_iqs[1], -1.0);
+        c.setSense('=');
+        c.addToRHS(aux_dist_iqs[6], 1.0);
+        executor.addConstraint(c);
+        executor.addGenConstraintAbs(aux_dist_iqs[3], aux_dist_iqs[6], nickName + "abs_XY");
     }
 
     private void buildCons_Master(ArrayList<Obstacle> obstacles, PseudoBase master, GurobiConstraint c_busMin, GurobiConstraint c_busDiff, VirtualPointVar vp) throws GRBException {
