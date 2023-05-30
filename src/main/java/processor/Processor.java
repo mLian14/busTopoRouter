@@ -2875,18 +2875,8 @@ public class Processor {
         executor.addConstraint(c);
 
 
-        //todo:test
-        c = new GurobiConstraint();
-        c.addToLHS(vp.rel_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.rel_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.rel_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.rel_qs.get(o)[3], 1.0);
-        c.setSense('<');
-        c.setRHSConstant(1.0);
-        executor.addConstraint(c);
-
         //tL
-        c = new GurobiQuadConstraint();
+        c = new GurobiConstraint();
         c.setName("tL.1");
         c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
@@ -2896,8 +2886,8 @@ public class Processor {
         c.addToRHS(vp.rel_qs.get(o)[0], -4.0);
         c.setRHSConstant(4.0);
         executor.addConstraint(c);
-        c = new GurobiQuadConstraint();
-        c.setName("tL.2");
+        c = new GurobiConstraint();
+        c.setName("tL.geq");
         c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
         c.addToLHS(vp.non_qs.get(o)[0], 1.0);
@@ -2909,7 +2899,7 @@ public class Processor {
 
 
         //tR
-        c = new GurobiQuadConstraint();
+        c = new GurobiConstraint();
         c.setName("tR.1");
         c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
@@ -2919,8 +2909,7 @@ public class Processor {
         c.addToRHS(vp.rel_qs.get(o)[1], -4.0);
         c.setRHSConstant(4.0);
         executor.addConstraint(c);
-
-        c = new GurobiQuadConstraint();
+        c = new GurobiConstraint();
         c.setName("tR.2");
         c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
@@ -2933,7 +2922,7 @@ public class Processor {
 
 
         //bL
-        c = new GurobiQuadConstraint();
+        c = new GurobiConstraint();
         c.setName("bL.1");
         c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
@@ -2943,7 +2932,7 @@ public class Processor {
         c.addToRHS(vp.rel_qs.get(o)[2], -4.0);
         c.setRHSConstant(4.0);
         executor.addConstraint(c);
-        c = new GurobiQuadConstraint();
+        c = new GurobiConstraint();
         c.setName("bL.2");
         c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
@@ -2956,7 +2945,7 @@ public class Processor {
 
 
         //bR
-        c = new GurobiQuadConstraint();
+        c = new GurobiConstraint();
         c.setName("bR.1");
         c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
@@ -2966,7 +2955,7 @@ public class Processor {
         c.addToRHS(vp.rel_qs.get(o)[3], -4.0);
         c.setRHSConstant(4.0);
         executor.addConstraint(c);
-        c = new GurobiQuadConstraint();
+        c = new GurobiConstraint();
         c.setName("bR.2");
         c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
         c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
