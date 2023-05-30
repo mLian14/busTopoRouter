@@ -291,13 +291,14 @@ public class Processor {
                 }
                 for (Obstacle om : obstacles) {
                     if (vp.inOutCnn_qs.get(om)[0].getIntResult() == 1) {
-                        System.out.print("vs->: " + om.getName() + ":");
+                        System.out.print("vp->: " + om.getName() + ":");
                         System.out.println("corner:" + convertGrbIntArrayToString(vp.corner_qs.get(om)) + "||");
                     }
                     if (vp.inOutCnn_qs.get(om)[1].getIntResult() == 1) {
-                        System.out.print("vs<-:" + om.getName());
+                        System.out.print("vp<-:" + om.getName());
                         System.out.println("corner:" + convertGrbIntArrayToString(vp.corner_qs.get(om)) + "||");
                     }
+                    System.out.println(om.getName() + convertGrbIntArrayToString(vp.oCoordinate_iqs.get(om)) + "|| ");
 
 
                 }
@@ -307,6 +308,7 @@ public class Processor {
                             System.out.print(om.getName() + "-> " + on.getName() + ":cnn" + "|| ");
                             System.out.print("cornerOm:" + convertGrbIntArrayToString(vp.corner_qs.get(om)) + "||cornerOn:" + convertGrbIntArrayToString(vp.corner_qs.get(on)) + "||");
                             System.out.println("dOmOn=" + convertGrbIntArrayToString(vp.dOmOn_cqs.get(om).get(on)) + "||");
+
                         }
                     }
                 }
@@ -978,7 +980,7 @@ public class Processor {
                             c.addToRHS(vp.omOnCnn_q.get(o).get(on), M);
                             c.setRHSConstant(-M);
                             executor.addConstraint(c);
-                            //todo:d_ij:pl.m->n_MIN<= M
+                            //d_ij:pl.m->n_MIN<= M
                             c = new GurobiConstraint();
                             c.setName("d_ij:pl.m->n_MIN<=M");
                             c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[0], 1.0);
@@ -996,7 +998,7 @@ public class Processor {
                             c.addToRHS(vp.omOnCnn_q.get(o).get(on), M);
                             c.setRHSConstant(-M);
                             executor.addConstraint(c);
-                            //todo: d_ij:pl.m->n_DIFF<=M
+                            //d_ij:pl.m->n_DIFF<=M
                             c = new GurobiConstraint();
                             c.setName("d_ij:pl.m->n_DIFF<=M");
                             c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
@@ -1078,6 +1080,7 @@ public class Processor {
                     c.addToRHS(vp.relObstacles_q.get(o), M);
                     c.setRHSConstant(-M);
                     executor.addConstraint(c);
+
 
                     //cor.y
                     c = new GurobiConstraint();
