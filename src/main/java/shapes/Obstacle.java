@@ -23,9 +23,6 @@ public class Obstacle {
     private ArrayList<Obstacle> dLObstacles, dRObstacles, dTObstacles, dBObstacles;
 
 
-
-
-
     public Obstacle(String name, int minX, int maxX, int minY, int maxY) {
         this.name = name;
         this.minX = minX;
@@ -66,7 +63,6 @@ public class Obstacle {
         this.dBObstacles.add(this);
 
     }
-
 
 
     public ArrayList<PseudoBase> getBaseArray() {
@@ -224,157 +220,111 @@ public class Obstacle {
         return minX == obstacle.minX && maxX == obstacle.maxX && minY == obstacle.minY && maxY == obstacle.maxY;
     }
 
-    public boolean onLeft(Obstacle other_o){
+    public boolean onLeft(Obstacle other_o) {
         return other_o.getMinX() < this.getMinX();
     }
 
-    public boolean onRight(Obstacle other_o){
+    public boolean onRight(Obstacle other_o) {
         return other_o.getMaxX() > this.getMaxX();
     }
 
-    public boolean onTop(Obstacle other_o){
+    public boolean onTop(Obstacle other_o) {
         return other_o.getMaxY() > this.getMaxY();
     }
 
-    public boolean onBottom(Obstacle other_o){
+    public boolean onBottom(Obstacle other_o) {
         return other_o.getMinY() < this.getMinY();
     }
 
 
-
-    public boolean topL_bottomR_oo(Obstacle other_o){
+    public boolean topL_bottomR_oo(Obstacle other_o) {
         return this.minX <= other_o.maxX && this.maxY >= other_o.maxY;
     }
 
-    public boolean bottomR_topL_oo(Obstacle other_o){
+    public boolean bottomR_topL_oo(Obstacle other_o) {
         return this.maxX >= other_o.minX && this.minY <= other_o.maxY;
     }
 
-    public boolean topR_bottomL_oo(Obstacle other_o){
+    public boolean topR_bottomL_oo(Obstacle other_o) {
         return this.maxX >= other_o.minX && this.maxY >= other_o.minY;
     }
 
-    public boolean bottomL_topR_oo(Obstacle other_o){
+    public boolean bottomL_topR_oo(Obstacle other_o) {
         return this.minX <= other_o.maxX && this.minY <= other_o.maxY;
     }
 
-    public boolean aboveUp(PseudoBase base){
+    public boolean aboveUp(PseudoBase base) {
         return base.getY() > this.gradient * (base.getX() - this.minX) + this.minY;
     }
-    public boolean belowUp(PseudoBase base){
+
+    public boolean belowUp(PseudoBase base) {
         return base.getY() < this.gradient * (base.getX() - this.minX) + this.minY;
     }
 
-    public boolean aboveDown(PseudoBase base){
+    public boolean aboveDown(PseudoBase base) {
         return base.getY() > -this.gradient * (base.getX() - this.minX) + this.maxY;
     }
 
-    public boolean belowDown (PseudoBase base){
+    public boolean belowDown(PseudoBase base) {
         return base.getY() < -this.gradient * (base.getX() - this.minX) + this.maxY;
     }
 
-    public boolean down_AreaOverlap(Obstacle other_o){
+    public boolean down_AreaOverlap(Obstacle other_o) {
         return other_o.minY + other_o.minX <= this.maxY + this.maxX && other_o.maxY + other_o.maxX >= this.minY + this.minX;
     }
-    public boolean up_AreaOverlap(Obstacle other_o){
-        if (other_o.maxY - other_o.minX <= this.minY - this.maxX || other_o.minY - other_o.maxX >= this.maxY - this.minX){
-            return false;
-        }else {
-            return true;
-        }
+
+    public boolean up_AreaOverlap(Obstacle other_o) {
+        return other_o.maxY - other_o.minX > this.minY - this.maxX && other_o.minY - other_o.maxX < this.maxY - this.minX;
     }
 
-    public boolean atL(Obstacle other_o){
+    //Conference 45-degree Set
+    public boolean atL(Obstacle other_o) {
         return down_AreaOverlap(other_o) && this.aboveUp(other_o.getUpperLeft());
     }
 
-    public boolean abR(Obstacle other_o){
+    public boolean abR(Obstacle other_o) {
         return down_AreaOverlap(other_o) && this.belowUp(other_o.getLowerRight());
     }
 
-    public boolean atR(Obstacle other_o){
+    public boolean atR(Obstacle other_o) {
         return up_AreaOverlap(other_o) && this.aboveDown(other_o.getUpperRight());
     }
 
-    public boolean abL(Obstacle other_o){
+    public boolean abL(Obstacle other_o) {
         return up_AreaOverlap(other_o) && this.belowDown(other_o.getLowerLeft());
     }
 
-
-    //Conference 45-degree Set
-    public boolean aboveYur(PseudoBase base){
-        return base.getX() + base.getY() > this.maxY + this.maxX;
-    }
-    public boolean belowYll(PseudoBase base){
-        return base.getY() + base.getX() < this.minY + this.minX;
-    }
-    public boolean otL (Obstacle on){
-        if (aboveYur(on.lowerLeft) || belowYll(on.upperRight)||((!belowYll(on.lowerLeft))&&(!aboveYur(on.upperRight))&&(aboveUp(on.lowerRight)))){
-            return false;
-        }else return true;
-    }
-    public boolean obR (Obstacle on){
-        if (aboveYur(on.lowerLeft) || belowYll(on.upperRight)||((!belowYll(on.lowerLeft))&&(!aboveYur(on.upperRight))&&(belowUp(on.upperLeft)))){
-            return false;
-        }else return true;
-    }
-
-    public boolean belowYlr (PseudoBase base){
-        return base.getY() - base.getX() < this.minY - this.maxX;
-    }
-    public boolean aboveYul (PseudoBase base){
-        return base.getY() - base.getX() > this.maxY - this.minX;
-    }
-
-    public boolean otR (Obstacle on){
-        if (belowYlr(on.upperLeft) || aboveYul(on.lowerRight) ||((!belowYlr(on.lowerRight))&&(!aboveYul(on.upperLeft))&&(this.aboveDown(on.lowerLeft)))){
-            return false;
-        }else return true;
-    }
-    public boolean obL (Obstacle on){
-        if (belowYlr(on.upperLeft) || aboveYul(on.lowerRight) ||((!belowYlr(on.lowerRight))&&(!aboveYul(on.upperLeft))&&(this.belowDown(on.upperRight)))){
-            return false;
-        }else return true;
-    }
-
     //Conference rectangular Set
-    public boolean below(Obstacle on){
+    public boolean below(Obstacle on) {
         return on.minY >= this.maxY;
     }
-    public boolean above(Obstacle on){
+
+    public boolean above(Obstacle on) {
         return on.maxY <= this.minY;
     }
 
-
-    public boolean odL(Obstacle on){
-        if (this.below(on) || this.above(on) || this.left(on)){
-            return false;
-        }else return true;
-    }
-    public boolean odR(Obstacle on){
-        if (this.below(on) || this.above(on) || this.right(on)){
-            return false;
-        }else return true;
-    }
-
-     public boolean right(Obstacle on){
+    public boolean right(Obstacle on) {
         return on.maxX <= this.minX;
-     }
-     public boolean left(Obstacle on){
+    }
+
+    public boolean left(Obstacle on) {
         return on.minX >= this.maxX;
-     }
+    }
 
+    public boolean odL(Obstacle on) {
+        return !this.below(on) && !this.above(on) && this.right(on);
+    }
 
-     public boolean odT(Obstacle on){
-        if (this.left(on) || this.right(on) || this.below(on)){
-            return false;
-        }else return true;
-     }
+    public boolean odR(Obstacle on) {
+        return !this.below(on) && !this.above(on) && this.left(on);
+    }
 
-    public boolean odB(Obstacle on){
-        if (this.left(on) || this.right(on) || this.above(on)){
-            return false;
-        }else return true;
+    public boolean odT(Obstacle on) {
+        return !this.left(on) && !this.right(on) && this.below(on);
+    }
+
+    public boolean odB(Obstacle on) {
+        return !this.left(on) && !this.right(on) && this.above(on);
     }
 
 
