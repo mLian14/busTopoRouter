@@ -70,6 +70,7 @@ public class Processor {
         Determine the pseudo Variables of Master and slaves
          */
         pseudoBaseVariablesDetermination(master, slaves, obstacles, minDist);
+
         for (PseudoBase sv : slaves) {
             System.out.println(sv.getName() + "(" + sv.getX() + ", " + sv.getY() + ")");
             for (Obstacle o : obstacles) {
@@ -4165,6 +4166,34 @@ public class Processor {
 
 
                 } else continue;
+            }
+        }
+
+        /*
+        update map_oo_dist
+         */
+        for (Obstacle this_o : obstacles) {
+            for (Obstacle other_o : obstacles) {
+                int[] dist = new int[8];
+                //|minX - minX|
+                dist[0] = Math.abs(this_o.getMinX() - other_o.getMinX());
+                //|minX - maxX|
+                dist[1] = Math.abs(this_o.getMinX() - other_o.getMaxX());
+                //|maxX - minX|
+                dist[2] = Math.abs(this_o.getMaxX() - other_o.getMinX());
+                //|maxX - maxX|
+                dist[3] = Math.abs(this_o.getMaxX() - other_o.getMaxX());
+
+                //|minY - minY|
+                dist[4] = Math.abs(this_o.getMinY() - other_o.getMinY());
+                //|minY - maxY|
+                dist[5] = Math.abs(this_o.getMinY() - other_o.getMaxY());
+                //|maxY - minY|
+                dist[6] = Math.abs(this_o.getMaxY() - other_o.getMinY());
+                //|maxY - maxY|
+                dist[7] = Math.abs(this_o.getMaxY() - other_o.getMaxY());
+
+                this_o.addToMap_oo_dist(other_o, dist);
             }
         }
 

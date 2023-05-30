@@ -16,11 +16,22 @@ public class Obstacle {
     private double delta_x, delta_y, gradient;
 
     private PseudoBase lowerLeft, lowerRight, upperLeft, upperRight;
-    private ArrayList<PseudoBase> baseArray;
 
     private ArrayList<Obstacle> tLObstacles, tRObstacles, bLObstacles, bRObstacles;
 
     private ArrayList<Obstacle> dLObstacles, dRObstacles, dTObstacles, dBObstacles;
+
+    /*
+    0: |minX - minX|
+    1: |minX - maxX|
+    2: |maxX - minX|
+    3: |maxX - maxX|
+    4: |minY - minY|
+    5: |minY - maxY|
+    6: |maxY - minY|
+    7: |maxY - maxY|
+     */
+    private Map<Obstacle, int[]> map_oo_dist;
 
 
     public Obstacle(String name, int minX, int maxX, int minY, int maxY) {
@@ -42,7 +53,7 @@ public class Obstacle {
         this.upperLeft.setType(BaseType.upperLeft);
         this.upperRight = new PseudoBase(maxX, maxY);
         this.upperRight.setType(BaseType.upperRight);
-        this.baseArray = new ArrayList<>(Arrays.asList(this.lowerLeft, this.lowerRight, this.upperLeft, this.upperRight));
+
 
         this.tLObstacles = new ArrayList<>();
         this.tLObstacles.add(this);
@@ -62,12 +73,20 @@ public class Obstacle {
         this.dBObstacles = new ArrayList<>();
         this.dBObstacles.add(this);
 
+        this.map_oo_dist = new HashMap<>();
+
+    }
+
+    public Map<Obstacle, int[]> getMap_oo_dist() {
+        return map_oo_dist;
+    }
+
+    public void addToMap_oo_dist(Obstacle o, int[] dist) {
+        this.map_oo_dist.put(o, dist);
     }
 
 
-    public ArrayList<PseudoBase> getBaseArray() {
-        return baseArray;
-    }
+
 
     public double getDelta_x() {
         return delta_x;
