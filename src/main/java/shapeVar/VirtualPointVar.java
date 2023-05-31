@@ -256,6 +256,38 @@ public class VirtualPointVar {
     q_i_vj^m->n
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable>> omOnCnn_q;//binaryVar regarding next virtualPoint for relObstacles' connection
+    /*
+    omOnCnnLowerLeft_qs
+    0: ll->ll
+    1: ll->ul
+    2: ll->ur
+    3: ll->lr
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnLowerLeft_qs;
+    /*
+    omOnCnnUpperLeft_qs
+    0: ul->ll
+    1: ul->ul
+    2: ul->ur
+    3: ul->lr
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnUpperLeft_qs;
+    /*
+    omOnCnnUpperRight_qs
+    0: ur->ll
+    1: ur->ul
+    2: ur->ur
+    3: ur->lr
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnUpperRight_qs;
+    /*
+    omOnCnnLowerRight_qs
+    0: lr->ll
+    1: lr->ul
+    2: lr->ur
+    3: lr->lr
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnLowerRight_qs;
 
 
 
@@ -265,6 +297,22 @@ public class VirtualPointVar {
     1: vj<-
      */
     public Map<Obstacle, GurobiVariable[]> inOutCnn_qs;//binaryVar regarding next virtualPoint for starting and end point connection
+    /*
+    outCorner_qs
+    0: vi->o.ll
+    1: vi->o.ul
+    2: vi->o.ur
+    3: vi->o.lr
+     */
+    public Map<Obstacle, GurobiVariable[]> outCorner_qs;
+    /*
+    inCorner_qs
+    0: o.ll->vi+1
+    1: o.ul->vi+1
+    2: o.ur->vi+1
+    3: o.lr->vi+1
+     */
+    public Map<Obstacle, GurobiVariable[]> inCorner_qs;
 
 
 
@@ -544,6 +592,9 @@ public class VirtualPointVar {
         this.corner_qs = new HashMap<>();
         this.omOnCnn_q = new HashMap<>();
         this.inOutCnn_qs = new HashMap<>();
+        this.outCorner_qs = new HashMap<>();
+        this.inCorner_qs = new HashMap<>();
+
         this.aux_dOut_iqs = new HashMap<>();
         this.aux_dOmOn_iqs = new HashMap<>();
         this.aux_dIn_iqs = new HashMap<>();

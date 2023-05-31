@@ -2,7 +2,6 @@ package processor;
 
 import grb.*;
 import gurobi.GRB;
-import gurobi.GRBConstr;
 import gurobi.GRBException;
 import parser.DocumentParser;
 import parser.Document;
@@ -896,9 +895,10 @@ public class Processor {
                     c.addToRHS(vp.relObstacles_q.get(o), 1.0);
                     executor.addConstraint(c);
 
-
-
-
+                    //outCorner
+                    buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[0], vp.outCorner_qs.get(o), vp.rel_qs.get(o), vp.relD_qs.get(o));
+                    //inCorner
+                    buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[1], vp.inCorner_qs.get(o), vpN.rel_qs.get(o), vpN.relD_qs.get(o));
 
                     //cnnRules.1
                     c = new GurobiConstraint();
@@ -1174,7 +1174,7 @@ public class Processor {
                 executor.addConstraint(c);
 
 
-                auxiliaryVarBase(vp.x, vp.y, sv, "dvs_woDetour:v" + String.valueOf(virtualPointVars.indexOf(vp)), vp.aux_vsDist_iqs.get(sv), vp.auxQ_vsDist.get(sv));
+                auxiliaryDistCons_VarBase(vp.x, vp.y, sv, "dvs_woDetour:v" + String.valueOf(virtualPointVars.indexOf(vp)), vp.aux_vsDist_iqs.get(sv), vp.auxQ_vsDist.get(sv));
                 /*
                 AAAA
                 d_i_sj
@@ -1493,7 +1493,7 @@ public class Processor {
                 c.addToRHS(vp.aux_dist_iqs[3], 1.0);
                 executor.addConstraint(c);
 
-                auxiliaryVarVar(vp.x, vpN.x, vp.y, vpN.y, "d_ij_woDetour" + String.valueOf(virtualPointVars.indexOf(vp)), vp.aux_dist_iqs, vp.auxQ_dist);
+                auxiliaryDistCons_VarVar(vp.x, vpN.x, vp.y, vpN.y, "d_ij_woDetour" + String.valueOf(virtualPointVars.indexOf(vp)), vp.aux_dist_iqs, vp.auxQ_dist);
 
                 /*
                 AAAA
@@ -1525,7 +1525,120 @@ public class Processor {
 
     }
 
-    private void auxiliaryVarBase(GurobiVariable x, GurobiVariable y, PseudoBase base, String nickName, GurobiVariable[] aux_dist_iqs, GurobiVariable auxQ_dist) throws GRBException {
+    private void buildCons_inOutCornerSelection(GurobiVariable inOutCnn_q, GurobiVariable[] corner_qs, GurobiVariable[] rel_qs, GurobiVariable[] relD_qs) {
+        GurobiConstraint c;
+        c = new GurobiConstraint();
+        c.setName("outCorner_L_leq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('<');
+        c.addToRHS(corner_qs[0], 1.0);
+        c.addToRHS(corner_qs[1], 1.0);
+        c.addToRHS(relD_qs[0], 7.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName("outCorner_L_geq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('>');
+        c.addToRHS(corner_qs[0], 1.0);
+        c.addToRHS(corner_qs[1], 1.0);
+        c.addToRHS(relD_qs[0], -7.0);
+        executor.addConstraint(c);
+
+        c = new GurobiConstraint();
+        c.setName("outCorner_R_leq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('<');
+        c.addToRHS(corner_qs[2], 1.0);
+        c.addToRHS(corner_qs[3], 1.0);
+        c.addToRHS(relD_qs[1], 7.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName("outCorner_R_geq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('>');
+        c.addToRHS(corner_qs[2], 1.0);
+        c.addToRHS(corner_qs[3], 1.0);
+        c.addToRHS(relD_qs[1], -7.0);
+        executor.addConstraint(c);
+
+        c = new GurobiConstraint();
+        c.setName("outCorner_T_leq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('<');
+        c.addToRHS(corner_qs[1], 1.0);
+        c.addToRHS(corner_qs[2], 1.0);
+        c.addToRHS(relD_qs[2], 7.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName("outCorner_T_geq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('>');
+        c.addToRHS(corner_qs[1], 1.0);
+        c.addToRHS(corner_qs[2], 1.0);
+        c.addToRHS(relD_qs[2], -7.0);
+        executor.addConstraint(c);
+
+        c = new GurobiConstraint();
+        c.setName("outCorner_B_leq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('<');
+        c.addToRHS(corner_qs[0], 1.0);
+        c.addToRHS(corner_qs[3], 1.0);
+        c.addToRHS(relD_qs[3], 7.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName("outCorner_B_geq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('>');
+        c.addToRHS(corner_qs[0], 1.0);
+        c.addToRHS(corner_qs[3], 1.0);
+        c.addToRHS(relD_qs[3], -7.0);
+        executor.addConstraint(c);
+
+        c = new GurobiConstraint();
+        c.setName("outCorner_tLbR_leq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('<');
+        c.addToRHS(corner_qs[0], 1.0);
+        c.addToRHS(corner_qs[2], 1.0);
+        c.addToRHS(rel_qs[0], -7.0);
+        c.addToRHS(rel_qs[3], -7.0);
+        c.setRHSConstant(7.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName("outCorner_tLbR_geq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('>');
+        c.addToRHS(corner_qs[0], 1.0);
+        c.addToRHS(corner_qs[2], 1.0);
+        c.addToRHS(rel_qs[0], 7.0);
+        c.addToRHS(rel_qs[3], 7.0);
+        c.setRHSConstant(-7.0);
+        executor.addConstraint(c);
+
+        c = new GurobiConstraint();
+        c.setName("outCorner_tRbL_leq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('<');
+        c.addToRHS(corner_qs[1], 1.0);
+        c.addToRHS(corner_qs[3], 1.0);
+        c.addToRHS(rel_qs[1], -7.0);
+        c.addToRHS(rel_qs[2], -7.0);
+        c.setRHSConstant(7.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName("outCorner_tRbL_geq");
+        c.addToLHS(inOutCnn_q, 1.0);
+        c.setSense('>');
+        c.addToRHS(corner_qs[1], 1.0);
+        c.addToRHS(corner_qs[3], 1.0);
+        c.addToRHS(rel_qs[1], 7.0);
+        c.addToRHS(rel_qs[2], 7.0);
+        c.setRHSConstant(-7.0);
+        executor.addConstraint(c);
+    }
+
+    private void auxiliaryDistCons_VarBase(GurobiVariable x, GurobiVariable y, PseudoBase base, String nickName, GurobiVariable[] aux_dist_iqs, GurobiVariable auxQ_dist) throws GRBException {
         GurobiConstraint c;
         //aux
         c = new GurobiConstraint();
@@ -1568,7 +1681,7 @@ public class Processor {
         executor.addConstraint(c);
     }
 
-    private void auxiliaryVarVar(GurobiVariable x1, GurobiVariable x2, GurobiVariable y1, GurobiVariable y2, String nickName, GurobiVariable[] aux_dist_iqs, GurobiVariable auxQ_dist) throws GRBException {
+    private void auxiliaryDistCons_VarVar(GurobiVariable x1, GurobiVariable x2, GurobiVariable y1, GurobiVariable y2, String nickName, GurobiVariable[] aux_dist_iqs, GurobiVariable auxQ_dist) throws GRBException {
         GurobiConstraint c;
 
         c = new GurobiConstraint();
@@ -2839,8 +2952,23 @@ public class Processor {
                 1: <-
                 */
                 vp.inOutCnn_qs.put(o, buildBinaryVar("v_" + i + ";" + o.getName() + "_inOutCnn_qs_", 2));
+                /*
+                outCorner_qs
+                0: vi->o.ll
+                1: vi->o.ul
+                2: vi->o.ur
+                3: vi->o.lr
+                 */
+                vp.outCorner_qs.put(o, buildBinaryVar("v_" + i + "->" + o.getName() + "_outCorner_qs_", 4));
 
-
+                /*
+                inCorner_qs
+                0: o.ll->vi+1
+                1: o.ul->vi+1
+                2: o.ur->vi+1
+                3: o.lr->vi+1
+                 */
+                vp.inCorner_qs.put(o, buildBinaryVar(o.getName() + "->v" + (i+1) + "_inCorner_qs_", 4));
 
                 /*
                 dOut_cqs
