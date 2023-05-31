@@ -47,12 +47,19 @@ public class Obstacle {
 
         this.lowerLeft = new PseudoBase(minX, minY);
         this.lowerLeft.setType(BaseType.lowerLeft);
+        this.lowerLeft.setName(this.name + ".ll");
+
         this.lowerRight = new PseudoBase(maxX, minY);
         this.lowerRight.setType(BaseType.lowerRight);
+        this.lowerRight.setName(this.name + ".lr");
+
         this.upperLeft = new PseudoBase(minX, maxY);
         this.upperLeft.setType(BaseType.upperLeft);
+        this.upperLeft.setName(this.name + ".ul");
+
         this.upperRight = new PseudoBase(maxX, maxY);
         this.upperRight.setType(BaseType.upperRight);
+        this.upperRight.setName(this.name + ".ur");
 
 
         this.tLObstacles = new ArrayList<>();
