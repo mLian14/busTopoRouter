@@ -75,13 +75,6 @@ public class VirtualPointVar {
      */
     public Map<Obstacle, GurobiVariable[]> vm_inOutCnn_qs;//binaryVar regarding next virtualPoint for starting and end point connection
 
-    /*
-    VM:oCoordinate_iqs
-    0: x_m
-    1: y_m
-     */
-    public Map<Obstacle, GurobiVariable[]> vm_oCoordinate_iqs;//intVar regarding next virtualPoint: coordinates of the selected intermedia point
-
 
     /*
     VM: dOut_cqs
@@ -172,7 +165,7 @@ public class VirtualPointVar {
 
 
 
-
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
     /*
     Detour triggering regarding NEXT VirtualPoint
      */
@@ -264,12 +257,6 @@ public class VirtualPointVar {
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable>> omOnCnn_q;//binaryVar regarding next virtualPoint for relObstacles' connection
 
-    /*
-    oCoordinate_iqs
-    0: x_m
-    1: y_m
-     */
-    public Map<Obstacle, GurobiVariable[]> oCoordinate_iqs;//intVar regarding next virtualPoint: coordinates of the selected intermedia point
 
 
     /*
@@ -501,13 +488,6 @@ public class VirtualPointVar {
 
 
 
-    /*
-    vs_oCoordinate_iqs
-    0: x_m
-    1: y_m
-     */
-    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_oCoordinate_iqs;//intVar regarding Slaves: coordinates of the selected intermedia point
-
 
     /*
     Auxiliary absolute values: aux_vsdOmOn_iqs
@@ -564,7 +544,6 @@ public class VirtualPointVar {
         this.corner_qs = new HashMap<>();
         this.omOnCnn_q = new HashMap<>();
         this.inOutCnn_qs = new HashMap<>();
-        this.oCoordinate_iqs = new HashMap<>();
         this.aux_dOut_iqs = new HashMap<>();
         this.aux_dOmOn_iqs = new HashMap<>();
         this.aux_dIn_iqs = new HashMap<>();
@@ -582,7 +561,6 @@ public class VirtualPointVar {
         this.vs_corner_qs = new HashMap<>();
         this.vs_omOnCnn_q = new HashMap<>();
         this.vs_inOutCnn_qs = new HashMap<>();
-        this.vs_oCoordinate_iqs = new HashMap<>();
         this.aux_vsDist_iqs = new HashMap<>();
         this.aux_vsdIn_iqs = new HashMap<>();
         this.aux_vsdOut_iqs = new HashMap<>();
@@ -603,7 +581,7 @@ public class VirtualPointVar {
         this.vm_corner_qs = new HashMap<>();
         this.vm_omOnCnn_q = new HashMap<>();
         this.vm_inOutCnn_qs = new HashMap<>();
-        this.vm_oCoordinate_iqs = new HashMap<>();
+
 
         this.aux_vmdOut_iqs = new HashMap<>();
         this.auxQ_vmdOut = new HashMap<>();
