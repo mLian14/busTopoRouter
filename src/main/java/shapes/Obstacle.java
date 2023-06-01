@@ -16,22 +16,40 @@ public class Obstacle {
     private double delta_x, delta_y, gradient;
 
     private PseudoBase lowerLeft, lowerRight, upperLeft, upperRight;
+    private ArrayList<PseudoBase> baseArray;
 
     private ArrayList<Obstacle> tLObstacles, tRObstacles, bLObstacles, bRObstacles;
 
     private ArrayList<Obstacle> dLObstacles, dRObstacles, dTObstacles, dBObstacles;
 
     /*
-    0: |minX - minX|
-    1: |minX - maxX|
-    2: |maxX - minX|
-    3: |maxX - maxX|
-    4: |minY - minY|
-    5: |minY - maxY|
-    6: |maxY - minY|
-    7: |maxY - maxY|
+    map_oo_distMin
+    0: ll->ll
+    1: ll->ul
+    2: ll->ur
+    3: ll->lr
+
+    4: ul->ll
+    5: ul->ul
+    6: ul->ur
+    7: ul->lr
+
+    8: ur->ll
+    9: ur->ul
+    10: ur->ur
+    11: ur->lr
+
+    12: lr->ll
+    13: lr->ul
+    14: lr->ur
+    15: lr->lr
      */
-    private Map<Obstacle, int[]> map_oo_dist;
+    private Map<Obstacle, int[]> map_oo_distMin;
+
+    /*
+    map_oo_distXY
+     */
+    private Map<Obstacle, int[]> map_oo_distXY;
 
 
     public Obstacle(String name, int minX, int maxX, int minY, int maxY) {
@@ -45,21 +63,27 @@ public class Obstacle {
         this.delta_y = this.maxY - this.minY;
         this.gradient = this.delta_y / this.delta_x;
 
+        this.baseArray = new ArrayList<>();
+
         this.lowerLeft = new PseudoBase(minX, minY);
         this.lowerLeft.setType(BaseType.lowerLeft);
         this.lowerLeft.setName(this.name + ".ll");
+        this.baseArray.add(this.lowerLeft);
 
         this.lowerRight = new PseudoBase(maxX, minY);
         this.lowerRight.setType(BaseType.lowerRight);
         this.lowerRight.setName(this.name + ".lr");
+        this.baseArray.add(this.lowerRight);
 
         this.upperLeft = new PseudoBase(minX, maxY);
         this.upperLeft.setType(BaseType.upperLeft);
         this.upperLeft.setName(this.name + ".ul");
+        this.baseArray.add(this.upperLeft);
 
         this.upperRight = new PseudoBase(maxX, maxY);
         this.upperRight.setType(BaseType.upperRight);
         this.upperRight.setName(this.name + ".ur");
+        this.baseArray.add(this.upperRight);
 
 
         this.tLObstacles = new ArrayList<>();
@@ -80,20 +104,30 @@ public class Obstacle {
         this.dBObstacles = new ArrayList<>();
         this.dBObstacles.add(this);
 
-        this.map_oo_dist = new HashMap<>();
+        this.map_oo_distMin = new HashMap<>();
+        this.map_oo_distXY = new HashMap<>();
 
     }
 
-    public Map<Obstacle, int[]> getMap_oo_dist() {
-        return map_oo_dist;
+    public Map<Obstacle, int[]> getMap_oo_distMin() {
+        return map_oo_distMin;
     }
 
-    public void addToMap_oo_dist(Obstacle o, int[] dist) {
-        this.map_oo_dist.put(o, dist);
+    public void addToMap_oo_distMin(Obstacle o, int[] dist) {
+        this.map_oo_distMin.put(o, dist);
     }
 
+    public Map<Obstacle, int[]> getMap_oo_distXY() {
+        return map_oo_distXY;
+    }
 
+    public void addToMap_oo_distXY(Obstacle o, int[] dist) {
+        this.map_oo_distXY.put(o, dist);
+    }
 
+    public ArrayList<PseudoBase> getBaseArray() {
+        return baseArray;
+    }
 
     public double getDelta_x() {
         return delta_x;
@@ -336,6 +370,7 @@ public class Obstacle {
     public boolean left(Obstacle on) {
         return on.minX >= this.maxX;
     }
+
 
     public boolean odL(Obstacle on) {
         return !this.below(on) && !this.above(on) && this.right(on);

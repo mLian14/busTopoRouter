@@ -257,37 +257,29 @@ public class VirtualPointVar {
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable>> omOnCnn_q;//binaryVar regarding next virtualPoint for relObstacles' connection
     /*
-    omOnCnnLowerLeft_qs
+    omOnCorner_qs
     0: ll->ll
     1: ll->ul
     2: ll->ur
     3: ll->lr
+
+    4: ul->ll
+    5: ul->ul
+    6: ul->ur
+    7: ul->lr
+
+    8: ur->ll
+    9: ur->ul
+    10: ur->ur
+    11: ur->lr
+
+    12: lr->ll
+    13: lr->ul
+    14: lr->ur
+    15: lr->lr
      */
-    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnLowerLeft_qs;
-    /*
-    omOnCnnUpperLeft_qs
-    0: ul->ll
-    1: ul->ul
-    2: ul->ur
-    3: ul->lr
-     */
-    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnUpperLeft_qs;
-    /*
-    omOnCnnUpperRight_qs
-    0: ur->ll
-    1: ur->ul
-    2: ur->ur
-    3: ur->lr
-     */
-    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnUpperRight_qs;
-    /*
-    omOnCnnLowerRight_qs
-    0: lr->ll
-    1: lr->ul
-    2: lr->ur
-    3: lr->lr
-     */
-    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCnnLowerRight_qs;
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCorner_qs;
+
 
 
 

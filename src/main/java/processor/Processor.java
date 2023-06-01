@@ -31,11 +31,15 @@ public class Processor {
     }
 
     enum OppositeType {
-        topLtoBottomR,
-        bottomLtoTopR,
-        topRtoBottomL,
-        bottomRtoTopL,
-        NoOppositeRelation
+        ul_lr,
+        ll_ur,
+        ur_ll,
+        lr_ul,
+        l_r,
+        r_l,
+        t_b,
+        b_t,
+        NoDetour
     }
 
 
@@ -68,20 +72,26 @@ public class Processor {
         /*
         Determine the pseudo Variables of Master and slaves
          */
-        pseudoBaseVariablesDetermination(master, slaves, obstacles, minDist);
+        pseudoBaseVariablesDetermination(master, slaves, obstacles);
 
-        for (PseudoBase sv : slaves) {
-            System.out.println(sv.getName() + "(" + sv.getX() + ", " + sv.getY() + ")");
-            for (Obstacle o : obstacles) {
-                System.out.print(o.getName() + "_dir:" + Arrays.toString(sv.getPseudo_oDir_qs().get(o)) + "|| ");
-                System.out.println("_rel:" + Arrays.toString(sv.getPseudo_oRel_qs().get(o)) + "||");
+
+        /*
+        update map_oo_dist
+         */
+        for (Obstacle o : obstacles) {
+            o.getLowerLeft().addToPseudo_oRel_qs(o, new int[]{0, 0, 1, 0, 1, 0, 0, 1});
+            o.getLowerRight().addToPseudo_oRel_qs(o, new int[]{0, 0, 0, 1, 0, 1, 0, 1});
+            o.getUpperLeft().addToPseudo_oRel_qs(o, new int[]{1, 0, 0, 0, 1, 0, 1, 0});
+            o.getUpperRight().addToPseudo_oRel_qs(o, new int[]{0, 1, 0, 0, 0, 1, 1, 0});
+            for (PseudoBase corner : o.getBaseArray()) {
+                for (Obstacle on : obstacles) {
+                    if (!on.getName().equals(o.getName())) {
+                        basicBinaryVariables(corner, on);
+                    }
+                }
             }
         }
-        System.out.println("Master");
-        for (Obstacle o : obstacles) {
-            System.out.print(o.getName() + "_dir:" + Arrays.toString(master.getPseudo_oDir_qs().get(o)) + "|| ");
-            System.out.println("_rel:" + Arrays.toString(master.getPseudo_oRel_qs().get(o)) + "||");
-        }
+
         for (Obstacle o : obstacles) {
             System.out.println(o.getName() + " " + o.getMinX() + " " + o.getMaxX() + " " + o.getMinY() + " " + o.getMaxY());
             System.out.print("O_tL: ");
@@ -102,6 +112,175 @@ public class Processor {
             System.out.print("O_B: ");
             System.out.println(convertObstacleArrayToString(o.get_dBObstacles()));
 
+        }
+
+        for (Obstacle o : obstacles) {
+            for (Obstacle on : obstacles) {
+                if (!o.getName().equals(on.getName())) {
+                    int[] distMin = new int[16];
+                    int[] distXY = new int[16];
+
+                    /*
+                    0: ll->ll
+                    1: ll->ul
+                    2: ll->ur
+                    3: ll->lr
+                     */
+                    PseudoBase startCorner = o.getLowerLeft();
+                    //0: ll->ll
+                    PseudoBase endCorner = on.getLowerLeft();
+//                    System.out.println(o.getName() + ".ll->" + on.getName() +".ur");
+//                    System.out.println(Arrays.toString(startCorner.getPseudo_oRel_qs().get(o)));
+//                    System.out.println(Arrays.toString(startCorner.getPseudo_oRel_qs().get(on)));
+//                    System.out.println(Arrays.toString(endCorner.getPseudo_oRel_qs().get(o)));
+//                    System.out.println(Arrays.toString(endCorner.getPseudo_oRel_qs().get(on)));
+                    ArrayList<PseudoBase> bypassBases = new ArrayList<>();
+                    int[] min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+//                    System.out.println(min_xy[0] + " " + min_xy[1]);
+//                    if (bypassBases.size() != 0){
+//                        for (PseudoBase base : bypassBases){
+//                            System.out.print(base.getName() +  "||");
+//                        }
+//                        System.out.println();
+//                    }
+                    distMin[0] = min_xy[0];
+                    distXY[0] = min_xy[1];
+                    //1: ll->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[1] = min_xy[0];
+                    distXY[1] = min_xy[1];
+                    //2: ll->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[2] = min_xy[0];
+                    distXY[2] = min_xy[1];
+                    //3: ll->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[3] = min_xy[0];
+                    distXY[3] = min_xy[1];
+
+                    /*
+                    4: ul->ll
+                    5: ul->ul
+                    6: ul->ur
+                    7: ul->lr
+                     */
+                    startCorner = o.getUpperLeft();
+                    //4: ul->ll
+                    endCorner = on.getLowerLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[4] = min_xy[0];
+                    distXY[4] = min_xy[1];
+                    //5: ul->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[5] = min_xy[0];
+                    distXY[5] = min_xy[1];
+                    //6: ul->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[6] = min_xy[0];
+                    distXY[6] = min_xy[1];
+                    //7: ul->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[7] = min_xy[0];
+                    distXY[7] = min_xy[1];
+
+                    /*
+                    8: ur->ll
+                    9: ur->ul
+                    10: ur->ur
+                    11: ur->lr
+                     */
+                    startCorner = o.getUpperRight();
+                    //8: ur->ll
+                    endCorner = on.getLowerLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[8] = min_xy[0];
+                    distXY[8] = min_xy[1];
+                    //9: ur->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[9] = min_xy[0];
+                    distXY[9] = min_xy[1];
+                    //10: ur->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[10] = min_xy[0];
+                    distXY[10] = min_xy[1];
+                    //11: ur->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[11] = min_xy[0];
+                    distXY[11] = min_xy[1];
+
+                    /*
+                    12: lr->ll
+                    13: lr->ul
+                    14: lr->ur
+                    15: lr->lr
+                     */
+                    startCorner = o.getLowerRight();
+                    //12: lr->ll
+                    endCorner = on.getLowerLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[12] = min_xy[0];
+                    distXY[12] = min_xy[1];
+                    //13: lr->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[13] = min_xy[0];
+                    distXY[13] = min_xy[1];
+                    //14: lr->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[14] = min_xy[0];
+                    distXY[14] = min_xy[1];
+                    //15: lr->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
+                    distMin[15] = min_xy[0];
+                    distXY[15] = min_xy[1];
+
+
+                    o.addToMap_oo_distMin(on, distMin);
+                    o.addToMap_oo_distXY(on, distXY);
+
+
+                }
+            }
+        }
+
+
+        for (PseudoBase sv : slaves) {
+            System.out.println(sv.getName() + "(" + sv.getX() + ", " + sv.getY() + ")");
+            for (Obstacle o : obstacles) {
+                System.out.print(o.getName() + "_dir:" + Arrays.toString(sv.getPseudo_oDir_qs().get(o)) + "|| ");
+                System.out.println("_rel:" + Arrays.toString(sv.getPseudo_oRel_qs().get(o)) + "||");
+            }
+        }
+        System.out.println("Master");
+        for (Obstacle o : obstacles) {
+            System.out.print(o.getName() + "_dir:" + Arrays.toString(master.getPseudo_oDir_qs().get(o)) + "|| ");
+            System.out.println("_rel:" + Arrays.toString(master.getPseudo_oRel_qs().get(o)) + "||");
         }
 
 
@@ -383,7 +562,7 @@ public class Processor {
                             System.out.print("auxQ = " + vp.auxQ_vsdIn.get(sv).get(om).getIntResult() + "||");
 
                         }
-                        for (Obstacle om : obstacles){
+                        for (Obstacle om : obstacles) {
                             for (Obstacle on : obstacles) {
                                 if (vp.vs_omOnCnn_q.get(sv).get(om).get(on).getIntResult() == 1) {
                                     System.out.print(om.getName() + "-> " + on.getName() + ":cnn" + "|| ");
@@ -420,6 +599,529 @@ public class Processor {
 //        executor.getEnv().dispose();
 
         return output;
+    }
+
+    private int[] cornerOppositeRelationDetection(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
+
+
+        OppositeType type = null;
+        int[] startO_qs = startCorner.getPseudo_oRel_qs().get(o);
+        int[] endO_qs = endCorner.getPseudo_oRel_qs().get(o);
+        int[] startOn_qs = startCorner.getPseudo_oRel_qs().get(on);
+        int[] endOn_qs = endCorner.getPseudo_oRel_qs().get(on);
+
+
+        //ul->lr
+        boolean o_rel = false;
+        boolean on_rel = false;
+        if (startO_qs[0] + endO_qs[3] == 2) {
+            o_rel = true;
+            type = OppositeType.ul_lr;
+        }
+        if (startOn_qs[0] + endOn_qs[3] == 2) {
+            on_rel = true;
+            type = OppositeType.ul_lr;
+        }
+        if (startO_qs[0] == 1 && o.get_bRObstacles().contains(on) && endOn_qs[3] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.ul_lr;
+        }
+        if (type == OppositeType.ul_lr) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), endCorner)));
+
+
+            } else if (!o_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, on.getUpperRight(), endCorner)));
+
+            } else {
+                return upperLeftLowerRight(o, on, startCorner, endCorner, bypassBases);
+            }
+
+
+        }
+
+
+        //lr->ul
+        if (startO_qs[3] + endO_qs[0] == 2) {
+            o_rel = true;
+            type = OppositeType.lr_ul;
+        }
+        if (startOn_qs[3] + endOn_qs[0] == 2) {
+            on_rel = true;
+            type = OppositeType.lr_ul;
+        }
+        if (startO_qs[3] == 1 && o.get_tLObstacles().contains(on) && endOn_qs[0] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.lr_ul;
+        }
+        if (type == OppositeType.lr_ul) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), endCorner)));
+
+            } else if (!o_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, on.getUpperRight(), endCorner)));
+
+            } else {
+                return lowerRightUpperLeft(o, on, startCorner, endCorner, bypassBases);
+
+            }
+
+        }
+
+
+        //ur->ll
+        if (startO_qs[1] + endO_qs[2] == 2) {
+            o_rel = true;
+            type = OppositeType.ur_ll;
+        }
+        if (startOn_qs[1] + endOn_qs[2] == 2) {
+            on_rel = true;
+            type = OppositeType.ur_ll;
+        }
+        if (startO_qs[1] == 1 && o.get_bLObstacles().contains(on) && endOn_qs[2] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.ur_ll;
+        }
+        if (type == OppositeType.ur_ll) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), endCorner)));
+
+
+            } else if (!o_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, on.getLowerRight(), endCorner)));
+
+            } else {
+                return upperRightLowerLeft(o, on, startCorner, endCorner, bypassBases);
+            }
+
+
+        }
+
+        //ll->ur
+        if (startO_qs[2] + endO_qs[1] == 2) {
+            o_rel = true;
+            type = OppositeType.ll_ur;
+        }
+        if (startOn_qs[2] + endOn_qs[1] == 2) {
+            on_rel = true;
+            type = OppositeType.ll_ur;
+        }
+        if (startO_qs[2] == 1 && o.get_tRObstacles().contains(on) && endOn_qs[1] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.ll_ur;
+        }
+        if (type == OppositeType.ll_ur) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), endCorner)));
+            } else if (!o_rel) {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, on.getLowerRight(), endCorner)));
+            } else {
+                return lowerLeftUpperRight(o, on, startCorner, endCorner, bypassBases);
+            }
+
+
+        }
+
+
+        //l->r
+        if (startO_qs[4] + endO_qs[5] == 2) {
+            o_rel = true;
+            type = OppositeType.l_r;
+        }
+        if (startOn_qs[4] + endOn_qs[5] == 2) {
+            on_rel = true;
+            type = OppositeType.l_r;
+        }
+        if (startO_qs[4] == 1 && o.get_dRObstacles().contains(on) && endOn_qs[5] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.l_r;
+        }
+        if (type == OppositeType.l_r) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                if (startCorner.equals(o.getLowerLeft())) {
+                    //start.o.ll
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), endCorner)));
+                } else if (startCorner.equals(o.getUpperLeft())) {
+                    //start.o.ul
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), endCorner)));
+                } else {
+                    System.out.println("l->r o_rel, but NOT o.ll or o.ul");
+                }
+
+
+            } else if (!o_rel) {
+                if (endCorner.equals(on.getLowerRight())) {
+                    //end.o.lr
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getLowerLeft(), endCorner)));
+                } else if (endCorner.equals(on.getUpperRight())) {
+                    //end.o.ur
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getUpperLeft(), endCorner)));
+                } else {
+                    System.out.println("l->r on_rel, but NOT on.lr or on.ur");
+                }
+
+
+            } else {
+                if (startCorner.equals(o.getLowerLeft()) && endCorner.equals(on.getLowerRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMinY() <= on.getMinY() ? o.getLowerRight() : on.getLowerLeft(), endCorner)));
+                } else if (startCorner.equals(o.getUpperLeft()) && endCorner.equals(on.getUpperRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMaxY() >= on.getMaxY() ? o.getUpperRight() : on.getUpperLeft(), endCorner)));
+
+                } else if (startCorner.equals(o.getLowerLeft()) && endCorner.equals(on.getUpperRight())) {
+                    return lowerLeftUpperRight(o, on, startCorner, endCorner, bypassBases);
+                } else if (startCorner.equals(o.getUpperLeft()) && endCorner.equals(on.getLowerRight())) {
+                    return upperLeftLowerRight(o, on, startCorner, endCorner, bypassBases);
+                } else {
+                    System.out.println("l->r, o_rel, on_rel: other Situation");
+                }
+
+            }
+
+        }
+
+
+        //r->l
+        if (startO_qs[5] + endO_qs[4] == 2) {
+            o_rel = true;
+            type = OppositeType.r_l;
+        }
+        if (startOn_qs[5] + endOn_qs[4] == 2) {
+            on_rel = true;
+            type = OppositeType.r_l;
+        }
+        if (startO_qs[5] == 1 && o.get_dLObstacles().contains(on) && endOn_qs[4] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.r_l;
+        }
+        if (type == OppositeType.r_l) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                if (startCorner.equals(o.getLowerRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), endCorner)));
+                } else if (startCorner.equals(o.getUpperRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), endCorner)));
+                } else {
+                    System.out.println("r->l, o_rel, but NOT o.lr or o.ur");
+                }
+
+
+            } else if (!o_rel) {
+                if (endCorner.equals(on.getLowerLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getLowerRight(), endCorner)));
+                } else if (endCorner.equals(on.getUpperLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getUpperRight(), endCorner)));
+                } else {
+                    System.out.println("r->l, on_rel, but NOT on.ll or on.ul");
+                }
+
+            } else {
+                if (startCorner.equals(o.getLowerRight()) && endCorner.equals(on.getLowerLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMinY() <= on.getMinY() ? o.getLowerLeft() : on.getLowerRight(), endCorner)));
+
+                } else if (startCorner.equals(o.getUpperRight()) && endCorner.equals(on.getUpperLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMaxY() >= on.getMaxY() ? o.getUpperLeft() : on.getUpperRight(), endCorner)));
+                } else if (startCorner.equals(o.getLowerRight()) && endCorner.equals(on.getUpperLeft())) {
+                    return lowerRightUpperLeft(o, on, startCorner, endCorner, bypassBases);
+                } else if (startCorner.equals(o.getUpperRight()) && endCorner.equals(on.getLowerLeft())) {
+                    return upperRightLowerLeft(o, on, startCorner, endCorner, bypassBases);
+                } else {
+                    System.out.println("r->l, o_rel, on_rel: other Situation");
+                }
+            }
+
+        }
+
+
+        //t->b
+        if (startO_qs[6] + endO_qs[7] == 2) {
+            o_rel = true;
+            type = OppositeType.t_b;
+        }
+        if (startOn_qs[6] + endOn_qs[7] == 2) {
+            on_rel = true;
+            type = OppositeType.t_b;
+        }
+        if (startO_qs[6] == 1 && o.get_dBObstacles().contains(on) && endOn_qs[7] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.t_b;
+        }
+        if (type == OppositeType.t_b) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                if (startCorner.equals(o.getUpperLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), endCorner)));
+                } else if (startCorner.equals(o.getUpperRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), endCorner)));
+                } else {
+                    System.out.println("t->b, o_rel, but NOT o.ul or o.ur");
+                }
+
+            } else if (!o_rel) {
+                if (endCorner.equals(on.getLowerLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getUpperLeft(), endCorner)));
+                } else if (endCorner.equals(on.getLowerRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getUpperRight(), endCorner)));
+                } else {
+                    System.out.println("t->b, on_rel, but NOT on.ll or on.lr");
+                }
+
+            } else {
+                if (startCorner.equals(o.getUpperLeft()) && endCorner.equals(on.getLowerLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMinX() <= on.getMinX() ? o.getLowerLeft() : on.getUpperLeft(), endCorner)));
+                } else if (startCorner.equals(o.getUpperRight()) && endCorner.equals(on.getLowerRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMaxX() >= on.getMaxX() ? o.getLowerRight() : on.getUpperRight(), endCorner)));
+                } else if (startCorner.equals(o.getUpperLeft()) && endCorner.equals(on.getLowerRight())) {
+                    return upperLeftLowerRight(o, on, startCorner, endCorner, bypassBases);
+                } else if (startCorner.equals(o.getUpperRight()) && endCorner.equals(on.getLowerLeft())) {
+                    return upperRightLowerLeft(o, on, startCorner, endCorner, bypassBases);
+                } else {
+                    System.out.println("t->b, o_rel, on_rel: other Situation");
+                }
+
+            }
+
+
+        }
+
+        //b->t
+        if (startO_qs[7] + endO_qs[6] == 2) {
+            o_rel = true;
+            type = OppositeType.b_t;
+        }
+        if (startOn_qs[7] + endOn_qs[6] == 2) {
+            on_rel = true;
+            type = OppositeType.b_t;
+        }
+        if (startO_qs[7] == 1 && o.get_dTObstacles().contains(on) && endOn_qs[6] == 1) {
+            o_rel = true;
+            on_rel = true;
+            type = OppositeType.b_t;
+        }
+        if (type == OppositeType.b_t) {
+            System.out.println("detourType=" + type);
+            if (o_rel && !on_rel) {
+                if (startCorner.equals(o.getLowerLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), endCorner)));
+                } else if (startCorner.equals(o.getLowerRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), endCorner)));
+                } else {
+                    System.out.println("b->t, o_rel, but NOT o.ll or o.lr");
+                }
+
+            } else if (!o_rel) {
+                if (endCorner.equals(on.getUpperLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getLowerLeft(), endCorner)));
+                } else if (endCorner.equals(on.getUpperRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, on.getLowerRight(), endCorner)));
+                } else {
+                    System.out.println("b->t, on_rel, but NOT on.ul or on.ur");
+                }
+
+            } else {
+                if (startCorner.equals(o.getLowerLeft()) && endCorner.equals(on.getUpperLeft())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMinX() <= on.getMinX() ? o.getUpperLeft() : on.getLowerLeft(), endCorner)));
+
+                } else if (startCorner.equals(o.getLowerRight()) && endCorner.equals(on.getUpperRight())) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getMaxX() >= on.getMaxX() ? o.getUpperRight() : on.getLowerRight(), endCorner)));
+                } else if (startCorner.equals(o.getLowerLeft()) && endCorner.equals(on.getUpperRight())) {
+                    return lowerLeftUpperRight(o, on, startCorner, endCorner, bypassBases);
+                } else if (startCorner.equals(o.getLowerRight()) && endCorner.equals(on.getUpperLeft())) {
+                    return lowerRightUpperLeft(o, on, startCorner, endCorner, bypassBases);
+                } else {
+                    System.out.println("b->t, o_rel, on_rel: other situation");
+                }
+
+            }
+
+        }
+
+        return new int[]{deltaMin(startCorner, endCorner), deltaXY(startCorner, endCorner)};
+    }
+
+    private int[] upperLeftLowerRight(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
+        if (o.getMaxY() >= on.getMaxY() && o.getMinY() >= on.getMinY()) {
+            return compare3Paths(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getUpperRight(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getLowerLeft(), endCorner)));
+        } else {
+
+            if (o.getMaxY() < on.getMaxY()) {
+                if (o.getMinY() <= on.getMinY()) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getLowerLeft(), endCorner)));
+                } else {
+                    return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getLowerLeft(), endCorner)));
+                }
+            } else {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getUpperRight(), endCorner)));
+            }
+
+        }
+    }
+
+    private int[] lowerRightUpperLeft(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
+        if (o.getMaxY() <= on.getMaxY() && o.getMinY() <= on.getMinY()) {
+            return compare3Paths(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getUpperRight(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getUpperRight(), endCorner)));
+        } else {
+            if (o.getMaxY() > on.getMaxY()) {
+                if (o.getMinY() >= o.getMinY()) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getUpperRight(), endCorner)));
+                } else {
+                    return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getUpperRight(), endCorner)));
+                }
+            } else {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerLeft(), on.getUpperRight(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperRight(), on.getUpperRight(), endCorner)));
+            }
+
+        }
+    }
+
+    private int[] upperRightLowerLeft(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
+        if (o.getMaxY() >= on.getMaxY() && o.getMinY() >= on.getMinY()) {
+            return compare3Paths(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getLowerRight(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getLowerRight(), endCorner)));
+
+        } else {
+            if (o.getMaxY() < on.getMaxY()) {
+                if (o.getMinY() <= on.getMinY()) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getLowerRight(), endCorner)));
+                } else {
+                    return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getLowerLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getLowerRight(), endCorner)));
+                }
+
+            } else {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getLowerRight(), endCorner)));
+
+            }
+        }
+    }
+
+    private int[] lowerLeftUpperRight(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
+        if (o.getMaxY() <= on.getMaxY() && o.getMinY() <= on.getMinY()) {
+            return compare3Paths(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getLowerRight(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getUpperLeft(), endCorner)));
+        } else {
+            if (o.getMaxY() > on.getMaxY()) {
+                if (o.getMinY() >= on.getMinY()) {
+                    return pathDist(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getUpperLeft(), endCorner)));
+                } else {
+                    return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getLowerRight(), endCorner)));
+                }
+
+
+            } else {
+                return comparePath(bypassBases, new ArrayList<>(Arrays.asList(startCorner, o.getUpperLeft(), on.getUpperLeft(), endCorner)), new ArrayList<>(Arrays.asList(startCorner, o.getLowerRight(), on.getUpperLeft(), endCorner)));
+
+            }
+        }
+    }
+
+    private int[] compare3Paths(ArrayList<PseudoBase> bypassBases, ArrayList<PseudoBase> path1, ArrayList<PseudoBase> path2, ArrayList<PseudoBase> path3) {
+        int path1Min = 0, path1XY = 0, path2Min = 0, path2XY = 0, path3Min = 0, path3XY = 0;
+        for (int i = 0; i < path1.size() - 1; ++i) {
+            path1Min += deltaMin(path1.get(i), path1.get(i + 1));
+            path1XY += deltaXY(path1.get(i), path1.get(i + 1));
+        }
+        for (int i = 0; i < path2.size() - 1; ++i) {
+            path2Min += deltaMin(path2.get(i), path2.get(i + 1));
+            path2XY += deltaXY(path2.get(i), path2.get(i + 1));
+        }
+        for (int i = 0; i < path3.size() - 1; ++i) {
+            path3Min += deltaMin(path3.get(i), path3.get(i + 1));
+            path3XY += deltaXY(path3.get(i), path3.get(i + 1));
+        }
+
+        ArrayList<Double> tmpArray = new ArrayList<>(Arrays.asList(octDist(path1Min, path1XY), octDist(path2Min, path2XY),octDist(path3Min, path3XY)));
+        double tmp = Collections.min(tmpArray);
+        if (tmp == octDist(path1Min, path1XY)){
+            bypassBases.addAll(path1);
+            for (PseudoBase base : bypassBases){
+                System.out.print(base.getName() + "||");
+            }
+            System.out.println(path1Min + " " + path1XY);
+            return new int[]{path1Min, path1XY};
+        }else if (tmp == octDist(path2Min, path2XY)){
+            bypassBases.addAll(path2);
+            for (PseudoBase base : bypassBases){
+                System.out.print(base.getName() + "||");
+            }
+            System.out.println(path2Min + " " + path2XY);
+            return new int[]{path2Min, path2XY};
+        }
+        else if (tmp == octDist(path3Min, path3XY)){
+            bypassBases.addAll(path3);
+            for (PseudoBase base : bypassBases){
+                System.out.print(base.getName() + "||");
+            }
+            System.out.println(path3Min + " " + path3XY);
+            return new int[]{path3Min, path3XY};
+        }else {
+            System.out.println("path wrong");
+            return new int[]{M, M};
+        }
+    }
+
+    private int[] comparePath(ArrayList<PseudoBase> bypassBases, ArrayList<PseudoBase> path1, ArrayList<PseudoBase> path2) {
+        int path1Min = 0, path1XY = 0, path2Min = 0, path2XY = 0;
+        for (int i = 0; i < path1.size() - 1; ++i) {
+            path1Min += deltaMin(path1.get(i), path1.get(i + 1));
+            path1XY += deltaXY(path1.get(i), path1.get(i + 1));
+        }
+        for (int i = 0; i < path2.size() - 1; ++i) {
+            path2Min += deltaMin(path2.get(i), path2.get(i + 1));
+            path2XY += deltaXY(path2.get(i), path2.get(i + 1));
+        }
+        if (octDist(path1Min, path1XY) <= octDist(path2Min, path2XY)) {
+            bypassBases.addAll(path1);
+            for (PseudoBase base : bypassBases){
+                System.out.print(base.getName() + "||");
+            }
+            System.out.println(path1Min + " " + path1XY);
+            return new int[]{path1Min, path1XY};
+        } else {
+            bypassBases.addAll(path2);
+            for (PseudoBase base : bypassBases){
+                System.out.print(base.getName() + "||");
+            }
+            System.out.println(path2Min + " " + path2XY);
+            return new int[]{path2Min, path2XY};
+        }
+    }
+
+
+    private int[] pathDist(ArrayList<PseudoBase> bypassBases, ArrayList<PseudoBase> path) {
+        bypassBases.addAll(path);
+        for (PseudoBase base : bypassBases){
+            System.out.print(base.getName() + "||");
+        }
+        int pathMin = 0, pathXY = 0;
+        for (int i = 0; i < path.size() - 1; ++i) {
+            pathMin += deltaMin(path.get(i), path.get(i + 1));
+            pathXY += deltaXY(path.get(i), path.get(i + 1));
+        }
+        System.out.println(pathMin + " " + pathXY);
+        return new int[]{pathMin, pathXY};
+    }
+
+
+    private double octDist(int pmin, int pxy) {
+        return Math.sqrt(2) * pmin + pxy;
+    }
+
+    public int deltaMin(PseudoBase base1, PseudoBase base2) {
+        return Math.min(Math.abs(base1.getX() - base2.getX()), Math.abs(base1.getY() - base2.getY()));
+    }
+
+    public int deltaXY(PseudoBase base1, PseudoBase base2) {
+        return Math.abs(Math.abs(base1.getX() - base2.getX()) - Math.abs(base1.getY() - base2.getY()));
     }
 
     public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master, GurobiVariable busMin, GurobiVariable busDiff, GurobiVariable branchMin, GurobiVariable branchDiff) throws GRBException {
@@ -686,7 +1388,7 @@ public class Processor {
                     c.setSense('<');
                     c.addToRHS(vp.relD_qs.get(o)[0], 1.0);
                     executor.addConstraint(c);
-                    for (Obstacle on : o.get_dRObstacles()){
+                    for (Obstacle on : o.get_dRObstacles()) {
                         //(1)l->r.1_o
                         c = new GurobiConstraint();
                         c.setName("l->r.1_o");
@@ -728,7 +1430,7 @@ public class Processor {
                     c.setSense('<');
                     c.addToRHS(vp.relD_qs.get(o)[1], 1.0);
                     executor.addConstraint(c);
-                    for (Obstacle on : o.get_dLObstacles()){
+                    for (Obstacle on : o.get_dLObstacles()) {
                         //(2)r->l.1_o
                         c = new GurobiConstraint();
                         c.setName("r->l.1_o");
@@ -738,7 +1440,7 @@ public class Processor {
                         c.addToRHS(vp.relD_qs.get(o)[1], 1.0);
                         c.setRHSConstant(-1.0);
                         executor.addConstraint(c);
-                        if (!o.getName().equals(on.getName())){
+                        if (!o.getName().equals(on.getName())) {
 
                             //(2)r->l.1_on
                             c = new GurobiConstraint();
@@ -762,7 +1464,6 @@ public class Processor {
                         }
 
 
-
                     }
                     //(3)t->b
                     c = new GurobiConstraint();
@@ -771,7 +1472,7 @@ public class Processor {
                     c.setSense('<');
                     c.addToRHS(vp.relD_qs.get(o)[2], 1.0);
                     executor.addConstraint(c);
-                    for (Obstacle on : o.get_dBObstacles()){
+                    for (Obstacle on : o.get_dBObstacles()) {
                         //(3)t->b.1_o
                         c = new GurobiConstraint();
                         c.setName("t->b.1_o");
@@ -781,7 +1482,7 @@ public class Processor {
                         c.addToRHS(vp.relD_qs.get(o)[2], 1.0);
                         c.setRHSConstant(-1.0);
                         executor.addConstraint(c);
-                        if (!o.getName().equals(on.getName())){
+                        if (!o.getName().equals(on.getName())) {
 
                             //(3)t->b.1_on
                             c = new GurobiConstraint();
@@ -805,7 +1506,6 @@ public class Processor {
                         }
 
 
-
                     }
                     //(4)b->t
                     c = new GurobiConstraint();
@@ -814,7 +1514,7 @@ public class Processor {
                     c.setSense('<');
                     c.addToRHS(vp.relD_qs.get(o)[3], 1.0);
                     executor.addConstraint(c);
-                    for (Obstacle on : o.get_dTObstacles()){
+                    for (Obstacle on : o.get_dTObstacles()) {
                         //(4) b->t.1_o
                         c = new GurobiConstraint();
                         c.setName("b->t.1_o");
@@ -825,7 +1525,7 @@ public class Processor {
                         c.setRHSConstant(-1.0);
                         executor.addConstraint(c);
 
-                        if (!o.getName().equals(on.getName())){
+                        if (!o.getName().equals(on.getName())) {
                             //(4) b->t.1_on
                             c = new GurobiConstraint();
                             c.setName("b->t.1_on");
@@ -849,7 +1549,6 @@ public class Processor {
 
 
                     }
-
 
 
                     //Opposite Relation Recognition
@@ -1000,15 +1699,11 @@ public class Processor {
                             c_distDIFF.addToRHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
 
 
-
-
-
                         }
                     }
 
                     //cnn.4 LHS
                     c_vpOut.addToLHS(vp.inOutCnn_qs.get(o)[0], vp.relObstacles_q.get(o), 1.0);
-
 
 
                     //d_ij:pl.->
@@ -1046,9 +1741,6 @@ public class Processor {
                     executor.addConstraint(c);
 
 
-
-
-
                     //d_ij:pl.<-
                     c = new GurobiConstraint();
                     c.setName("d_ij_pl.<-_MIN");
@@ -1081,8 +1773,6 @@ public class Processor {
                     c.setSense('<');
                     c.addToRHS(vp.detour_q, M);
                     executor.addConstraint(c);
-
-
 
 
                 }
@@ -1272,7 +1962,6 @@ public class Processor {
                     executor.addConstraint(c);
 
 
-
                     //vs_cnn.1
                     c = new GurobiConstraint();
                     c.setName("vs_cnn.1");
@@ -1370,13 +2059,8 @@ public class Processor {
                             c_dvs_detourDIFF.addToRHS(vp.vs_dOmOn_cqs.get(sv).get(o).get(on)[1], 1.0);
 
 
-
-
-
                         }
                     }
-
-
 
 
                     //vs_d_->
@@ -1417,9 +2101,6 @@ public class Processor {
                     c_dvs_detourDIFF.addToRHS(vp.vs_odOut_cqs.get(sv).get(o)[1], 1.0);
 
 
-
-
-
                     //vs_d_<-
                     c = new GurobiConstraint();
                     c.setName("vs_d_<-_MIN");
@@ -1456,7 +2137,6 @@ public class Processor {
 //                    executor.addConstraint(c);
 
                     c_dvs_detourDIFF.addToRHS(vp.vs_odIn_cqs.get(sv).get(o)[1], 1.0);
-
 
 
                 }
@@ -1935,9 +2615,6 @@ public class Processor {
             c_vmDist_detourDIFF.addToRHS(vp.vm_odOut_cqs.get(o)[1], 1.0);
 
 
-
-
-
             //VM_pl.<-
             c = new GurobiConstraint();
             c.setName("VM_pl.<-_MIN");
@@ -1958,8 +2635,6 @@ public class Processor {
             c.setRHSConstant(-M);
             executor.addConstraint(c);
             c_vmDist_detourDIFF.addToRHS(vp.vm_odIn_cqs.get(o)[1], 1.0);
-
-
 
 
             for (Obstacle on : obstacles) {
@@ -2011,8 +2686,6 @@ public class Processor {
                     c_vmDist_detourDIFF.addToRHS(vp.vm_dOmOn_cqs.get(o).get(on)[1], 1.0);
 
 
-
-
                 }
             }
 
@@ -2020,7 +2693,7 @@ public class Processor {
         }
     }
 
-    private void virtualAndBaseOppositeRelation(PseudoBase base, VirtualPointVar vp, Obstacle o, Map<Obstacle,GurobiVariable[]> vpRelObstacle_qs, Map<Obstacle,GurobiVariable[]> vpRelObstacleD_qs, String nickname) {
+    private void virtualAndBaseOppositeRelation(PseudoBase base, VirtualPointVar vp, Obstacle o, Map<Obstacle, GurobiVariable[]> vpRelObstacle_qs, Map<Obstacle, GurobiVariable[]> vpRelObstacleD_qs, String nickname) {
         GurobiConstraint c;
         //1.vm_ul->lr
         c = new GurobiConstraint();
@@ -2177,14 +2850,14 @@ public class Processor {
         c.setSense('<');
         c.addToRHS(vp.relD_qs.get(o)[0], 1.0);
         executor.addConstraint(c);
-        for (Obstacle on : o.get_dRObstacles()){
+        for (Obstacle on : o.get_dRObstacles()) {
             //(1)vm_l->r.1_o
             c = new GurobiConstraint();
             c.setName(nickname + "l->r.1_o");
             c.addToLHS(vpRelObstacleD_qs.get(o)[0], 1.0);
             c.setSense('>');
             c.addToRHS(vp.relD_qs.get(o)[0], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[5] -1.0);
+            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[5] - 1.0);
             executor.addConstraint(c);
 
             if (!o.getName().equals(on.getName())) {
@@ -2194,7 +2867,7 @@ public class Processor {
                 c.addToLHS(vpRelObstacleD_qs.get(on)[0], 1.0);
                 c.setSense('>');
                 c.addToRHS(vp.relD_qs.get(o)[0], 1.0);
-                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[5] -1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[5] - 1.0);
                 executor.addConstraint(c);
 
                 //(1)vm_l->r.2_on
@@ -2219,7 +2892,7 @@ public class Processor {
         c.setSense('<');
         c.addToRHS(vp.relD_qs.get(o)[1], 1.0);
         executor.addConstraint(c);
-        for (Obstacle on : o.get_dLObstacles()){
+        for (Obstacle on : o.get_dLObstacles()) {
             //(2)vm_r->l.1_o
             c = new GurobiConstraint();
             c.setName(nickname + "r->l.1_o");
@@ -2228,7 +2901,7 @@ public class Processor {
             c.addToRHS(vp.relD_qs.get(o)[1], 1.0);
             c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[4] - 1.0);
             executor.addConstraint(c);
-            if (!o.getName().equals(on.getName())){
+            if (!o.getName().equals(on.getName())) {
 
                 //(2)vm_r->l.1_on
                 c = new GurobiConstraint();
@@ -2251,7 +2924,6 @@ public class Processor {
             }
 
 
-
         }
 
         //(3)vm_t->b
@@ -2261,7 +2933,7 @@ public class Processor {
         c.setSense('<');
         c.addToRHS(vp.relD_qs.get(o)[2], 1.0);
         executor.addConstraint(c);
-        for (Obstacle on : o.get_dBObstacles()){
+        for (Obstacle on : o.get_dBObstacles()) {
             //(3)vm_t->b.1_o
             c = new GurobiConstraint();
             c.setName(nickname + "t->b.1_o");
@@ -2270,7 +2942,7 @@ public class Processor {
             c.addToRHS(vp.relD_qs.get(o)[2], 1.0);
             c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[7] - 1.0);
             executor.addConstraint(c);
-            if (!o.getName().equals(on.getName())){
+            if (!o.getName().equals(on.getName())) {
 
                 //(3)vm_t->b.1_on
                 c = new GurobiConstraint();
@@ -2293,7 +2965,6 @@ public class Processor {
             }
 
 
-
         }
         //(4)vm_b->t
         c = new GurobiConstraint();
@@ -2302,7 +2973,7 @@ public class Processor {
         c.setSense('<');
         c.addToRHS(vp.relD_qs.get(o)[3], 1.0);
         executor.addConstraint(c);
-        for (Obstacle on : o.get_dTObstacles()){
+        for (Obstacle on : o.get_dTObstacles()) {
             //(4) vm_b->t.1_o
             c = new GurobiConstraint();
             c.setName(nickname + "b->t.1_o");
@@ -2312,7 +2983,7 @@ public class Processor {
             c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[6] - 1.0);
             executor.addConstraint(c);
 
-            if (!o.getName().equals(on.getName())){
+            if (!o.getName().equals(on.getName())) {
                 //(4)vm_b->t.1_on
                 c = new GurobiConstraint();
                 c.setName(nickname + "b->t.1_on");
@@ -2968,7 +3639,7 @@ public class Processor {
                 2: o.ur->vi+1
                 3: o.lr->vi+1
                  */
-                vp.inCorner_qs.put(o, buildBinaryVar(o.getName() + "->v" + (i+1) + "_inCorner_qs_", 4));
+                vp.inCorner_qs.put(o, buildBinaryVar(o.getName() + "->v" + (i + 1) + "_inCorner_qs_", 4));
 
                 /*
                 dOut_cqs
@@ -3295,7 +3966,6 @@ public class Processor {
                     vs_inOutCnn_qsMap.put(o, buildBinaryVar("v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_inCnn_q_", 2));
 
 
-
                     vs_dOmOn_cqsMap.put(o, vs_dOn_cqsMap);
 
                     vs_odOut_cqsMap.put(o, buildIntVar(0, M, "v" + i + ";" + o.getName() + ";" + sv.getName() + "_vs_odOUT_cqs_", 2));
@@ -3417,27 +4087,27 @@ public class Processor {
 
     public OppositeType relationDetermineRegardOs(ArrayList<Obstacle> relevantObstacles, PseudoBase cur_n, PseudoBase other_n) {
 
-        OppositeType type = OppositeType.NoOppositeRelation;
+        OppositeType type = OppositeType.NoDetour;
         for (Obstacle cur_o : relevantObstacles) {
             for (Obstacle other_o : relevantObstacles) {
                 //topL to bottomR
                 if (cur_o.topL_bottomR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[4] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[7] == 1) {
-                    type = OppositeType.topLtoBottomR;
+                    type = OppositeType.ul_lr;
                     break;
                 }
                 //bottomR to topL
                 if (cur_o.bottomR_topL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[7] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[4] == 1) {
-                    type = OppositeType.bottomRtoTopL;
+                    type = OppositeType.lr_ul;
                     break;
                 }
                 //topR to bottomL
                 if (cur_o.topR_bottomL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[5] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[6] == 1) {
-                    type = OppositeType.topRtoBottomL;
+                    type = OppositeType.ur_ll;
                     break;
                 }
                 //bottomL to topR
                 if (cur_o.bottomL_topR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[6] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[5] == 1) {
-                    type = OppositeType.bottomLtoTopR;
+                    type = OppositeType.ll_ur;
                 }
 
 
@@ -3696,22 +4366,15 @@ public class Processor {
      * @param slaves    ArrayList of slaves
      * @param obstacles ArrayList of obstacles
      */
-    public void pseudoBaseVariablesDetermination(PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles, int minDist) {
+    public void pseudoBaseVariablesDetermination(PseudoBase master, ArrayList<PseudoBase> slaves, ArrayList<Obstacle> obstacles) {
 
         for (Obstacle o : obstacles) {
-            int minX = o.getMinX() - minDist;
-            int maxX = o.getMaxX() + minDist;
-            int minY = o.getMinY() - minDist;
-            int maxY = o.getMaxY() + minDist;
-            o.setMinX(minX);
-            o.setMaxX(maxX);
-            o.setMinY(minY);
-            o.setMaxY(maxY);
 
-            basicBinaryVariables(master, o, slaves);
+            basicBinaryVariables(master, o);
             for (PseudoBase slave : slaves) {
-                basicBinaryVariables(slave, o, slaves);
+                basicBinaryVariables(slave, o);
             }
+
 
             /*
             oo_dir
@@ -3740,52 +4403,24 @@ public class Processor {
                     }
 
                     //OdL:
-                    if (o.odL(other_o)){
+                    if (o.odL(other_o)) {
                         o.addTodLObstacles(other_o);
                     }
                     //OdR:
-                    if (o.odR(other_o)){
+                    if (o.odR(other_o)) {
                         o.addTodRObstacles(other_o);
                     }
                     //OdT:
-                    if (o.odT(other_o)){
+                    if (o.odT(other_o)) {
                         o.addTodTObstacles(other_o);
                     }
                     //OdB:
-                    if (o.odB(other_o)){
+                    if (o.odB(other_o)) {
                         o.addTodBObstacles(other_o);
                     }
 
 
                 } else continue;
-            }
-        }
-
-        /*
-        update map_oo_dist
-         */
-        for (Obstacle this_o : obstacles) {
-            for (Obstacle other_o : obstacles) {
-                int[] dist = new int[8];
-                //|minX - minX|
-                dist[0] = Math.abs(this_o.getMinX() - other_o.getMinX());
-                //|minX - maxX|
-                dist[1] = Math.abs(this_o.getMinX() - other_o.getMaxX());
-                //|maxX - minX|
-                dist[2] = Math.abs(this_o.getMaxX() - other_o.getMinX());
-                //|maxX - maxX|
-                dist[3] = Math.abs(this_o.getMaxX() - other_o.getMaxX());
-
-                //|minY - minY|
-                dist[4] = Math.abs(this_o.getMinY() - other_o.getMinY());
-                //|minY - maxY|
-                dist[5] = Math.abs(this_o.getMinY() - other_o.getMaxY());
-                //|maxY - minY|
-                dist[6] = Math.abs(this_o.getMaxY() - other_o.getMinY());
-                //|maxY - maxY|
-                dist[7] = Math.abs(this_o.getMaxY() - other_o.getMaxY());
-
-                this_o.addToMap_oo_dist(other_o, dist);
             }
         }
 
@@ -3798,7 +4433,7 @@ public class Processor {
      * @param base given point
      * @param o    given obstacle
      */
-    private void basicBinaryVariables(PseudoBase base, Obstacle o, ArrayList<PseudoBase> bases) {
+    private void basicBinaryVariables(PseudoBase base, Obstacle o) {
 
         /*
         oDir_q: UL, UR, LR, LL, L, R, T, B
