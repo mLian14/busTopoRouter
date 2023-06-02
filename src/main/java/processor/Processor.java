@@ -114,160 +114,7 @@ public class Processor {
 
         }
 
-        for (Obstacle o : obstacles) {
-            for (Obstacle on : obstacles) {
-                if (!o.getName().equals(on.getName())) {
-                    int[] distMin = new int[16];
-                    int[] distXY = new int[16];
-
-                    /*
-                    0: ll->ll
-                    1: ll->ul
-                    2: ll->ur
-                    3: ll->lr
-                     */
-                    PseudoBase startCorner = o.getLowerLeft();
-                    //0: ll->ll
-                    PseudoBase endCorner = on.getLowerLeft();
-//                    System.out.println(o.getName() + ".ll->" + on.getName() +".ur");
-//                    System.out.println(Arrays.toString(startCorner.getPseudo_oRel_qs().get(o)));
-//                    System.out.println(Arrays.toString(startCorner.getPseudo_oRel_qs().get(on)));
-//                    System.out.println(Arrays.toString(endCorner.getPseudo_oRel_qs().get(o)));
-//                    System.out.println(Arrays.toString(endCorner.getPseudo_oRel_qs().get(on)));
-                    ArrayList<PseudoBase> bypassBases = new ArrayList<>();
-                    int[] min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-//                    System.out.println(min_xy[0] + " " + min_xy[1]);
-//                    if (bypassBases.size() != 0){
-//                        for (PseudoBase base : bypassBases){
-//                            System.out.print(base.getName() +  "||");
-//                        }
-//                        System.out.println();
-//                    }
-                    distMin[0] = min_xy[0];
-                    distXY[0] = min_xy[1];
-                    //1: ll->ul
-                    endCorner = on.getUpperLeft();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[1] = min_xy[0];
-                    distXY[1] = min_xy[1];
-                    //2: ll->ur
-                    endCorner = on.getUpperRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[2] = min_xy[0];
-                    distXY[2] = min_xy[1];
-                    //3: ll->lr
-                    endCorner = on.getLowerRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[3] = min_xy[0];
-                    distXY[3] = min_xy[1];
-
-                    /*
-                    4: ul->ll
-                    5: ul->ul
-                    6: ul->ur
-                    7: ul->lr
-                     */
-                    startCorner = o.getUpperLeft();
-                    //4: ul->ll
-                    endCorner = on.getLowerLeft();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[4] = min_xy[0];
-                    distXY[4] = min_xy[1];
-                    //5: ul->ul
-                    endCorner = on.getUpperLeft();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[5] = min_xy[0];
-                    distXY[5] = min_xy[1];
-                    //6: ul->ur
-                    endCorner = on.getUpperRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[6] = min_xy[0];
-                    distXY[6] = min_xy[1];
-                    //7: ul->lr
-                    endCorner = on.getLowerRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[7] = min_xy[0];
-                    distXY[7] = min_xy[1];
-
-                    /*
-                    8: ur->ll
-                    9: ur->ul
-                    10: ur->ur
-                    11: ur->lr
-                     */
-                    startCorner = o.getUpperRight();
-                    //8: ur->ll
-                    endCorner = on.getLowerLeft();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[8] = min_xy[0];
-                    distXY[8] = min_xy[1];
-                    //9: ur->ul
-                    endCorner = on.getUpperLeft();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[9] = min_xy[0];
-                    distXY[9] = min_xy[1];
-                    //10: ur->ur
-                    endCorner = on.getUpperRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[10] = min_xy[0];
-                    distXY[10] = min_xy[1];
-                    //11: ur->lr
-                    endCorner = on.getLowerRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[11] = min_xy[0];
-                    distXY[11] = min_xy[1];
-
-                    /*
-                    12: lr->ll
-                    13: lr->ul
-                    14: lr->ur
-                    15: lr->lr
-                     */
-                    startCorner = o.getLowerRight();
-                    //12: lr->ll
-                    endCorner = on.getLowerLeft();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[12] = min_xy[0];
-                    distXY[12] = min_xy[1];
-                    //13: lr->ul
-                    endCorner = on.getUpperLeft();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[13] = min_xy[0];
-                    distXY[13] = min_xy[1];
-                    //14: lr->ur
-                    endCorner = on.getUpperRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[14] = min_xy[0];
-                    distXY[14] = min_xy[1];
-                    //15: lr->lr
-                    endCorner = on.getLowerRight();
-                    bypassBases = new ArrayList<>();
-                    min_xy = cornerOppositeRelationDetection(o, on, startCorner, endCorner, bypassBases);
-                    distMin[15] = min_xy[0];
-                    distXY[15] = min_xy[1];
-
-
-                    o.addToMap_oo_distMin(on, distMin);
-                    o.addToMap_oo_distXY(on, distXY);
-
-
-                }
-            }
-        }
+        cornerToCorner(obstacles);
 
 
         for (PseudoBase sv : slaves) {
@@ -601,7 +448,152 @@ public class Processor {
         return output;
     }
 
-    private int[] cornerOppositeRelationDetection(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
+    private void cornerToCorner(ArrayList<Obstacle> obstacles) {
+        for (Obstacle o : obstacles) {
+            for (Obstacle on : obstacles) {
+                if (!o.getName().equals(on.getName())) {
+                    int[] distMin = new int[16];
+                    int[] distXY = new int[16];
+
+                    /*
+                    0: ll->ll
+                    1: ll->ul
+                    2: ll->ur
+                    3: ll->lr
+                     */
+                    PseudoBase startCorner = o.getLowerLeft();
+                    //0: ll->ll
+                    PseudoBase endCorner = on.getLowerLeft();
+                    ArrayList<PseudoBase> bypassBases = new ArrayList<>();
+                    int[] min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[0] = min_xy[0];
+                    distXY[0] = min_xy[1];
+                    //1: ll->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[1] = min_xy[0];
+                    distXY[1] = min_xy[1];
+                    //2: ll->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[2] = min_xy[0];
+                    distXY[2] = min_xy[1];
+                    //3: ll->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[3] = min_xy[0];
+                    distXY[3] = min_xy[1];
+
+                    /*
+                    4: ul->ll
+                    5: ul->ul
+                    6: ul->ur
+                    7: ul->lr
+                     */
+                    startCorner = o.getUpperLeft();
+                    //4: ul->ll
+                    endCorner = on.getLowerLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[4] = min_xy[0];
+                    distXY[4] = min_xy[1];
+                    //5: ul->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[5] = min_xy[0];
+                    distXY[5] = min_xy[1];
+                    //6: ul->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[6] = min_xy[0];
+                    distXY[6] = min_xy[1];
+                    //7: ul->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[7] = min_xy[0];
+                    distXY[7] = min_xy[1];
+
+                    /*
+                    8: ur->ll
+                    9: ur->ul
+                    10: ur->ur
+                    11: ur->lr
+                     */
+                    startCorner = o.getUpperRight();
+                    //8: ur->ll
+                    endCorner = on.getLowerLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[8] = min_xy[0];
+                    distXY[8] = min_xy[1];
+                    //9: ur->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[9] = min_xy[0];
+                    distXY[9] = min_xy[1];
+                    //10: ur->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[10] = min_xy[0];
+                    distXY[10] = min_xy[1];
+                    //11: ur->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[11] = min_xy[0];
+                    distXY[11] = min_xy[1];
+
+                    /*
+                    12: lr->ll
+                    13: lr->ul
+                    14: lr->ur
+                    15: lr->lr
+                     */
+                    startCorner = o.getLowerRight();
+                    //12: lr->ll
+                    endCorner = on.getLowerLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[12] = min_xy[0];
+                    distXY[12] = min_xy[1];
+                    //13: lr->ul
+                    endCorner = on.getUpperLeft();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[13] = min_xy[0];
+                    distXY[13] = min_xy[1];
+                    //14: lr->ur
+                    endCorner = on.getUpperRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[14] = min_xy[0];
+                    distXY[14] = min_xy[1];
+                    //15: lr->lr
+                    endCorner = on.getLowerRight();
+                    bypassBases = new ArrayList<>();
+                    min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
+                    distMin[15] = min_xy[0];
+                    distXY[15] = min_xy[1];
+
+
+                    o.addToMap_oo_distMin(on, distMin);
+                    o.addToMap_oo_distXY(on, distXY);
+
+
+                }
+            }
+        }
+    }
+
+    private int[] cornerDistanceCalculation(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
 
 
         OppositeType type = null;
