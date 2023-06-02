@@ -465,6 +465,7 @@ public class Processor {
                     //0: ll->ll
                     PseudoBase endCorner = on.getLowerLeft();
                     ArrayList<PseudoBase> bypassBases = new ArrayList<>();
+
                     int[] min_xy = cornerDistanceCalculation(o, on, startCorner, endCorner, bypassBases);
                     distMin[0] = min_xy[0];
                     distXY[0] = min_xy[1];
@@ -1151,7 +1152,7 @@ public class Processor {
         executor.addConstraint(c_branchDiff);
 
 
-        //sv.2
+        //vp->Slave connection
         for (PseudoBase sv : slaves) {
             c = new GurobiConstraint();
             for (VirtualPointVar vp : virtualPointVars) {
@@ -1168,50 +1169,100 @@ public class Processor {
 
         for (VirtualPointVar vp : virtualPointVars) {
 
-            //cnn.4
-            GurobiQuadConstraint c_vpOut = new GurobiQuadConstraint();
-            c_vpOut.setName("cnn.4");
-            c_vpOut.setSense('=');
-            c_vpOut.addToRHS(vp.detour_q, 1.0);
-            executor.addConstraint(c_vpOut);
+            /*
+            non-overlapping and opposite relations recognition
+             */
+            for (Obstacle o : obstacles) {
+                buildCons_nonOverlapAndOppositeRelation(minDist, vp, o);
+            }
+
 
             /*
-            Obstacle relative rgd. NEXT virtualPoint
+            Index 0 -- vps.size() - 1:
+            Connection with next virtualPoint
              */
-            //todo: vv_dist
-            GurobiConstraint c_distMIN = new GurobiConstraint();
-            c_distMIN.setName("dist_MIN");
-            c_distMIN.addToLHS(vp.dist_cqs[0], 1.0);
-            c_distMIN.setSense('>');
-            c_distMIN.addToRHS(vp.detour_q, M);
-            c_distMIN.setRHSConstant(-M);
-            executor.addConstraint(c_distMIN);
-            GurobiConstraint c_distDIFF = new GurobiConstraint();
-            c_distDIFF.setName("dist_DIFF");
-            c_distDIFF.addToLHS(vp.dist_cqs[1], 1.0);
-            c_distDIFF.setSense('>');
-            c_distDIFF.addToRHS(vp.detour_q, M);
-            c_distDIFF.setRHSConstant(-M);
-            executor.addConstraint(c_distDIFF);
+            if (virtualPointVars.indexOf(vp) < virtualPointVars.size() - 1) {
+                vpN = virtualPointVars.get(virtualPointVars.indexOf(vp) + 1);
 
 
-            for (Obstacle o : obstacles) {
-
-                //non-overlapping and opposite relations recognition
-                buildCons_nonOverlapAndOppositeRelation(minDist, vp, o);
-
+                //add To bus length:
+                c_busMin.addToRHS(vp.dist_cqs[0], 1.0);
+                c_busDiff.addToRHS(vp.dist_cqs[1], 1.0);
 
                 /*
-                Connection with next virtualPoint
+                d_ij without Detour
+                VVVV
                  */
-                if (virtualPointVars.indexOf(vp) < virtualPointVars.size() - 1) {
-                    vpN = virtualPointVars.get(virtualPointVars.indexOf(vp) + 1);
+                c = new GurobiConstraint();
+                c.setName("dvv_MIN");
+                c.addToLHS(vp.dist_cqs[0], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.aux_dist_iqs[2], 1.0);
+                executor.addConstraint(c);
+                c = new GurobiConstraint();
+                c.setName("dvv_XY");
+                c.addToLHS(vp.dist_cqs[1], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.aux_dist_iqs[3], 1.0);
+                executor.addConstraint(c);
 
-                    c_distMIN.addToRHS(vp.odOut_cqs.get(o)[0], 1.0);
-                    c_distDIFF.addToRHS(vp.odOut_cqs.get(o)[1], 1.0);
+                auxiliaryDistCons_VarVar(vp.x, vpN.x, vp.y, vpN.y, "d_ij_woDetour" + virtualPointVars.indexOf(vp), vp.aux_dist_iqs, vp.auxQ_dist);
 
-                    c_distMIN.addToRHS(vp.odIn_cqs.get(o)[0], 1.0);
-                    c_distDIFF.addToRHS(vp.odIn_cqs.get(o)[1], 1.0);
+                /*
+                AAAA
+                d_ij
+                 */
+
+                /*
+                 Obstacle relative rgd. NEXT virtualPoint
+                 */
+                //todo: vv_dist
+                GurobiConstraint c_distMIN = new GurobiConstraint();
+                c_distMIN.setName("dist_MIN");
+                c_distMIN.addToLHS(vp.dist_cqs[0], 1.0);
+                c_distMIN.setSense('>');
+                c_distMIN.addToRHS(vp.detour_q, M);
+                c_distMIN.setRHSConstant(-M);
+                executor.addConstraint(c_distMIN);
+                GurobiConstraint c_distXY = new GurobiConstraint();
+                c_distXY.setName("dist_XY");
+                c_distXY.addToLHS(vp.dist_cqs[1], 1.0);
+                c_distXY.setSense('>');
+                c_distXY.addToRHS(vp.detour_q, M);
+                c_distXY.setRHSConstant(-M);
+                executor.addConstraint(c_distXY);
+
+                //detour_triggering_aux.2: if one obstacle is relevant => detour trigger
+                GurobiConstraint c_detour_geq = new GurobiConstraint();
+                c_detour_geq.setName("aux.2_geq");
+                c_detour_geq.addToLHS(vp.detour_q, obstacles.size());
+                c_detour_geq.setSense('>');
+                executor.addConstraint(c_detour_geq);
+                GurobiConstraint c_detour_leq = new GurobiConstraint();
+                c_detour_leq.setName("aux.2_leq");
+                c_detour_leq.addToLHS(vp.detour_q, 1.0);
+                c_detour_leq.setSense('<');
+                executor.addConstraint(c_detour_leq);
+                //cnnRules.5: if detour => startPoint should connect one of the relevant obstacle
+                GurobiQuadConstraint c_svpToObstacle = new GurobiQuadConstraint();
+                c_svpToObstacle.setName("cnnRules.5");
+                c_svpToObstacle.setSense('=');
+                c_svpToObstacle.addToRHS(vp.detour_q, 1.0);
+                executor.addConstraint(c_svpToObstacle);
+                //cnnRules.6: if detour => one of the relevant obstacle should connect to endPoint
+                GurobiQuadConstraint c_obstacleToEvp = new GurobiQuadConstraint();
+                c_obstacleToEvp.setName("cnnRules.6");
+                c_obstacleToEvp.setSense('=');
+                c_obstacleToEvp.addToRHS(vp.detour_q, 1.0);
+                executor.addConstraint(c_obstacleToEvp);
+
+                for (Obstacle o : obstacles) {
+                    c_detour_geq.addToRHS(vp.relObstacles_q.get(o), 1.0);
+                    c_detour_leq.addToRHS(vp.relObstacles_q.get(o), 1.0);
+
+                    c_svpToObstacle.addToLHS(vp.inOutCnn_qs.get(o)[0], vp.relObstacles_q.get(o), 1.0);
+                    c_obstacleToEvp.addToLHS(vp.inOutCnn_qs.get(o)[1], vp.relObstacles_q.get(o), 1.0);
+
 
 
                     //(1)ul->lr
@@ -1543,9 +1594,9 @@ public class Processor {
                     }
 
 
-                    //Opposite Relation Recognition
+                    //Opposite Relation Recognition: aux.1
                     c = new GurobiConstraint();
-                    c.setName("aux.1.1");
+                    c.setName("aux.1");
                     c.addToLHS(vp.relObstacles_qs.get(o)[0], 1.0);
                     c.addToLHS(vp.relObstacles_qs.get(o)[1], 1.0);
                     c.addToLHS(vp.relObstacles_qs.get(o)[2], 1.0);
@@ -1557,20 +1608,6 @@ public class Processor {
                     c.setSense('<');
                     c.addToRHS(vp.relObstacles_q.get(o), 8.0);
                     executor.addConstraint(c);
-//                    c = new GurobiConstraint();
-//                    c.setName("aux.1.2");
-//                    c.addToLHS(vp.relObstacles_qs.get(o)[0], 1.0);
-//                    c.addToLHS(vp.relObstacles_qs.get(o)[1], 1.0);
-//                    c.addToLHS(vp.relObstacles_qs.get(o)[2], 1.0);
-//                    c.addToLHS(vp.relObstacles_qs.get(o)[3], 1.0);
-//                    c.addToLHS(vp.relObstaclesD_qs.get(o)[0], 1.0);
-//                    c.addToLHS(vp.relObstaclesD_qs.get(o)[1], 1.0);
-//                    c.addToLHS(vp.relObstaclesD_qs.get(o)[2], 1.0);
-//                    c.addToLHS(vp.relObstaclesD_qs.get(o)[3], 1.0);
-//                    c.setSense('>');
-//                    c.addToRHS(vp.relObstacles_q.get(o), 1.0);
-//                    executor.addConstraint(c);
-
 
                     /*
                     Connection Rules:
@@ -1586,12 +1623,15 @@ public class Processor {
                     c.addToRHS(vp.relObstacles_q.get(o), 1.0);
                     executor.addConstraint(c);
 
-                    //outCorner
+                    //outCorner: vi -> o
                     buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[0], vp.outCorner_qs.get(o), vp.rel_qs.get(o), vp.relD_qs.get(o));
-                    //inCorner
+                    //inCorner: o -> vi
                     buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[1], vp.inCorner_qs.get(o), vpN.rel_qs.get(o), vpN.relD_qs.get(o));
 
-                    //cnnRules.1
+
+
+
+                    //cnnRules.1: q_om->om = 0
                     c = new GurobiConstraint();
                     c.setName("cnnRules.1");
                     c.addToLHS(vp.omOnCnn_q.get(o).get(o), 1.0);
@@ -1599,182 +1639,160 @@ public class Processor {
                     c.setRHSConstant(0.0);
                     executor.addConstraint(c);
 
-                    //cnn.3_1
-                    GurobiQuadConstraint c_outCnn = new GurobiQuadConstraint();
-                    c_outCnn.setName("cnn.3_1");
-                    c_outCnn.addToLHS(vp.relObstacles_q.get(o), 1.0);
-                    c_outCnn.setSense('=');
-                    c_outCnn.addToRHS(vp.inOutCnn_qs.get(o)[1], 1.0);
-                    executor.addConstraint(c_outCnn);
+                    //cnnRules.3: om relevant => connect to one relevant on or endpoint
+                    GurobiQuadConstraint c_obstacleOutCnn = new GurobiQuadConstraint();
+                    c_obstacleOutCnn.setName("cnnRules.3");
+                    c_obstacleOutCnn.addToLHS(vp.relObstacles_q.get(o), 1.0);
+                    c_obstacleOutCnn.setSense('=');
+                    c_obstacleOutCnn.addToRHS(vp.inOutCnn_qs.get(o)[1], 1.0);
+                    executor.addConstraint(c_obstacleOutCnn);
 
 
-                    //cnn.3_2
-                    GurobiQuadConstraint c_inCnn = new GurobiQuadConstraint();
-                    c_inCnn.setName("cnn.3_2");
-                    c_inCnn.addToLHS(vp.relObstacles_q.get(o), 1.0);
-                    c_inCnn.setSense('=');
-                    c_inCnn.addToRHS(vp.inOutCnn_qs.get(o)[0], 1.0);
-                    executor.addConstraint(c_inCnn);
-                    //cnn.5_1
-                    GurobiConstraint c_CnnAux1 = new GurobiConstraint();
-                    c_CnnAux1.setName("cnn.5_1");
-                    c_CnnAux1.addToLHS(vp.relObstacles_q.get(o), 1.0);
-                    c_CnnAux1.setSense('>');
-                    executor.addConstraint(c_CnnAux1);
-                    //cnn.5_2
-                    GurobiConstraint c_CnnAux2 = new GurobiConstraint();
-                    c_CnnAux2.setName("cnn.5_2");
-                    c_CnnAux2.addToLHS(vp.relObstacles_q.get(o), 1.0);
-                    c_CnnAux2.setSense('>');
-                    executor.addConstraint(c_CnnAux2);
+                    //cnnRules.4: om relevant => be connected by one relevant on or startpoint
+                    GurobiQuadConstraint c_obstacleInCnn = new GurobiQuadConstraint();
+                    c_obstacleInCnn.setName("cnnRules.4");
+                    c_obstacleInCnn.addToLHS(vp.relObstacles_q.get(o), 1.0);
+                    c_obstacleInCnn.setSense('=');
+                    c_obstacleInCnn.addToRHS(vp.inOutCnn_qs.get(o)[0], 1.0);
+                    executor.addConstraint(c_obstacleInCnn);
+
+
 
 
                     //Om ----> On
                     for (Obstacle on : obstacles) {
                         if (!o.getName().equals(on.getName())) {
 
-                            c_CnnAux1.addToRHS(vp.omOnCnn_q.get(o).get(on), 1.0);
-                            c_CnnAux2.addToRHS(vp.omOnCnn_q.get(on).get(o), 1.0);
-
-
-                            //cnn.2
+                            //cornerCnn: q_om->on = sum q_om.corner->on.corner
                             c = new GurobiConstraint();
-                            c.setName("cnn.2");
+                            c.setName("cornerCnn");
+                            c.addToLHS(vp.omOnCnn_q.get(o).get(on), 1.0);
+                            c.setSense('=');
+                            for (int i = 0; i < vp.omOnCorner_qs.get(o).get(on).length; ++i){
+                                c.addToRHS(vp.omOnCorner_qs.get(o).get(on)[i], 1.0);
+                            }
+                            executor.addConstraint(c);
+
+                            //cnnRules.2: q_om->on + q_on->om <= 1
+                            c = new GurobiConstraint();
+                            c.setName("cnnRules.2");
                             c.addToLHS(vp.omOnCnn_q.get(o).get(on), 1.0);
                             c.addToLHS(vp.omOnCnn_q.get(on).get(o), 1.0);
                             c.setSense('<');
                             c.setRHSConstant(1.0);
                             executor.addConstraint(c);
 
-                            //cnn.3_1
-                            c_outCnn.addToRHS(vp.omOnCnn_q.get(o).get(on), vp.relObstacles_q.get(on), 1.0);
-                            //cnn.3_2
-                            c_inCnn.addToRHS(vp.omOnCnn_q.get(on).get(o), vp.relObstacles_q.get(o), 1.0);
+                            //cnnRules.3
+                            c_obstacleOutCnn.addToRHS(vp.omOnCnn_q.get(o).get(on), vp.relObstacles_q.get(on), 1.0);
+                            //cnnRules.4
+                            c_obstacleInCnn.addToRHS(vp.omOnCnn_q.get(on).get(o), vp.relObstacles_q.get(o), 1.0);
+
+                            for (int cnt = 0; cnt < vp.omOnCorner_qs.get(o).get(on).length; ++cnt){
+                                //pathLength.2:Min
+                                c = new GurobiConstraint();
+                                c.setName("pathLength.2:Min");
+                                c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[0], 1.0);
+                                c.setSense('>');
+                                c.addToRHS(vp.omOnCorner_qs.get(o).get(on)[cnt], M);
+                                c.setRHSConstant(o.getMap_oo_distMin().get(on)[cnt] - M);
+                                executor.addConstraint(c);
+                                //pathLength.2:XY
+                                c = new GurobiConstraint();
+                                c.setName("pathLength.2:XY");
+                                c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
+                                c.setSense('>');
+                                c.addToRHS(vp.omOnCorner_qs.get(o).get(on)[cnt], M);
+                                c.setRHSConstant(o.getMap_oo_distXY().get(on)[cnt] - M);
+                                executor.addConstraint(c);
+                            }
 
 
-                            //d_ij:pl.m->n
-                            c = new GurobiConstraint();
-                            c.setName("d_ij:pl.m->n_MIN");
-                            c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[0], 1.0);
-                            c.setSense('>');
-                            c.addToRHS(vp.aux_dOmOn_iqs.get(o).get(on)[2], 1.0);
-                            c.addToRHS(vp.omOnCnn_q.get(o).get(on), M);
-                            c.setRHSConstant(-M);
-                            executor.addConstraint(c);
-                            //d_ij:pl.m->n_MIN<= M
+
+                            //todo:d_ij:pl.m->n_MIN<= M
                             c = new GurobiConstraint();
                             c.setName("d_ij:pl.m->n_MIN<=M");
                             c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[0], 1.0);
                             c.setSense('<');
-                            c.addToRHS(vp.detour_q, M);
+                            c.addToRHS(vp.omOnCnn_q.get(o).get(on), M);
                             executor.addConstraint(c);
 
                             c_distMIN.addToRHS(vp.dOmOn_cqs.get(o).get(on)[0], 1.0);
 
-                            c = new GurobiConstraint();
-                            c.setName("d_ij:pl.m->n:DIFF");
-                            c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
-                            c.setSense('>');
-                            c.addToRHS(vp.aux_dOmOn_iqs.get(o).get(on)[3], 1.0);
-                            c.addToRHS(vp.omOnCnn_q.get(o).get(on), M);
-                            c.setRHSConstant(-M);
-                            executor.addConstraint(c);
-                            //d_ij:pl.m->n_DIFF<=M
+
+                            //todo: d_ij:pl.m->n_DIFF<=M
                             c = new GurobiConstraint();
                             c.setName("d_ij:pl.m->n_DIFF<=M");
                             c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
                             c.setSense('<');
-                            c.addToRHS(vp.detour_q, M);
+                            c.addToRHS(vp.omOnCnn_q.get(o).get(on), M);
                             executor.addConstraint(c);
 
 
-                            c_distDIFF.addToRHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
+                            c_distXY.addToRHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
 
 
                         }
                     }
 
-                    //cnn.4 LHS
-                    c_vpOut.addToLHS(vp.inOutCnn_qs.get(o)[0], vp.relObstacles_q.get(o), 1.0);
+                    //dvi-> and d->v_i+1
+                    for (int cnt = 0; cnt < o.getBaseArray().size(); ++cnt){
+                        PseudoBase corner = o.getBaseArray().get(cnt);
+                        //pathLength.1:Min
+                        c = new GurobiConstraint();
+                        c.setName("pathLength.1:Min");
+                        c.addToLHS(vp.dOut_cqs[0], 1.0);
+                        c.setSense('>');
+                        c.addToRHS(vp.aux_dOutCorner_iqs.get(o).get(corner)[2], 1.0);
+                        c.addToRHS(vp.outCorner_qs.get(o)[cnt], M);
+                        c.setRHSConstant(-M);
+                        executor.addConstraint(c);
+                        //pathLength.1:XY
+                        c = new GurobiConstraint();
+                        c.setName("pathLength.1:XY");
+                        c.addToLHS(vp.dOut_cqs[1], 1.0);
+                        c.setSense('>');
+                        c.addToRHS(vp.aux_dOutCorner_iqs.get(o).get(corner)[3], 1.0);
+                        c.addToRHS(vp.outCorner_qs.get(o)[cnt], M);
+                        c.setRHSConstant(-M);
+                        executor.addConstraint(c);
+
+                        auxiliaryDistCons_VarBase(vp.x, vp.y, corner, "dv_i->", vp.aux_dOutCorner_iqs.get(o).get(corner), vp.auxQ_dOutCorner.get(o).get(corner));
+
+                        //pathLength.3:Min
+                        c = new GurobiConstraint();
+                        c.setName("pathLength.3:Min");
+                        c.addToLHS(vp.dIn_cqs[0], 1.0);
+                        c.setSense('>');
+                        c.addToRHS(vp.aux_dInCorner_iqs.get(o).get(corner)[2], 1.0);
+                        c.addToRHS(vp.inCorner_qs.get(o)[cnt], M);
+                        c.setRHSConstant(-M);
+                        executor.addConstraint(c);
+                        //pathLength.3:XY
+                        c = new GurobiConstraint();
+                        c.setName("pathLength.3:XY");
+                        c.addToLHS(vp.dIn_cqs[0], 1.0);
+                        c.setSense('>');
+                        c.addToRHS(vp.aux_dInCorner_iqs.get(o).get(corner)[3], 1.0);
+                        c.addToRHS(vp.inCorner_qs.get(o)[cnt], M);
+                        c.setRHSConstant(-M);
+                        executor.addConstraint(c);
+
+                        auxiliaryDistCons_VarBase(vpN.x, vpN.y, corner, "d->v_i+1", vp.aux_dInCorner_iqs.get(o).get(corner), vp.auxQ_dInCorner.get(o).get(corner));
 
 
-                    //d_ij:pl.->
-                    c = new GurobiConstraint();
-                    c.setName("d_ij_pl.->_MIN");
-                    c.addToLHS(vp.odOut_cqs.get(o)[0], 1.0);
-                    c.setSense('>');
-                    c.addToRHS(vp.aux_dOut_iqs.get(o)[2], 1.0);
-                    c.addToRHS(vp.inOutCnn_qs.get(o)[0], M);
-                    c.setRHSConstant(-M);
-                    executor.addConstraint(c);
-                    //todo:pl.->MIN<=M
-                    c = new GurobiConstraint();
-                    c.setName("pl.->MIN<=M");
-                    c.addToLHS(vp.odOut_cqs.get(o)[0], 1.0);
-                    c.setSense('<');
-                    c.addToRHS(vp.detour_q, M);
-                    executor.addConstraint(c);
 
+                    }
+                    c_distMIN.addToRHS(vp.dOut_cqs[0], 1.0);
+                    c_distMIN.addToRHS(vp.dIn_cqs[0], 1.0);
+                    c_distXY.addToRHS(vp.dOut_cqs[1], 1.0);
+                    c_distXY.addToRHS(vp.dIn_cqs[1], 1.0);
 
-                    c = new GurobiConstraint();
-                    c.setName("d_ij_pl.->_DIFF");
-                    c.addToLHS(vp.odOut_cqs.get(o)[1], 1.0);
-                    c.setSense('>');
-                    c.addToRHS(vp.aux_dOut_iqs.get(o)[3], 1.0);
-                    c.addToRHS(vp.inOutCnn_qs.get(o)[0], M);
-                    c.setRHSConstant(-M);
-                    executor.addConstraint(c);
-                    //todo: pl.->DIFF<=M
-                    c = new GurobiConstraint();
-                    c.setName("pl.->DIFF<=M");
-                    c.addToLHS(vp.odOut_cqs.get(o)[1], 1.0);
-                    c.setSense('<');
-                    c.addToRHS(vp.detour_q, M);
-                    executor.addConstraint(c);
-
-
-                    //d_ij:pl.<-
-                    c = new GurobiConstraint();
-                    c.setName("d_ij_pl.<-_MIN");
-                    c.addToLHS(vp.odIn_cqs.get(o)[0], 1.0);
-                    c.setSense('>');
-                    c.addToRHS(vp.aux_dIn_iqs.get(o)[2], 1.0);
-                    c.addToRHS(vp.inOutCnn_qs.get(o)[1], M);
-                    c.setRHSConstant(-M);
-                    executor.addConstraint(c);
-                    //todo: pl.<-_MIN<=M
-                    c = new GurobiConstraint();
-                    c.setName("pl.<-_MIN<=M");
-                    c.addToLHS(vp.odIn_cqs.get(o)[0], 1.0);
-                    c.setSense('<');
-                    c.addToRHS(vp.detour_q, M);
-                    executor.addConstraint(c);
-
-                    c = new GurobiConstraint();
-                    c.setName("d_ij_pl.<-_DIFF");
-                    c.addToLHS(vp.odIn_cqs.get(o)[1], 1.0);
-                    c.setSense('>');
-                    c.addToRHS(vp.aux_dIn_iqs.get(o)[3], 1.0);
-                    c.addToRHS(vp.inOutCnn_qs.get(o)[1], M);
-                    c.setRHSConstant(-M);
-                    executor.addConstraint(c);
-                    //todo: pl.<-_DIFF<=M
-                    c = new GurobiConstraint();
-                    c.setName("pl.<-_DIFF<=M");
-                    c.addToLHS(vp.odIn_cqs.get(o)[1], 1.0);
-                    c.setSense('<');
-                    c.addToRHS(vp.detour_q, M);
-                    executor.addConstraint(c);
 
 
                 }
 
+
             }
-
-
-
-
-
 
 
 
@@ -2137,59 +2155,7 @@ public class Processor {
             }
 
 
-            /*
-            Index 0 -- vps.size() - 1:
-             */
-            if (virtualPointVars.indexOf(vp) < virtualPointVars.size() - 1) {
-                vpN = virtualPointVars.get(virtualPointVars.indexOf(vp) + 1);
 
-
-                //add To bus length:
-                c_busMin.addToRHS(vp.dist_cqs[0], 1.0);
-                c_busDiff.addToRHS(vp.dist_cqs[1], 1.0);
-
-                /*
-                d_ij without Detour
-                VVVV
-                 */
-                c = new GurobiConstraint();
-                c.setName("dvv_MIN");
-                c.addToLHS(vp.dist_cqs[0], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.aux_dist_iqs[2], 1.0);
-                executor.addConstraint(c);
-                c = new GurobiConstraint();
-                c.setName("dvv_DIFF");
-                c.addToLHS(vp.dist_cqs[1], 1.0);
-                c.setSense('>');
-                c.addToRHS(vp.aux_dist_iqs[3], 1.0);
-                executor.addConstraint(c);
-
-                auxiliaryDistCons_VarVar(vp.x, vpN.x, vp.y, vpN.y, "d_ij_woDetour" + String.valueOf(virtualPointVars.indexOf(vp)), vp.aux_dist_iqs, vp.auxQ_dist);
-
-                /*
-                AAAA
-                d_ij
-                 */
-
-                //detour_triggering_aux.2
-                GurobiConstraint c_detour_geq = new GurobiConstraint();
-                c_detour_geq.setName("aux.2_geq");
-                c_detour_geq.addToLHS(vp.detour_q, obstacles.size());
-                c_detour_geq.setSense('>');
-                executor.addConstraint(c_detour_geq);
-                GurobiConstraint c_detour_leq = new GurobiConstraint();
-                c_detour_leq.setName("aux.2_leq");
-                c_detour_leq.addToLHS(vp.detour_q, 1.0);
-                c_detour_leq.setSense('<');
-                executor.addConstraint(c_detour_leq);
-                for (Obstacle o : obstacles) {
-                    c_detour_geq.addToRHS(vp.relObstacles_q.get(o), 1.0);
-                    c_detour_leq.addToRHS(vp.relObstacles_q.get(o), 1.0);
-                }
-
-
-            }
 
 
         }
@@ -2547,22 +2513,8 @@ public class Processor {
             c.setSense('<');
             c.addToRHS(vp.vm_relObstacles_q.get(o), 8.0);
             executor.addConstraint(c);
-//            c = new GurobiConstraint();
-//            c.setName("VM_aux1.2");
-//            c.addToLHS(vp.vm_relObstacles_qs.get(o)[0], 1.0);
-//            c.addToLHS(vp.vm_relObstacles_qs.get(o)[1], 1.0);
-//            c.addToLHS(vp.vm_relObstacles_qs.get(o)[2], 1.0);
-//            c.addToLHS(vp.vm_relObstacles_qs.get(o)[3], 1.0);
-//            c.addToLHS(vp.vm_relObstaclesD_qs.get(o)[0], 1.0);
-//            c.addToLHS(vp.vm_relObstaclesD_qs.get(o)[1], 1.0);
-//            c.addToLHS(vp.vm_relObstaclesD_qs.get(o)[2], 1.0);
-//            c.addToLHS(vp.vm_relObstaclesD_qs.get(o)[3], 1.0);
-//            c.setSense('>');
-//            c.addToRHS(vp.vm_relObstacles_q.get(o), 1.0);
-//            executor.addConstraint(c);
 
 
-            //vm_corner
             c = new GurobiConstraint();
             c.addToLHS(vp.vm_corner_qs.get(o)[0], 1.0);
             c.addToLHS(vp.vm_corner_qs.get(o)[1], 1.0);
@@ -3387,18 +3339,6 @@ public class Processor {
 //            vp.y = new GurobiVariable(GRB.INTEGER, 0, 0, "y" + i);
             executor.addVariable(vp.y);
 
-//            if (i == 0){
-//                vp.x = new GurobiVariable(GRB.INTEGER, 0, 0, "x" + i);
-//                executor.addVariable(vp.x);
-//                vp.y = new GurobiVariable(GRB.INTEGER, 3, 3, "y" + i);
-//                executor.addVariable(vp.y);
-//            }else {
-//                vp.x = new GurobiVariable(GRB.INTEGER, 3, 3, "x" + i);
-//                executor.addVariable(vp.x);
-//                vp.y = new GurobiVariable(GRB.INTEGER, 4, 4, "y" + i);
-//                executor.addVariable(vp.y);
-//            }
-
 
             for (Obstacle o : obstacles) {
 
@@ -3634,41 +3574,39 @@ public class Processor {
                 vp.inCorner_qs.put(o, buildBinaryVar(o.getName() + "->v" + (i + 1) + "_inCorner_qs_", 4));
 
                 /*
-                dOut_cqs
-                0: d_->:MIN
-                1: d_->:DIFF
-                 */
-                vp.odOut_cqs.put(o, buildIntVar(0, M, "v_" + i + ";" + o.getName() + "_dOUT_cqs_", 2));
-
-                /*
-                dIn_cqs
-                0: d_<-:MIN
-                1: d_<-:DIFF
-                 */
-                vp.odIn_cqs.put(o, buildIntVar(0, M, "v_" + i + ";" + o.getName() + "_dIN_cqs_", 2));
-
-                /*
                 omOnCnn_q
                 0: q_ij^m->n
                  */
                 Map<Obstacle, GurobiVariable> omOnCnn_qMap = new HashMap<>();
                 /*
+                omOnCorner_qs
+                0: ll->ll
+                1: ll->ul
+                2: ll->ur
+                3: ll->lr
+
+                4: ul->ll
+                5: ul->ul
+                6: ul->ur
+                7: ul->lr
+
+                8: ur->ll
+                9: ur->ul
+                10: ur->ur
+                11: ur->lr
+
+                12: lr->ll
+                13: lr->ul
+                14: lr->ur
+                15: lr->lr
+                 */
+                Map<Obstacle, GurobiVariable[]> omOnCorner_qsMap = new HashMap<>();
+                /*
                 dOmOn_cqsMap
                 0: d_m->n
                  */
                 Map<Obstacle, GurobiVariable[]> dOmOn_cqsMap = new HashMap<>();
-                /*
-                Auxiliary absolute values: aux_dOmOn_iqs
-                0: |x_m - x_n|
-                1: |y_m - y_n|
-                2: min(|x_m - x_n|, |y_m - y_n|)
-                3: ||x_m - x_n| - |y_m - y_n||
-                4: x_m - x_n
-                5: y_m - y_n
-                6: |x_m - x_n| - |y_m - y_n|
-                 */
-                Map<Obstacle, GurobiVariable[]> aux_dOmOn_iqsMap = new HashMap<>();
-                Map<Obstacle, GurobiVariable> auxQ_dOmOnMap = new HashMap<>();
+
                 for (Obstacle on : obstacles) {
 
                     q = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + ";" + o.getName() + "-" + on.getName() + "_omOnCnn_q_");
@@ -3676,24 +3614,23 @@ public class Processor {
                     omOnCnn_qMap.put(on, q);
 
 
+                    omOnCorner_qsMap.put(on, buildBinaryVar("v_" + i + ";" + o.getName() + "->" + on.getName() + "_omOnCorner_qs_", 16));
                     dOmOn_cqsMap.put(on, buildIntVar(0, M, "v_" + i + ";" + o.getName() + "->" + on.getName() + "_dOmOn_cqs_", 2));
 
-                    aux_dOmOn_iqsMap.put(on, buildAuxIntVar("v_" + i + ";" + o.getName() + "->" + on.getName() + "_aux_dOmOn_iqs_"));
-                    q = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + o.getName() + "->" + on.getName() + "_auxQ_dOmOn");
-                    executor.addVariable(q);
-                    auxQ_dOmOnMap.put(on, q);
 
 
                 }
                 vp.omOnCnn_q.put(o, omOnCnn_qMap);
+                vp.omOnCorner_qs.put(o, omOnCorner_qsMap);
+
+
                 vp.dOmOn_cqs.put(o, dOmOn_cqsMap);
-                vp.aux_dOmOn_iqs.put(o, aux_dOmOn_iqsMap);
-                vp.auxQ_dOmOn.put(o, auxQ_dOmOnMap);
+
 
 
 
                 /*
-                Auxiliary absolute values: aux_dOut_iqs
+                Auxiliary absolute values: aux_dOutCorner_iqs/aux_dInCorner_iqs
                 0: |vi.x - x_m|
                 1: |vi.y - y_m|
                 2: min(|vi.x - x_m|, |vi.y - y_m|)
@@ -3702,27 +3639,26 @@ public class Processor {
                 5: vi.y - y_m
                 6: |vi.x - x_m| - |vi.y - y_m|
                  */
-                //vp.aux_dOut_cqs.put(o, buildContinuousVar(-M, M, "v_" + i + ";" + o.getName() + "_aux_dOut_cqs_", 7));
-                vp.aux_dOut_iqs.put(o, buildAuxIntVar("v_" + i + ";" + o.getName() + "_aux_dOut_iqs_"));
-                q = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + o.getName() + "_auxQ_dOut");
-                executor.addVariable(q);
-                vp.auxQ_dOut.put(o, q);
+                Map<PseudoBase, GurobiVariable[]> aux_dOutCorner_iqsMap = new HashMap<>();
+                Map<PseudoBase, GurobiVariable> auxQ_dOutCorner = new HashMap<>();
+                Map<PseudoBase, GurobiVariable[]> aux_dInCorner_iqsMap = new HashMap<>();
+                Map<PseudoBase, GurobiVariable> auxQ_dInCorner = new HashMap<>();
+                for (PseudoBase corner : o.getBaseArray()){
+                    aux_dOutCorner_iqsMap.put(corner, buildAuxIntVar("v_" + i + ";" + corner.getName() + "_aux_dOutCorner_iqs_"));
+                    q = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i +";" + corner.getName() + "_auxQ_dOutCorner");
+                    executor.addVariable(q);
+                    auxQ_dOutCorner.put(corner, q);
 
-                /*
-                Auxiliary absolute values: aux_dIn_iqs
-                0: |vi.x - x_m|
-                1: |vi.y - y_m|
-                2: min(|vi.x - x_m|, |vi.y - y_m|)
-                3: ||vi.x - x_m| - |vi.y - y_m||
-                4: vi.x - x_m
-                5: vi.y - y_m
-                6: |vi.x - x_m| - |vi.y - y_m|
-                 */
-                //vp.aux_dIn_cqs.put(o, buildContinuousVar(-M, M, "v_" + i + ";" + o.getName() + "_aux_dIn_cqs_", 7));
-                vp.aux_dIn_iqs.put(o, buildAuxIntVar("v_" + i + ";" + o.getName() + "_aux_dIn_iqs_"));
-                q = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i + ";" + o.getName() + "_auxQ_dIn");
-                executor.addVariable(q);
-                vp.auxQ_dIn.put(o, q);
+                    aux_dInCorner_iqsMap.put(corner, buildAuxIntVar("v_" + i + ";" + corner.getName() + "_aux_dInCorner_iqs_"));
+                    q = new GurobiVariable(GRB.BINARY, 0, 1, "v_" + i +";" + corner.getName() + "_auxQ_dInCorner");
+                    executor.addVariable(q);
+                    auxQ_dInCorner.put(corner, q);
+                }
+                vp.aux_dOutCorner_iqs.put(o, aux_dOutCorner_iqsMap);
+                vp.auxQ_dOutCorner.put(o, auxQ_dOutCorner);
+                vp.aux_dInCorner_iqs.put(o, aux_dInCorner_iqsMap);
+                vp.auxQ_dInCorner.put(o, auxQ_dInCorner);
+
 
             }
 
@@ -3767,32 +3703,11 @@ public class Processor {
 
 
             /*
-            dist_cqs
-            0: vv dist
-            1: v.corrS dist
-            2: vm dist (only for 1st vp)
-             */
-            /*if (i == 0) {
-                vp.dist_cqs = buildContinuousVar(0, M, "v" + i + "dist_cqs", 3);
-            } else {
-                vp.dist_cqs = buildContinuousVar(0, M, "v" + i + "dist_cqs", 2);
-            }*/
-
-
-            /*
             dist_cqs: vv_dist
             0: dvv:MIN
             1: dvv:DIFF
              */
             vp.dist_cqs = buildIntVar(0, M, "v" + i + "dist_cqs_", 2);
-
-            /*
-            d_vCorS: dist between virtualPoint and corresponding slave
-            0: d_vCorS:MIN
-            1: d_vCors:DIFF
-             */
-            vp.vs_corDist_cqs = buildIntVar(0, M, "v" + i + "_corDist_cqs_", 2);
-
             /*
             Auxiliary absolute values: aux_dist_iqs
             0: |vi.x-vj.x|
@@ -3806,6 +3721,26 @@ public class Processor {
             vp.aux_dist_iqs = buildAuxIntVar("v" + i + "_aux_dist_iqs_");
             vp.auxQ_dist = new GurobiVariable(GRB.BINARY, 0, 1, "v" + i + "_auxQ_dist");
             executor.addVariable(vp.auxQ_dist);
+
+            /*
+            d_vCorS: dist between virtualPoint and corresponding slave
+            0: d_vCorS:MIN
+            1: d_vCors:DIFF
+             */
+            vp.vs_corDist_cqs = buildIntVar(0, M, "v" + i + "_corDist_cqs_", 2);
+
+            /*
+            dOut_cqs
+            0: dvi->:MIN
+            1: dvi->:DIFF
+             */
+            vp.dOut_cqs = buildIntVar(0, M, "v" + i + "_dOut_cqs_", 2);
+            /*
+            dIn_cqs
+            0: d->pj:MIN
+            1: d->pj:DIFF
+             */
+            vp.dIn_cqs = buildIntVar(0, M, "v" + i + "_dIn_cqs_", 2);
 
 
 

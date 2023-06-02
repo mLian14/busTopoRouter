@@ -70,10 +70,6 @@ public class Obstacle {
         this.lowerLeft.setName(this.name + ".ll");
         this.baseArray.add(this.lowerLeft);
 
-        this.lowerRight = new PseudoBase(maxX, minY);
-        this.lowerRight.setType(BaseType.lowerRight);
-        this.lowerRight.setName(this.name + ".lr");
-        this.baseArray.add(this.lowerRight);
 
         this.upperLeft = new PseudoBase(minX, maxY);
         this.upperLeft.setType(BaseType.upperLeft);
@@ -84,6 +80,11 @@ public class Obstacle {
         this.upperRight.setType(BaseType.upperRight);
         this.upperRight.setName(this.name + ".ur");
         this.baseArray.add(this.upperRight);
+
+        this.lowerRight = new PseudoBase(maxX, minY);
+        this.lowerRight.setType(BaseType.lowerRight);
+        this.lowerRight.setName(this.name + ".lr");
+        this.baseArray.add(this.lowerRight);
 
 
         this.tLObstacles = new ArrayList<>();
