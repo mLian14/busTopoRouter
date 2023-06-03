@@ -114,8 +114,33 @@ public class Processor {
 
         }
 
-        cornerToCorner(obstacles);
+        /*
+        Compute the shortest path between each corner of each pair obstacles
+         */
+        obstacleCornerToCornerDistCalculation(obstacles);
 
+        /*
+        Compute the shortest path between master/slave and each corner
+         */
+        for (Obstacle o : obstacles){
+
+            //master
+            Map<PseudoBase, Integer> cornerMasterDistMin = new HashMap<>();
+            Map<PseudoBase, Integer> cornerMasterDistXY = new HashMap<>();
+            baseToObstacleDistCalculation(master, o, cornerMasterDistMin, cornerMasterDistXY);
+            o.addTo_oBase_distMin(master, cornerMasterDistMin);
+            o.addTo_oBase_distXY(master, cornerMasterDistXY);
+
+            for (PseudoBase slave : slaves){
+                Map<PseudoBase, Integer> cornerSlaveDistMin = new HashMap<>();
+                Map<PseudoBase, Integer> cornerSlaveDistXY= new HashMap<>();
+                baseToObstacleDistCalculation(slave, o, cornerSlaveDistMin, cornerSlaveDistXY);
+                o.addTo_oBase_distMin(slave, cornerSlaveDistMin);
+                o.addTo_oBase_distXY(slave, cornerSlaveDistXY);
+            }
+
+
+        }
 
         for (PseudoBase sv : slaves) {
             System.out.println(sv.getName() + "(" + sv.getX() + ", " + sv.getY() + ")");
@@ -448,7 +473,119 @@ public class Processor {
         return output;
     }
 
-    private void cornerToCorner(ArrayList<Obstacle> obstacles) {
+    private void baseToObstacleDistCalculation(PseudoBase base, Obstacle o, Map<PseudoBase, Integer> cornerBaseDistMin, Map<PseudoBase, Integer> cornerBaseDistXY) {
+        for (PseudoBase corner : o.getBaseArray()){
+            if (base.getPseudo_oRel_qs().get(o)[0] == 1){
+                if (corner.equals(o.getLowerRight())){
+                    int[] min_xy = comparePath(new ArrayList<>(Arrays.asList(base, o.getLowerLeft(), o.getLowerRight())), new ArrayList<>(Arrays.asList(base, o.getUpperRight(), o.getLowerRight())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+
+            }else if (base.getPseudo_oRel_qs().get(o)[1] == 1){
+                if (corner.equals(o.getLowerLeft())){
+                    int[] min_xy = comparePath(new ArrayList<>(Arrays.asList(base, o.getUpperLeft(), o.getLowerLeft())), new ArrayList<>(Arrays.asList(base, o.getLowerRight(), o.getLowerLeft())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+
+            }
+            else if (base.getPseudo_oRel_qs().get(o)[2] == 1){
+                if (corner.equals(o.getUpperRight())){
+                    int[] min_xy = comparePath(new ArrayList<>(Arrays.asList(base, o.getUpperLeft(), o.getUpperRight())), new ArrayList<>(Arrays.asList(base, o.getLowerRight(), o.getUpperRight())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+
+            }
+            else if (base.getPseudo_oRel_qs().get(o)[3] == 1){
+                if (corner.equals(o.getUpperLeft())){
+                    int[] min_xy = comparePath(new ArrayList<>(Arrays.asList(base, o.getLowerLeft(), o.getUpperLeft())), new ArrayList<>(Arrays.asList(base, o.getUpperRight(), o.getUpperLeft())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+
+            }
+            else if (base.getPseudo_oRel_qs().get(o)[4] == 1){
+                if (corner.equals(o.getUpperRight())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getUpperLeft(), o.getUpperRight())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else if (corner.equals(o.getLowerRight())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getLowerLeft(), o.getLowerRight())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+
+            }
+            else if (base.getPseudo_oRel_qs().get(o)[5] == 1){
+                if (corner.equals(o.getUpperLeft())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getUpperRight(), o.getUpperLeft())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else if (corner.equals(o.getLowerLeft())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getLowerRight(), o.getLowerLeft())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+            }
+            else if (base.getPseudo_oRel_qs().get(o)[6] == 1){
+                if (corner.equals(o.getLowerLeft())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getUpperLeft(), o.getLowerLeft())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else if (corner.equals(o.getLowerRight())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getUpperRight(), o.getLowerRight())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+            }else if (base.getPseudo_oRel_qs().get(o)[7] == 1){
+                if (corner.equals(o.getUpperLeft())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getLowerLeft(), o.getUpperLeft())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else if (corner.equals(o.getUpperRight())){
+                    int[] min_xy = pathDist(new ArrayList<>(Arrays.asList(base, o.getLowerRight(), o.getUpperRight())));
+                    cornerBaseDistMin.put(corner, min_xy[0]);
+                    cornerBaseDistXY.put(corner, min_xy[1]);
+                }else {
+                    cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                    cornerBaseDistXY.put(corner, deltaXY(base, corner));
+                }
+            }else {
+                cornerBaseDistMin.put(corner, deltaMin(base, corner));
+                cornerBaseDistXY.put(corner, deltaXY(base, corner));
+            }
+
+        }
+    }
+
+    /**
+     * Determine the distance between two corners of two different obstacles
+     * @param obstacles ArrayList of all obstacles
+     */
+    private void obstacleCornerToCornerDistCalculation(ArrayList<Obstacle> obstacles) {
         for (Obstacle o : obstacles) {
             for (Obstacle on : obstacles) {
                 if (!o.getName().equals(on.getName())) {
@@ -585,8 +722,8 @@ public class Processor {
                     distXY[15] = min_xy[1];
 
 
-                    o.addToMap_oo_distMin(on, distMin);
-                    o.addToMap_oo_distXY(on, distXY);
+                    o.addTo_oo_distMin(on, distMin);
+                    o.addTo_oo_distXY(on, distXY);
 
 
                 }
@@ -594,6 +731,15 @@ public class Processor {
         }
     }
 
+    /**
+     * Given two corner,
+     * @param o obstacle that start point belongs to
+     * @param on obstacle that end point belongs to
+     * @param startCorner start point
+     * @param endCorner end point
+     * @param bypassBases give the path connecting from start point to end point
+     * @return [distMin, distXY]
+     */
     private int[] cornerDistanceCalculation(Obstacle o, Obstacle on, PseudoBase startCorner, PseudoBase endCorner, ArrayList<PseudoBase> bypassBases) {
 
 
@@ -1089,12 +1235,40 @@ public class Processor {
         }
     }
 
+    private int[] comparePath(ArrayList<PseudoBase> path1, ArrayList<PseudoBase> path2) {
+        int path1Min = 0, path1XY = 0, path2Min = 0, path2XY = 0;
+        for (int i = 0; i < path1.size() - 1; ++i) {
+            path1Min += deltaMin(path1.get(i), path1.get(i + 1));
+            path1XY += deltaXY(path1.get(i), path1.get(i + 1));
+        }
+        for (int i = 0; i < path2.size() - 1; ++i) {
+            path2Min += deltaMin(path2.get(i), path2.get(i + 1));
+            path2XY += deltaXY(path2.get(i), path2.get(i + 1));
+        }
+        if (octDist(path1Min, path1XY) <= octDist(path2Min, path2XY)) {
+            System.out.println(path1Min + " " + path1XY);
+            return new int[]{path1Min, path1XY};
+        } else {
+            System.out.println(path2Min + " " + path2XY);
+            return new int[]{path2Min, path2XY};
+        }
+    }
+
 
     private int[] pathDist(ArrayList<PseudoBase> bypassBases, ArrayList<PseudoBase> path) {
         bypassBases.addAll(path);
         for (PseudoBase base : bypassBases){
             System.out.print(base.getName() + "||");
         }
+        int pathMin = 0, pathXY = 0;
+        for (int i = 0; i < path.size() - 1; ++i) {
+            pathMin += deltaMin(path.get(i), path.get(i + 1));
+            pathXY += deltaXY(path.get(i), path.get(i + 1));
+        }
+        System.out.println(pathMin + " " + pathXY);
+        return new int[]{pathMin, pathXY};
+    }
+    private int[] pathDist(ArrayList<PseudoBase> path) {
         int pathMin = 0, pathXY = 0;
         for (int i = 0; i < path.size() - 1; ++i) {
             pathMin += deltaMin(path.get(i), path.get(i + 1));
@@ -1694,7 +1868,7 @@ public class Processor {
                                 c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[0], 1.0);
                                 c.setSense('>');
                                 c.addToRHS(vp.omOnCorner_qs.get(o).get(on)[cnt], M);
-                                c.setRHSConstant(o.getMap_oo_distMin().get(on)[cnt] - M);
+                                c.setRHSConstant(o.getOo_distMin().get(on)[cnt] - M);
                                 executor.addConstraint(c);
                                 //pathLength.2:XY
                                 c = new GurobiConstraint();
@@ -1702,7 +1876,7 @@ public class Processor {
                                 c.addToLHS(vp.dOmOn_cqs.get(o).get(on)[1], 1.0);
                                 c.setSense('>');
                                 c.addToRHS(vp.omOnCorner_qs.get(o).get(on)[cnt], M);
-                                c.setRHSConstant(o.getMap_oo_distXY().get(on)[cnt] - M);
+                                c.setRHSConstant(o.getOo_distXY().get(on)[cnt] - M);
                                 executor.addConstraint(c);
                             }
 
@@ -1945,19 +2119,6 @@ public class Processor {
                     c.setSense('<');
                     c.addToRHS(vp.vs_relObstacles_q.get(sv).get(o), 8.0);
                     executor.addConstraint(c);
-//                    c = new GurobiConstraint();
-//                    c.setName("vs_aux.1.2");
-//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(o)[0], 1.0);
-//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(o)[1], 1.0);
-//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(o)[2], 1.0);
-//                    c.addToLHS(vp.vs_relObstacles_qs.get(sv).get(o)[3], 1.0);
-//                    c.addToLHS(vp.vs_relObstaclesD_qs.get(sv).get(o)[0], 1.0);
-//                    c.addToLHS(vp.vs_relObstaclesD_qs.get(sv).get(o)[1], 1.0);
-//                    c.addToLHS(vp.vs_relObstaclesD_qs.get(sv).get(o)[2], 1.0);
-//                    c.addToLHS(vp.vs_relObstaclesD_qs.get(sv).get(o)[3], 1.0);
-//                    c.setSense('>');
-//                    c.addToRHS(vp.vs_relObstacles_q.get(sv).get(o), 1.0);
-//                    executor.addConstraint(c);
 
 
                     //vs_corner

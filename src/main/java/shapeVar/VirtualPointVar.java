@@ -382,7 +382,7 @@ public class VirtualPointVar {
 
 
     /*
-    Auxiliary absolute values: vv
+    Auxiliary absolute values: dist(v,v) without Detour
     0: |vi.x - vj.x|
     1: |vi.y - vj.y|
     2: min(|vi.x - vj.x|, |vi.y - vj.y|)
@@ -482,6 +482,11 @@ public class VirtualPointVar {
     1: vs_odOut:DIFF
      */
     public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_odOut_cqs;
+
+    /*
+
+    vi->
+     */
 
     /*
     vs_odIn_cqs

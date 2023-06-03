@@ -44,12 +44,21 @@ public class Obstacle {
     14: lr->ur
     15: lr->lr
      */
-    private Map<Obstacle, int[]> map_oo_distMin;
+    private Map<Obstacle, int[]> oo_distMin;
 
     /*
     map_oo_distXY
      */
-    private Map<Obstacle, int[]> map_oo_distXY;
+    private Map<Obstacle, int[]> oo_distXY;
+
+    /*
+    0: ll
+    1: ul
+    2: ur
+    3: lr
+     */
+    private Map<PseudoBase, Map<PseudoBase, Integer>> oBase_distMin;//first base is the master/slaves
+    private Map<PseudoBase, Map<PseudoBase, Integer>> oBase_distXY;
 
 
     public Obstacle(String name, int minX, int maxX, int minY, int maxY) {
@@ -105,25 +114,44 @@ public class Obstacle {
         this.dBObstacles = new ArrayList<>();
         this.dBObstacles.add(this);
 
-        this.map_oo_distMin = new HashMap<>();
-        this.map_oo_distXY = new HashMap<>();
+        this.oo_distMin = new HashMap<>();
+        this.oo_distXY = new HashMap<>();
+        this.oBase_distMin = new HashMap<>();
+        this.oBase_distXY = new HashMap<>();
+
 
     }
 
-    public Map<Obstacle, int[]> getMap_oo_distMin() {
-        return map_oo_distMin;
+    public Map<PseudoBase, Map<PseudoBase, Integer>> getoBase_distMin() {
+        return oBase_distMin;
     }
 
-    public void addToMap_oo_distMin(Obstacle o, int[] dist) {
-        this.map_oo_distMin.put(o, dist);
+    public void addTo_oBase_distMin(PseudoBase base, Map<PseudoBase, Integer> dist) {
+        this.oBase_distMin.put(base, dist);
     }
 
-    public Map<Obstacle, int[]> getMap_oo_distXY() {
-        return map_oo_distXY;
+    public Map<PseudoBase, Map<PseudoBase, Integer>> getoBase_distXY() {
+        return oBase_distXY;
     }
 
-    public void addToMap_oo_distXY(Obstacle o, int[] dist) {
-        this.map_oo_distXY.put(o, dist);
+    public void addTo_oBase_distXY(PseudoBase base, Map<PseudoBase, Integer> dist) {
+        this.oBase_distXY.put(base, dist);
+    }
+
+    public Map<Obstacle, int[]> getOo_distMin() {
+        return oo_distMin;
+    }
+
+    public void addTo_oo_distMin(Obstacle o, int[] dist) {
+        this.oo_distMin.put(o, dist);
+    }
+
+    public Map<Obstacle, int[]> getOo_distXY() {
+        return oo_distXY;
+    }
+
+    public void addTo_oo_distXY(Obstacle o, int[] dist) {
+        this.oo_distXY.put(o, dist);
     }
 
     public ArrayList<PseudoBase> getBaseArray() {
