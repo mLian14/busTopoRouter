@@ -25,7 +25,7 @@ public class PseudoBase {
     6: oqT
     7: oqB
      */
-    private Map<Obstacle, int[]> pseudo_oDir_qs;
+    private final Map<Obstacle, int[]> pseudo_oDir_qs;
 
     /*
     opposite relation: 45-degree
@@ -39,13 +39,13 @@ public class PseudoBase {
     6: oqdT
     7: oqdB
      */
-    private Map<Obstacle, int[]> pseudo_oRel_qs;
+    private final Map<Obstacle, int[]> pseudo_oRel_qs;
 
 
     /*
 
      */
-    private Map<Obstacle, int[]> pseudo_iVars;
+    private final Map<Obstacle, int[]> pseudo_iVars;
 
 
 
@@ -56,9 +56,6 @@ public class PseudoBase {
         this.pseudo_oDir_qs = new HashMap<>();
         this.pseudo_oRel_qs = new HashMap<>();
         this.pseudo_iVars = new HashMap<>();
-
-
-
 
     }
 

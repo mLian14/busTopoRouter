@@ -8,6 +8,7 @@ Master
 MS 0 0
 Slave
 s1 -2 6
+s2 4 4
 s3 18 6
 FIN
 slaveC 1
