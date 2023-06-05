@@ -68,6 +68,7 @@ public class VirtualPointVar {
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable>> vm_omOnCnn_q;//binaryVar regarding next virtualPoint for relObstacles' connection
 
+
     /*
     omOnCorner_qs
     0: ll->ll
@@ -91,6 +92,7 @@ public class VirtualPointVar {
     15: lr->lr
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> vm_omOnCorner_qs;
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> auxQuad_vm_omOnCorner_qs;
 
     /*
     VM:inOutCnn_qs
@@ -115,6 +117,7 @@ public class VirtualPointVar {
     3: o.lr->vi+1
      */
     public Map<Obstacle, GurobiVariable[]> vm_inCorner_qs;
+    public Map<Obstacle, GurobiVariable[]> auxQuad_vm_inOutCorner_qs;
 
     /*
     vm_dOut_cqs
@@ -297,8 +300,11 @@ public class VirtualPointVar {
     15: lr->lr
      */
     public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> omOnCorner_qs;
-
-
+    /*
+    0: cnnRules.3
+    1: cnnRules.4
+     */
+    public Map<Obstacle, Map<Obstacle, GurobiVariable[]>> auxQuad_omOnCorner_qs;
 
 
     /*
@@ -324,8 +330,11 @@ public class VirtualPointVar {
      */
     public Map<Obstacle, GurobiVariable[]> inCorner_qs;
 
-
-
+    /*
+    0: cnnRules.5
+    1: cnnRules.6
+     */
+    public Map<Obstacle, GurobiVariable[]> auxQuad_inOutCorners_qs;
 
     /*
     dOut_cqs
@@ -503,6 +512,14 @@ public class VirtualPointVar {
     public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable[]>>> vs_omOnCorner_qs;
 
     /*
+    auxQuad_vs_OmOnCorner_qs
+    0: cnnRules.3
+    1: cnnRules.4
+     */
+    public Map<PseudoBase, Map<Obstacle, Map<Obstacle, GurobiVariable[]>>> auxQuad_vs_omOnCorner_qs;
+
+
+    /*
     vs_dOmOn_cqs
     0: vs_d_m->n:MIN
     1: vs_d_m->n:DIFF
@@ -533,6 +550,12 @@ public class VirtualPointVar {
     3: o.lr->sj
      */
     public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> vs_inCorner_qs;
+    /*
+    auxQuad_vs_inOutCorner_qs
+    0: cnnRules.5
+    1: cnnRules.6
+     */
+    public Map<PseudoBase, Map<Obstacle, GurobiVariable[]>> auxQuad_vs_inOutCorner_qs;
 
     /*
     vs_dOut_cqs: vi->o
@@ -607,10 +630,11 @@ public class VirtualPointVar {
         this.corner_qs = new HashMap<>();
         this.omOnCnn_q = new HashMap<>();
         this.omOnCorner_qs = new HashMap<>();
+        this.auxQuad_omOnCorner_qs = new HashMap<>();
         this.inOutCnn_qs = new HashMap<>();
         this.outCorner_qs = new HashMap<>();
         this.inCorner_qs = new HashMap<>();
-
+        this.auxQuad_inOutCorners_qs = new HashMap<>();
 
         this.dOmOn_cqs = new HashMap<>();
 
@@ -638,12 +662,14 @@ public class VirtualPointVar {
         this.vs_dOmOn_cqs = new HashMap<>();
         this.vs_omOnCnn_q = new HashMap<>();
         this.vs_omOnCorner_qs = new HashMap<>();
+        this.auxQuad_vs_omOnCorner_qs = new HashMap<>();
 
         this.vs_inOutCnn_qs = new HashMap<>();
         this.vs_outCorner_qs = new HashMap<>();
         this.vs_inCorner_qs = new HashMap<>();
         this.vs_dOut_cqs = new HashMap<>();
         this.vs_dIn_cqs = new HashMap<>();
+        this.auxQuad_vs_inOutCorner_qs = new HashMap<>();
 
         this.aux_vsDist_iqs = new HashMap<>();
         this.auxQ_vsDist = new HashMap<>();
@@ -668,11 +694,13 @@ public class VirtualPointVar {
         this.vm_corner_qs = new HashMap<>();
         this.vm_omOnCnn_q = new HashMap<>();
         this.vm_omOnCorner_qs = new HashMap<>();
+        this.auxQuad_vm_omOnCorner_qs = new HashMap<>();
 
 
         this.vm_inOutCnn_qs = new HashMap<>();
         this.vm_outCorner_qs = new HashMap<>();
         this.vm_inCorner_qs = new HashMap<>();
+        this.auxQuad_vm_inOutCorner_qs = new HashMap<>();
         this.aux_vm_dOutCorner_iqs = new HashMap<>();
         this.auxQ_vm_dOutCorner = new HashMap<>();
 

@@ -1,0 +1,380 @@
+/Library/Java/JavaVirtualMachines/zulu-15.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=53593:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Users/lianmeng/Documents/HW/hw_conf/busTopoRouter/target/classes:/Users/lianmeng/.m2/repository/com/itextpdf/barcodes/7.2.4/barcodes-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/font-asian/7.2.4/font-asian-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/forms/7.2.4/forms-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/hyph/7.2.4/hyph-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/io/7.2.4/io-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/commons/7.2.4/commons-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/kernel/7.2.4/kernel-7.2.4.jar:/Users/lianmeng/.m2/repository/org/bouncycastle/bcpkix-jdk15on/1.70/bcpkix-jdk15on-1.70.jar:/Users/lianmeng/.m2/repository/org/bouncycastle/bcutil-jdk15on/1.70/bcutil-jdk15on-1.70.jar:/Users/lianmeng/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.70/bcprov-jdk15on-1.70.jar:/Users/lianmeng/.m2/repository/com/itextpdf/layout/7.2.4/layout-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/pdfa/7.2.4/pdfa-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/sign/7.2.4/sign-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/styled-xml-parser/7.2.4/styled-xml-parser-7.2.4.jar:/Users/lianmeng/.m2/repository/com/itextpdf/svg/7.2.4/svg-7.2.4.jar:/Users/lianmeng/.m2/repository/org/slf4j/slf4j-api/2.0.3/slf4j-api-2.0.3.jar:/Users/lianmeng/.m2/repository/org/slf4j/slf4j-simple/2.0.3/slf4j-simple-2.0.3.jar:/Users/lianmeng/IdeaProjects/libs/gurobi.jar:/Users/lianmeng/IdeaProjects/libs/commons-lang3-3.12.0/commons-lang3-3.12.0.jar:/Users/lianmeng/IdeaProjects/libs/commons-lang3-3.12.0/commons-lang3-3.12.0-tests.jar:/Users/lianmeng/IdeaProjects/libs/commons-lang3-3.12.0/commons-lang3-3.12.0-javadoc.jar:/Users/lianmeng/IdeaProjects/libs/commons-lang3-3.12.0/commons-lang3-3.12.0-sources.jar:/Users/lianmeng/IdeaProjects/libs/commons-lang3-3.12.0/commons-lang3-3.12.0-test-sources.jar test
+Program Starts at: 2023/06/04 17:16:31.150
+o1 -451 461 1455 1992
+O_tL: :o1; o2; ||O_tR: :o1; o2; ||O_bL: :o1; o2; ||O_bR: :o1; o2; ||
+O_L: :o1; ||O_R: :o1; ||O_T: :o1; ||O_B: :o1; ||
+o2 -39 461 1400 2352
+O_tL: :o2; o1; ||O_tR: :o2; o1; ||O_bL: :o2; o1; ||O_bR: :o2; o1; ||
+O_L: :o2; ||O_R: :o2; ||O_T: :o2; ||O_B: :o2; ||
+detourType=b_t
+o1.ll||o1.ul||o2.ul||360 589
+detourType=ll_ur
+o1.ll||o1.ul||o2.ul||o2.ur||360 1089
+detourType=l_r
+o1.ll||o2.ll||o2.lr||55 857
+detourType=t_b
+o1.ul||o1.ll||o2.ll||55 894
+detourType=l_r
+o1.ul||o2.ul||o2.ur||360 552
+detourType=ul_lr
+o1.ul||o1.ll||o2.ll||o2.lr||55 1394
+detourType=ur_ll
+o1.ur||o1.lr||o2.lr||o2.ll||0 1092
+detourType=r_l
+o1.ur||o2.ur||o2.ul||0 860
+detourType=l_r
+o1.ur||o2.ul||o2.ur||360 640
+detourType=l_r
+o1.ur||o2.ll||o2.lr||500 592
+detourType=r_l
+o1.lr||o2.lr||o2.ll||0 555
+detourType=lr_ul
+o1.lr||o1.ur||o2.ur||o2.ul||0 1397
+detourType=l_r
+o1.lr||o2.ul||o2.ur||500 897
+detourType=l_r
+o1.lr||o2.ll||o2.lr||55 945
+detourType=b_t
+o2.ll||o1.ll||o1.ul||55 894
+detourType=ll_ur
+o2.ll||o2.lr||o1.lr||o1.ur||0 1092
+detourType=l_r
+o2.ll||o2.lr||o1.lr||0 555
+detourType=t_b
+o2.ul||o1.ul||o1.ll||360 589
+detourType=l_r
+o2.ul||o2.ur||o1.ur||0 860
+detourType=ul_lr
+o2.ul||o2.ur||o1.ur||o1.lr||0 1397
+detourType=ur_ll
+o2.ur||o2.ul||o1.ul||o1.ll||360 1089
+detourType=r_l
+o2.ur||o2.ul||o1.ul||360 552
+detourType=r_l
+o2.ur||o2.ul||o1.ur||360 640
+detourType=r_l
+o2.ur||o2.ul||o1.lr||500 897
+detourType=r_l
+o2.lr||o2.ll||o1.ll||55 857
+detourType=lr_ul
+o2.lr||o2.ll||o1.ur||o1.ul||500 1504
+detourType=r_l
+o2.lr||o2.ll||o1.ur||500 592
+detourType=r_l
+o2.lr||o2.ll||o1.lr||55 945
+HALLO
+82 1252
+422 945
+515 1161
+111 1400
+563 914
+362 1109
+201 1127
+121 992
+20 754
+20 1192
+311 619
+393 745
+69 776
+308 1072
+137 785
+422 893
+515 1109
+523 936
+925 550
+27 1448
+774 645
+33 1241
+613 663
+176 937
+175 665
+175 937
+101 1384
+52 791
+343 1057
+R704.2(976, 1228)
+o1_dir:[0, 0, 1, 0, 1, 0, 1, 0]|| _rel:[0, 0, 0, 1, 0, 0, 0, 0]||
+o2_dir:[0, 0, 1, 0, 1, 0, 1, 0]|| _rel:[0, 0, 0, 1, 0, 0, 0, 0]||
+U5701.E2(-562, 1393)
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||
+o2_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||
+U1702.A4(-1014, 1427)
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||
+o2_dir:[1, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||
+U1701.B2(-813, 1433)
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||
+o2_dir:[0, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||
+U2501.A4(-652, 1576)
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||
+o2_dir:[0, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||
+U1901.C3(-214, 2012)
+o1_dir:[0, 0, 0, 0, 1, 1, 0, 1]|| _rel:[0, 0, 0, 0, 0, 0, 1, 0]||
+o2_dir:[0, 0, 0, 0, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||
+R2912.2(-140, 2385)
+o1_dir:[1, 0, 0, 0, 1, 1, 0, 1]|| _rel:[0, 0, 0, 0, 0, 0, 1, 0]||
+o2_dir:[1, 0, 0, 0, 0, 1, 0, 1]|| _rel:[1, 0, 0, 0, 0, 0, 0, 0]||
+U2500.A4(-382, 2300)
+o1_dir:[1, 0, 0, 0, 1, 1, 0, 1]|| _rel:[0, 0, 0, 0, 0, 0, 1, 0]||
+o2_dir:[1, 0, 0, 0, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||
+Master
+o1_dir:[0, 0, 1, 0, 1, 0, 1, 1]|| _rel:[0, 0, 0, 0, 0, 1, 0, 0]||
+o2_dir:[0, 0, 1, 0, 1, 0, 1, 1]|| _rel:[0, 0, 0, 0, 0, 1, 0, 0]||
+Set parameter Username
+Academic license - for non-commercial use only - expires 2024-01-15
+Set parameter LogFile to value "LinearBusRouting_KO.log"
+Set parameter MIPGap to value 0
+Set parameter MIPGapAbs to value 0
+Set parameter TimeLimit to value 100
+#Variables = 15541
+#Constraints = 21508
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (mac64[arm])
+
+CPU model: Apple M1
+Thread count: 8 physical cores, 8 logical processors, using up to 8 threads
+
+Optimize a model with 21076 rows, 15541 columns and 57034 nonzeros
+Model fingerprint: 0x377a9c5a
+Model has 432 quadratic constraints
+Model has 2112 general constraints
+Variable types: 0 continuous, 15541 integer (9436 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+05]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 9911 rows and 7221 columns
+Presolve time: 0.37s
+Presolved: 12325 rows, 8632 columns, 36711 nonzeros
+Variable types: 0 continuous, 8632 integer (3619 binary)
+Found heuristic solution: objective 12412.156483
+
+Root relaxation: objective 0.000000e+00, 3454 iterations, 0.08 seconds (0.08 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.00000    0  213 12412.1565    0.00000   100%     -    0s
+H    0     0                    11856.370553    0.00000   100%     -    0s
+H    0     0                    11065.820479    0.00000   100%     -    0s
+     0     0    0.00000    0  715 11065.8205    0.00000   100%     -    0s
+     0     0    0.00000    0  702 11065.8205    0.00000   100%     -    0s
+H    0     0                    11062.820479    0.00000   100%     -    0s
+     0     0    0.00000    0  797 11062.8205    0.00000   100%     -    1s
+     0     0    0.00000    0  212 11062.8205    0.00000   100%     -    1s
+     0     0    0.00000    0  207 11062.8205    0.00000   100%     -    1s
+H    0     0                    11059.820479    0.00000   100%     -    1s
+H    0     0                    11053.820479    0.00000   100%     -    1s
+     0     0    0.00000    0  992 11053.8205    0.00000   100%     -    1s
+H    0     0                    11050.820479    0.00000   100%     -    1s
+H    0     0                    10770.124087    0.00000   100%     -    1s
+H    0     0                    10383.820479    0.00000   100%     -    1s
+     0     0    0.00000    0 1625 10383.8205    0.00000   100%     -    1s
+     0     0    0.00000    0 1625 10383.8205    0.00000   100%     -    1s
+H    0     0                    10251.506771    0.00000   100%     -    2s
+H    0     0                    9692.8924138    0.00000   100%     -    2s
+     0     0    0.00000    0  626 9692.89241    0.00000   100%     -    2s
+H    0     0                    9690.8924138    0.00000   100%     -    2s
+H    0     0                    9546.4782003    0.00000   100%     -    2s
+     0     0    0.00000    0 1072 9546.47820    0.00000   100%     -    2s
+     0     0    0.00000    0  657 9546.47820    0.00000   100%     -    2s
+H    0     0                    9399.3999898    0.00000   100%     -    3s
+     0     0    0.00000    0  583 9399.39999    0.00000   100%     -    3s
+H    0     0                    8931.2953007    1.00000   100%     -    3s
+     0     2    1.00000    0  581 8931.29530    1.00000   100%     -    3s
+H  114    96                    8798.3470325    1.00000   100%   416    4s
+   158   127  211.00000   19  157 8798.34703    1.00000   100%   337    5s
+H  200   162                    8771.8373645    1.00000   100%   285    5s
+H  201   162                    8734.3470325    1.00000   100%   284    5s
+H  203   162                    8627.3398898    1.00000   100%   286    5s
+H  240   201                    8557.8180285    1.00000   100%   260    5s
+H  285   242                    8382.5682451    1.00000   100%   244    5s
+H  404   369                    7884.5051866    1.00000   100%   201    5s
+H  749   615                    7523.5417665    1.00000   100%   155    6s
+H  804   662                    7479.0219972    1.00000   100%   150    6s
+H  811   658                    7313.4858506    1.00000   100%   149    6s
+H 1319  1097                    7302.9416947    1.00000   100%   118    7s
+H 1535  1250                    7202.9446533    1.00000   100%   111    8s
+H 1543  1250                    7189.3294296    1.00000   100%   110    8s
+H 1560  1250                    7082.7781310    1.00000   100%   111    8s
+H 1584  1250                    6967.0695450    1.00000   100%   111    8s
+  1590  1252  629.63099   22  570 6967.06954    1.00000   100%   110   10s
+H 1667  1242                    6965.6553314    1.00000   100%   125   10s
+H 2009  1489                    6787.9455198    1.00000   100%   114   11s
+H 2128  1440                    6751.0805128    1.00000   100%   114   11s
+H 2163  1517                    6735.0805128    1.00000   100%   114   12s
+H 2234  1443                    6728.4530958    1.00000   100%   117   12s
+H 2332  1388                    5745.2264736    1.00000   100%   115   12s
+H 2355  1334                    5628.1949443    1.00000   100%   115   12s
+H 2615  1442                    5573.0406153    1.00000   100%   114   13s
+H 2652  1388                    5546.6436457    1.00000   100%   114   13s
+H 2656  1346                    5433.1196924    1.00000   100%   114   13s
+H 2972  1473                    5377.9653634    1.00000   100%   110   14s
+H 3002  1427                    5334.0872965    1.00000   100%   109   14s
+H 3105  1570                    5314.2050455    1.00000   100%   108   14s
+H 3304  1472                    5310.2588694    1.00000   100%   104   14s
+  3330  1873 3602.55967  107   65 5310.25887    1.00000   100%   103   15s
+H 3842  1856                    5248.1268350    1.00000   100%  95.4   15s
+H 4850  2757                    5246.8131265    1.00000   100%  86.5   17s
+H 5359  3058                    5246.1562723    1.00000   100%  86.8   17s
+  6827  3949     cutoff   82      5246.15627    1.00000   100%  84.4   20s
+  9563  6642    1.00000   28  177 5246.15627    1.00000   100%  82.6   25s
+ 13772  8707 infeasible   73      5246.15627    1.00000   100%  76.1   30s
+ 19101 12268  286.67114   44  159 5246.15627    1.00000   100%  74.7   35s
+H20664 11346                    4280.1176003    1.00000   100%  74.9   37s
+H20698 12628                    4276.2891732    1.00000   100%  74.9   38s
+H21623 12583                    4267.8038918    1.00000   100%  74.0   38s
+H21809 12208                    4029.1773414    1.00000   100%  74.0   38s
+H22745 12893                    4010.9519446    1.00000   100%  73.7   39s
+ 23514 13845     cutoff   69      4010.95194    1.00000   100%  72.9   40s
+H24175 13843                    4010.4666633    1.00000   100%  72.7   40s
+H25408 13846                    3897.3295783    1.00000   100%  73.1   41s
+H25923 14583                    3817.3295783    1.00000   100%  73.2   42s
+H26919 15008                    3797.4473273    1.00000   100%  72.5   43s
+H26976 14645                    3665.0940803    1.00000   100%  72.5   43s
+H27107 14472                    3606.3295783    1.00000   100%  72.6   43s
+ 28695 15096 1083.37305   33  388 3606.32958    1.00000   100%  72.9   45s
+ 30486 16294 2656.63283   65  797 3606.32958    1.00000   100%  72.1   62s
+ 30493 16299 2255.67323   64 2285 3606.32958  119.57839  96.7%  72.1   65s
+ 30500 16303  558.35743   49 1941 3606.32958  119.57839  96.7%  72.1   70s
+ 30512 16313 3589.22672   56 3216 3606.32958  119.57839  96.7%  73.1   75s
+ 30518 16317  479.16147   55 3124 3606.32958  119.57839  96.7%  73.1   80s
+ 30524 16324  159.70929   37 1847 3606.32958  159.70929  95.6%  74.0   85s
+H30629 15577                    3594.0280631  218.67539  93.9%  75.1   86s
+H30663 14824                    3593.4422766  218.67539  93.9%  75.4   87s
+H30665 14087                    3577.5255378  218.67539  93.9%  75.4   87s
+ 31029 14253  844.63848   66 1240 3577.52554  218.67539  93.9%  76.5   90s
+ 31258 14318  904.71391   75 1363 3577.52554  218.67539  93.9%  76.9   95s
+ 31711 14397 2333.24237   63 1222 3577.52554  218.67539  93.9%  78.6  100s
+
+Cutting planes:
+  Learned: 3
+  Gomory: 4
+  Cover: 344
+  Implied bound: 996
+  Projected implied bound: 9
+  Clique: 1054
+  MIR: 50
+  StrongCG: 1
+  Flow cover: 349
+  GUB cover: 2
+  RLT: 16
+  Relax-and-lift: 517
+  BQP: 3
+
+Explored 31723 nodes (2502589 simplex iterations) in 100.09 seconds (115.23 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 3577.53 3593.44 3594.03 ... 4010.95
+
+Time limit reached
+Best objective 3.577525537769e+03, best bound 2.186753875969e+02, gap 93.8875%
+Warning: general constraint name "dvs_woDetour:v0->R704.2_absX" has a colon
+Optimization was stopped with status 9
+busMIN= 1479
+busDIFF= 474
+branchMIN= 345
+brancDIFF=524
+vp0=(883, 1537).
+Master:
+VM:detour_q:0|| VM_dist_cqs:[0 0]|| 
+detour_q:0|| dvv_cqs:[816 106]||
+o1 -451 461 1455 1992|| nonL:[1 0 1 1]|| dir_qs:[0 0 1 0]|| rel_qs:[0 0 0 0]|| relD_qs:[0 1 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[1 0 1 1]|| dir_qs:[0 0 1 0]|| rel_qs:[0 0 0 0]|| relD_qs:[0 1 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+vp0=(883, 1537)->R704.2:(976, 1228)
+d_v->CorrS= [93.0 216.0]|| || d_vi_sj = [93.0 216.0]|| 
+aux_vsDist_cqs=[93.0 309.0 93.0 216.0 -93.0 309.0 -216.0]: 347.5218613006979
+vs_detour_q:0|| R704.2
+o1_dir:[0, 0, 1, 0, 1, 0, 1, 0]|| _rel:[0, 0, 0, 1, 0, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:2|| 
+o2_dir:[0, 0, 1, 0, 1, 0, 1, 0]|| _rel:[0, 0, 0, 1, 0, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:2|| 
+
+vp0->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+vp1=(-39, 2353).
+detour_q:0|| dvv_cqs:[176 0]||
+o1 -451 461 1455 1992|| nonL:[1 1 0 1]|| dir_qs:[0 0 0 0]|| rel_qs:[0 0 0 0]|| relD_qs:[0 0 1 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[1 1 0 1]|| dir_qs:[1 0 0 0]|| rel_qs:[0 0 0 0]|| relD_qs:[0 0 1 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+vp1=(-39, 2353)->R2912.2:(-140, 2385)
+d_v->CorrS= [32.0 69.0]|| || d_vi_sj = [32.0 69.0]|| 
+aux_vsDist_cqs=[101.0 32.0 32.0 69.0 101.0 -32.0 69.0]: 114.25483399593904
+vs_detour_q:0|| R2912.2
+o1_dir:[1, 0, 0, 0, 1, 1, 0, 1]|| _rel:[0, 0, 0, 0, 0, 0, 1, 0]||_vs_sum_tL:1|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+o2_dir:[1, 0, 0, 0, 0, 1, 0, 1]|| _rel:[1, 0, 0, 0, 0, 0, 0, 0]||_vs_sum_tL:1|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+
+vp1->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+vp2=(-215, 2177).
+detour_q:0|| dvv_cqs:[0 164]||
+o1 -451 461 1455 1992|| nonL:[1 1 0 1]|| dir_qs:[0 0 0 0]|| rel_qs:[0 0 0 0]|| relD_qs:[0 0 1 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[0 1 1 1]|| dir_qs:[1 0 0 0]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+vp2=(-215, 2177)->U2500.A4:(-382, 2300)
+d_v->CorrS= [123.0 44.0]|| || d_vi_sj = [123.0 44.0]|| 
+aux_vsDist_cqs=[167.0 123.0 123.0 44.0 167.0 -123.0 44.0]: 217.9482681718907
+vs_detour_q:0|| U2500.A4
+o1_dir:[1, 0, 0, 0, 1, 1, 0, 1]|| _rel:[0, 0, 0, 0, 0, 0, 1, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+o2_dir:[1, 0, 0, 0, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+
+vp2->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+vp3=(-215, 2013).
+detour_q:0|| dvv_cqs:[437 0]||
+o1 -451 461 1455 1992|| nonL:[1 1 0 1]|| dir_qs:[0 0 0 0]|| rel_qs:[0 0 0 0]|| relD_qs:[0 0 1 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[0 1 1 1]|| dir_qs:[0 0 0 0]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+vp3=(-215, 2013)->U1901.C3:(-214, 2012)
+d_v->CorrS= [1.0 -0.0]|| || d_vi_sj = [1.0 -0.0]|| 
+aux_vsDist_cqs=[1.0 1.0 1.0 -0.0 -1.0 1.0 0.0]: 1.4142135623730951
+vs_detour_q:0|| U1901.C3
+o1_dir:[0, 0, 0, 0, 1, 1, 0, 1]|| _rel:[0, 0, 0, 0, 0, 0, 1, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+o2_dir:[0, 0, 0, 0, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+
+vp3->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+vp4=(-652, 1576).
+detour_q:0|| dvv_cqs:[0 93]||
+o1 -451 461 1455 1992|| nonL:[0 1 1 1]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[0 1 1 1]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+vp4=(-652, 1576)->U2501.A4:(-652, 1576)
+d_v->CorrS= [-0.0 -0.0]|| || d_vi_sj = [-0.0 -0.0]|| 
+aux_vsDist_cqs=[-0.0 -0.0 -0.0 -0.0 0.0 0.0 0.0]: -0.0
+vs_detour_q:0|| U2501.A4
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+o2_dir:[0, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:0|| _vs_sum_bR:0|| 
+
+vp4->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+vp5=(-652, 1483).
+detour_q:0|| dvv_cqs:[50 111]||
+o1 -451 461 1455 1992|| nonL:[0 1 1 1]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[0 1 1 1]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:0|| _sum_bR:0|| 
+vp5=(-652, 1483)->U5701.E2:(-562, 1393)
+d_v->CorrS= [90.0 -0.0]|| || d_vi_sj = [90.0 -0.0]|| 
+aux_vsDist_cqs=[90.0 90.0 90.0 -0.0 -90.0 90.0 0.0]: 127.27922061357856
+vs_detour_q:0|| U5701.E2
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:2|| _vs_sum_bR:0|| 
+o2_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:2|| _vs_sum_bR:0|| 
+
+vp5->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+vp6=(-813, 1433).
+detour_q:0|| dvv_cqs:[0 0]||
+o1 -451 461 1455 1992|| nonL:[0 1 1 0]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 1 0]|| relD_qs:[0 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:1|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[0 1 1 1]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:1|| _sum_bR:0|| 
+vp6=(-813, 1433)->U1702.A4:(-1014, 1427)
+d_v->CorrS= [6.0 195.0]|| || d_vi_sj = [6.0 195.0]|| 
+aux_vsDist_cqs=[201.0 6.0 6.0 195.0 201.0 6.0 195.0]: 203.48528137423858
+vs_detour_q:0|| U1702.A4
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:1|| _vs_sum_bR:0|| 
+o2_dir:[1, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:1|| _vs_sum_bR:0|| 
+
+vp6->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+vp7=(-813, 1433).
+detour_q:0|| dvv_cqs:[0 0]||
+o1 -451 461 1455 1992|| nonL:[0 1 1 0]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 1 0]|| relD_qs:[0 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:1|| _sum_bR:0|| 
+o2 -39 461 1400 2352|| nonL:[0 1 1 1]|| dir_qs:[0 0 0 1]|| rel_qs:[0 0 0 0]|| relD_qs:[1 0 0 0]|| _sum_tL:0|| _sum_tR:0|| _sum_bL:1|| _sum_bR:0|| 
+vp7=(-813, 1433)->U1701.B2:(-813, 1433)
+d_v->CorrS= [-0.0 -0.0]|| || d_vi_sj = [-0.0 -0.0]|| 
+aux_vsDist_cqs=[-0.0 -0.0 -0.0 -0.0 0.0 0.0 0.0]: -0.0
+vs_detour_q:0|| U1701.B2
+o1_dir:[0, 0, 0, 1, 0, 1, 1, 0]|| _rel:[0, 0, 1, 0, 0, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:1|| _vs_sum_bR:0|| 
+o2_dir:[0, 0, 0, 1, 0, 1, 1, 1]|| _rel:[0, 0, 0, 0, 1, 0, 0, 0]||_vs_sum_tL:0|| _vs_sum_tR:0|| _vs_sum_bL:1|| _vs_sum_bR:0|| 
+
+vp7->Slave Relevant AAAAAAAAAAAAAAAAAAAAAAAAAA
+Program Ends at: 2023/06/04 17:18:11.809
+Program Run Time is: 00:01:40.658
+
+进程已结束，退出代码为 0
