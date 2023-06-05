@@ -160,8 +160,8 @@ public class Processor {
         executor = new GurobiExecutor("LinearBusRouting_KO");
         executor.setMIPGap(0);
         executor.setMIPGapAbs(0);
-//        executor.setTimeLimit(100);
-        executor.setTimeLimit(7200);
+        executor.setTimeLimit(200);
+//        executor.setTimeLimit(7200);
 //        executor.setPresolve(0);
 
 
@@ -3286,171 +3286,105 @@ public class Processor {
 
 
         //tL
-        c = new GurobiConstraint();
-        c.setName("tL.1");
-        c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.setSense('<');
-        c.addToRHS(vp.rel_qs.get(o)[0], -4.0);
-        c.setRHSConstant(4.0);
-        executor.addConstraint(c);
-        c = new GurobiConstraint();
-        c.setName("tL.geq");
-        c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.rel_qs.get(o)[0], -1.0);
-        c.setRHSConstant(1.0);
-        executor.addConstraint(c);
+        allZeroBVars("tL", vp.rel_qs.get(o)[0], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[1], vp.dir_qs.get(o)[3], vp.auxRel_qs.get(o)[0])));
+        //nonL * nonT
+        linearizeProduct2BVars(vp.auxRel_qs.get(o)[0], vp.non_qs.get(o)[0], vp.non_qs.get(o)[2]);
 
 
         //tR
-        c = new GurobiConstraint();
-        c.setName("tR.1");
-        c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.setSense('<');
-        c.addToRHS(vp.rel_qs.get(o)[1], -4.0);
-        c.setRHSConstant(4.0);
-        executor.addConstraint(c);
-        c = new GurobiConstraint();
-        c.setName("tR.2");
-        c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.rel_qs.get(o)[1], -1.0);
-        c.setRHSConstant(1.0);
-        executor.addConstraint(c);
-
+        allZeroBVars("tR", vp.rel_qs.get(o)[1], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[2], vp.auxRel_qs.get(o)[1])));
+        //nonR * nonT
+        linearizeProduct2BVars(vp.auxRel_qs.get(o)[1], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2]);
 
         //bL
-        c = new GurobiConstraint();
-        c.setName("bL.1");
-        c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('<');
-        c.addToRHS(vp.rel_qs.get(o)[2], -4.0);
-        c.setRHSConstant(4.0);
-        executor.addConstraint(c);
-        c = new GurobiConstraint();
-        c.setName("bL.2");
-        c.addToLHS(vp.dir_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.rel_qs.get(o)[2], -1.0);
-        c.setRHSConstant(1.0);
-        executor.addConstraint(c);
+        allZeroBVars("bL", vp.rel_qs.get(o)[2], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[2], vp.auxRel_qs.get(o)[2])));
+        //nonL * nonB
+        linearizeProduct2BVars(vp.auxRel_qs.get(o)[2], vp.non_qs.get(o)[0], vp.non_qs.get(o)[3]);
 
 
         //bR
-        c = new GurobiConstraint();
-        c.setName("bR.1");
-        c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('<');
-        c.addToRHS(vp.rel_qs.get(o)[3], -4.0);
-        c.setRHSConstant(4.0);
-        executor.addConstraint(c);
-        c = new GurobiConstraint();
-        c.setName("bR.2");
-        c.addToLHS(vp.dir_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.dir_qs.get(o)[3], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.rel_qs.get(o)[3], -1.0);
-        c.setRHSConstant(1.0);
-        executor.addConstraint(c);
+        allZeroBVars("bR", vp.rel_qs.get(o)[3], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[1], vp.dir_qs.get(o)[3], vp.auxRel_qs.get(o)[3])));
+        //nonR * nonB
+        linearizeProduct2BVars(vp.auxRel_qs.get(o)[3], vp.non_qs.get(o)[1], vp.non_qs.get(o)[3]);
+
 
         //Directly Opposite Relations
         //L
-        c = new GurobiConstraint();
-        c.setName("dL.1");
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.relD_qs.get(o)[0], 3.0);
-        executor.addConstraint(c);
-        c = new GurobiConstraint();
-        c.setName("dL.2");
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('<');
-        c.addToRHS(vp.relD_qs.get(o)[0], 1.0);
-        c.setRHSConstant(2.0);
-        executor.addConstraint(c);
+        allOneBVars("dL", vp.relD_qs.get(o)[0], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[3], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
 
         //R
-        c = new GurobiConstraint();
-        c.setName("dR.1");
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.relD_qs.get(o)[1], 3.0);
-        executor.addConstraint(c);
-        c = new GurobiConstraint();
-        c.setName("dR.2");
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('<');
-        c.addToRHS(vp.relD_qs.get(o)[1], 1.0);
-        c.setRHSConstant(2.0);
-        executor.addConstraint(c);
+        allOneBVars("dR", vp.relD_qs.get(o)[1], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[1], vp.dir_qs.get(o)[2], vp.non_qs.get(o)[0],vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
+
 
         //T
-        c = new GurobiConstraint();
-        c.setName("dT.1");
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.relD_qs.get(o)[2], 3.0);
-        executor.addConstraint(c);
-        c = new GurobiConstraint();
-        c.setName("dT.2");
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[3], 1.0);
-        c.setSense('<');
-        c.addToRHS(vp.relD_qs.get(o)[2], 1.0);
-        c.setRHSConstant(2.0);
-        executor.addConstraint(c);
+        allOneBVars("dT", vp.relD_qs.get(o)[2], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[1], vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[3])));
 
         //B
+        allOneBVars("dB", vp.relD_qs.get(o)[3], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[2], vp.dir_qs.get(o)[3], vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2])));
+    }
+
+    private void allZeroBVars(String nickname, GurobiVariable targetVar, ArrayList<GurobiVariable> variables) {
+        GurobiConstraint c;
         c = new GurobiConstraint();
-        c.setName("dB.1");
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
-        c.setSense('>');
-        c.addToRHS(vp.relD_qs.get(o)[3], 3.0);
+        c.setName(nickname + "_leq");
+        for (GurobiVariable var: variables){
+            c.addToLHS(var, 1.0);
+        }
+        c.setSense('<');
+        c.addToRHS(targetVar, -variables.size());
+        c.setRHSConstant(variables.size());
         executor.addConstraint(c);
         c = new GurobiConstraint();
-        c.setName("dB.2");
-        c.addToLHS(vp.non_qs.get(o)[0], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[1], 1.0);
-        c.addToLHS(vp.non_qs.get(o)[2], 1.0);
+        c.setName(nickname + "_geq");
+        for (GurobiVariable var: variables){
+            c.addToLHS(var, 1.0);
+        }
+        c.setSense('>');
+        c.addToRHS(targetVar, -1.0);
+        c.setRHSConstant(1.0);
+        executor.addConstraint(c);
+    }
+
+    private void allOneBVars(String nickname, GurobiVariable targetVar,ArrayList<GurobiVariable> variables) {
+        GurobiConstraint c;
+
+        c = new GurobiConstraint();
+        c.setName(nickname + "_geq");
+        for (GurobiVariable var : variables){
+            c.addToLHS(var, 1.0);
+        }
+        c.setSense('>');
+        c.addToRHS(targetVar, variables.size());
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.setName(nickname + "_leq");
+        for (GurobiVariable var : variables){
+            c.addToLHS(var, 1.0);
+        }
         c.setSense('<');
-        c.addToRHS(vp.relD_qs.get(o)[3], 1.0);
-        c.setRHSConstant(2.0);
+        c.addToRHS(targetVar, 1.0);
+        c.setRHSConstant(variables.size() - 1.0);
+        executor.addConstraint(c);
+    }
+
+    private void linearizeProduct2BVars(GurobiVariable product, GurobiVariable var1, GurobiVariable var2) {
+        GurobiConstraint c;
+        c = new GurobiConstraint();
+        c.addToLHS(product, 1.0);
+        c.setSense('<');
+        c.addToRHS(var1, 1.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.addToLHS(product, 1.0);
+        c.setSense('<');
+        c.addToRHS(var2, 1.0);
+        executor.addConstraint(c);
+        c = new GurobiConstraint();
+        c.addToLHS(product, 1.0);
+        c.setSense('>');
+        c.addToRHS(var1, 1.0);
+        c.addToRHS(var2, 1.0);
+        c.setRHSConstant(-1.0);
         executor.addConstraint(c);
     }
 
@@ -3667,6 +3601,13 @@ public class Processor {
                 3: o_bR
                  */
                 vp.rel_qs.put(o, buildBinaryVar("v_" + i + ";" + o.getName() + "_rel_qs_", 4));
+                /*
+                0: nonL * nonT
+                1: nonR * nonT
+                2: nonL * nonB
+                3: nonR * nonB
+                 */
+                vp.auxRel_qs.put(o, buildBinaryVar("v_" + i + ";" + o.getName() + "_auxRel_qs_", 4));
                 /*
                 relD_qs
                 0: o_L
@@ -4619,36 +4560,36 @@ public class Processor {
          */
         int[] orel_q = new int[8];
         //UpperLeft
-        if (odir_q[3] + odir_q[1] + odir_q[4] + odir_q[6] == 0) {
+        if (odir_q[3] + odir_q[1] + odir_q[4] * odir_q[6] == 0) {
             orel_q[0] = 1;
         } else orel_q[0] = 0;
         //UpperRight
-        if (odir_q[0] + odir_q[2] + odir_q[5] + odir_q[6] == 0) {
+        if (odir_q[0] + odir_q[2] + odir_q[5] * odir_q[6] == 0) {
             orel_q[1] = 1;
         } else orel_q[1] = 0;
         //LowerLeft
-        if (odir_q[0] + odir_q[2] + odir_q[4] + odir_q[7] == 0) {
+        if (odir_q[0] + odir_q[2] + odir_q[4] * odir_q[7] == 0) {
             orel_q[2] = 1;
         } else orel_q[2] = 0;
         //LowerRight
-        if (odir_q[1] + odir_q[3] + odir_q[5] + odir_q[7] == 0) {
+        if (odir_q[1] + odir_q[3] + odir_q[5] * odir_q[7] == 0) {
             orel_q[3] = 1;
         } else orel_q[3] = 0;
 
         //d_Left
-        if (odir_q[5] + odir_q[6] + odir_q[7] == 3) {
+        if (odir_q[5] + odir_q[6] + odir_q[7] + odir_q[0] + odir_q[3] == 5) {
             orel_q[4] = 1;
         } else orel_q[4] = 0;
         //d_Right
-        if (odir_q[4] + odir_q[6] + odir_q[7] == 3) {
+        if (odir_q[4] + odir_q[6] + odir_q[7] + odir_q[1] + odir_q[2]== 5) {
             orel_q[5] = 1;
         } else orel_q[5] = 0;
         //d_Top
-        if (odir_q[4] + odir_q[5] + odir_q[7] == 3) {
+        if (odir_q[4] + odir_q[5] + odir_q[7] + odir_q[0] + odir_q[1]== 5) {
             orel_q[6] = 1;
         } else orel_q[6] = 0;
         //d_Bottom
-        if (odir_q[4] + odir_q[5] + odir_q[6] == 3) {
+        if (odir_q[4] + odir_q[5] + odir_q[6] + odir_q[2] + odir_q[3]== 5) {
             orel_q[7] = 1;
         } else orel_q[7] = 0;
 
