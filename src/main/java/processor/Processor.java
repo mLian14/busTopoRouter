@@ -23,12 +23,6 @@ public class Processor {
     private final static int M = 99999;
     private OutputDocument output;
 
-    enum SortType {
-        LeftToRight,
-        RightToLeft,
-        TopToBottom,
-        BottomToTop
-    }
 
     enum OppositeType {
         ul_lr,
@@ -91,6 +85,13 @@ public class Processor {
                 }
             }
         }
+        for (Obstacle o : obstacles){
+            for (PseudoBase corner : o.getBaseArray()){
+                for (Obstacle on : obstacles){
+
+                }
+            }
+        }
 
         for (Obstacle o : obstacles) {
             System.out.println(o.getName() + " " + o.getMinX() + " " + o.getMaxX() + " " + o.getMinY() + " " + o.getMaxY());
@@ -118,11 +119,21 @@ public class Processor {
         Compute the shortest path between each corner of each pair obstacles
          */
         obstacleCornerToCornerDistCalculation(obstacles);
+        for (Obstacle o : obstacles){
+            for (Obstacle on : obstacles){
+                if (!o.getName().equals(on.getName())) {
+                    System.out.println(o.getName() + "->" + on.getName());
+                    for (int i = 0; i < o.getOo_distMin().get(on).length; ++i) {
+                        System.out.println(i + ":" + o.getOo_distMin().get(on)[i] + " " + o.getOo_distXY().get(on)[i]);
+                    }
+                }
+
+            }
+        }
 
         /*
         Compute the shortest path between master/slave and each corner
          */
-        System.out.println("HALLO");
         for (Obstacle o : obstacles){
 
             //master
@@ -312,26 +323,6 @@ public class Processor {
                 System.out.print("dir_qs:" + convertGrbIntArrayToString(vp.dir_qs.get(o)) + "|| ");
                 System.out.print("rel_qs:" + convertGrbIntArrayToString(vp.rel_qs.get(o)) + "|| ");
                 System.out.print("relD_qs:" + convertGrbIntArrayToString(vp.relD_qs.get(o)) + "|| ");
-                int itmp = 0;
-                for (Obstacle on : o.get_tLObstacles()) {
-                    itmp += vp.rel_qs.get(on)[0].getIntResult();
-                }
-                System.out.print("_sum_tL:" + itmp + "|| ");
-                itmp = 0;
-                for (Obstacle on : o.get_tRObstacles()) {
-                    itmp += vp.rel_qs.get(on)[1].getIntResult();
-                }
-                System.out.print("_sum_tR:" + itmp + "|| ");
-                itmp = 0;
-                for (Obstacle on : o.get_bLObstacles()) {
-                    itmp += vp.rel_qs.get(on)[2].getIntResult();
-                }
-                System.out.print("_sum_bL:" + itmp + "|| ");
-                itmp = 0;
-                for (Obstacle on : o.get_bRObstacles()) {
-                    itmp += vp.rel_qs.get(on)[3].getIntResult();
-                }
-                System.out.println("_sum_bR:" + itmp + "|| ");
 
             }
             if (vp.detour_q.getIntResult() == 1) {
@@ -866,15 +857,18 @@ public class Processor {
         if (startO_qs[4] + endO_qs[5] == 2) {
             o_rel = true;
             type = OppositeType.l_r;
+            System.out.println("l->r:o");
         }
         if (startOn_qs[4] + endOn_qs[5] == 2) {
             on_rel = true;
             type = OppositeType.l_r;
+            System.out.println("l->r:on");
         }
         if (startO_qs[4] == 1 && o.get_dRObstacles().contains(on) && endOn_qs[5] == 1) {
             o_rel = true;
             on_rel = true;
             type = OppositeType.l_r;
+            System.out.println("l->r:indirect o,on");
         }
         if (type == OppositeType.l_r) {
             System.out.println("detourType=" + type);
@@ -2841,22 +2835,24 @@ public class Processor {
             c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[3] - 1.0);
             executor.addConstraint(c);
 
-            //1.ul->lr.1_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "ul->lr.1_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[0], 1.0);
-            c.setSense('>');
-            c.addToRHS(vp.rel_qs.get(o)[0], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[3] - 1.0);
-            executor.addConstraint(c);
-            //1.ul->lr.2_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "ul->lr.2_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[0], 2.0);
-            c.setSense('<');
-            c.addToRHS(vp.rel_qs.get(o)[0], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[3]);
-            executor.addConstraint(c);
+            if (!o.getName().equals(on.getName())) {
+                //1.ul->lr.1_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "ul->lr.1_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[0], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.rel_qs.get(o)[0], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[3] - 1.0);
+                executor.addConstraint(c);
+                //1.ul->lr.2_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "ul->lr.2_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[0], 2.0);
+                c.setSense('<');
+                c.addToRHS(vp.rel_qs.get(o)[0], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[3]);
+                executor.addConstraint(c);
+            }
 
         }
 
@@ -2877,22 +2873,24 @@ public class Processor {
             c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[0] - 1.0);
             executor.addConstraint(c);
 
-            //2.lr->ul.1_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "lr->ul.1_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[1], 1.0);
-            c.setSense('>');
-            c.addToRHS(vp.rel_qs.get(o)[3], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[0] - 1.0);
-            executor.addConstraint(c);
-            //2.lr->ul.2_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "lr->ul.2_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[1], 2.0);
-            c.setSense('<');
-            c.addToRHS(vp.rel_qs.get(o)[3], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[0]);
-            executor.addConstraint(c);
+            if (!o.getName().equals(on.getName())) {
+                //2.lr->ul.1_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "lr->ul.1_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[1], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.rel_qs.get(o)[3], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[0] - 1.0);
+                executor.addConstraint(c);
+                //2.lr->ul.2_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "lr->ul.2_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[1], 2.0);
+                c.setSense('<');
+                c.addToRHS(vp.rel_qs.get(o)[3], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[0]);
+                executor.addConstraint(c);
+            }
 
         }
 
@@ -2914,22 +2912,24 @@ public class Processor {
             c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[2] - 1.0);
             executor.addConstraint(c);
 
-            //3:ur->ll.1_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "ur->ll.1_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[2], 1.0);
-            c.setSense('>');
-            c.addToRHS(vp.rel_qs.get(o)[1], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[2] - 1.0);
-            executor.addConstraint(c);
-            //3:ur->ll.2_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "ur->ll.2_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[2], 2.0);
-            c.setSense('<');
-            c.addToRHS(vp.rel_qs.get(o)[1], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[2]);
-            executor.addConstraint(c);
+            if (!o.getName().equals(on.getName())) {
+                //3:ur->ll.1_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "ur->ll.1_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[2], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.rel_qs.get(o)[1], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[2] - 1.0);
+                executor.addConstraint(c);
+                //3:ur->ll.2_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "ur->ll.2_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[2], 2.0);
+                c.setSense('<');
+                c.addToRHS(vp.rel_qs.get(o)[1], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[2]);
+                executor.addConstraint(c);
+            }
 
 
         }
@@ -2953,22 +2953,24 @@ public class Processor {
             executor.addConstraint(c);
 
 
-            //4:ll->ur.1_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "ll->ur.1_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[3], 1.0);
-            c.setSense('>');
-            c.addToRHS(vp.rel_qs.get(o)[2], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[1] - 1.0);
-            executor.addConstraint(c);
-            //4:ll->ur.2_on
-            c = new GurobiConstraint();
-            c.setName(nickname + "ll->ur.2_on");
-            c.addToLHS(vpRelObstacle_qs.get(on)[3], 2.0);
-            c.setSense('<');
-            c.addToRHS(vp.rel_qs.get(o)[2], 1.0);
-            c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[1]);
-            executor.addConstraint(c);
+            if (!o.getName().equals(on.getName())) {
+                //4:ll->ur.1_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "ll->ur.1_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[3], 1.0);
+                c.setSense('>');
+                c.addToRHS(vp.rel_qs.get(o)[2], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[1] - 1.0);
+                executor.addConstraint(c);
+                //4:ll->ur.2_on
+                c = new GurobiConstraint();
+                c.setName(nickname + "ll->ur.2_on");
+                c.addToLHS(vpRelObstacle_qs.get(on)[3], 2.0);
+                c.setSense('<');
+                c.addToRHS(vp.rel_qs.get(o)[2], 1.0);
+                c.setRHSConstant(base.getPseudo_oRel_qs().get(on)[1]);
+                executor.addConstraint(c);
+            }
 
         }
 
@@ -3310,17 +3312,22 @@ public class Processor {
 
         //Directly Opposite Relations
         //L
-        allOneBVars("dL", vp.relD_qs.get(o)[0], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[3], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
+//        allOneBVars("dL", vp.relD_qs.get(o)[0], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[3], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
+        allOneBVars("dL", vp.relD_qs.get(o)[0], new ArrayList<>(Arrays.asList(vp.non_qs.get(o)[1], vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
 
         //R
-        allOneBVars("dR", vp.relD_qs.get(o)[1], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[1], vp.dir_qs.get(o)[2], vp.non_qs.get(o)[0],vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
+//        allOneBVars("dR", vp.relD_qs.get(o)[1], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[1], vp.dir_qs.get(o)[2], vp.non_qs.get(o)[0],vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
+        allOneBVars("dR", vp.relD_qs.get(o)[1], new ArrayList<>(Arrays.asList(vp.non_qs.get(o)[0],vp.non_qs.get(o)[2], vp.non_qs.get(o)[3])));
 
 
         //T
-        allOneBVars("dT", vp.relD_qs.get(o)[2], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[1], vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[3])));
+//        allOneBVars("dT", vp.relD_qs.get(o)[2], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[0], vp.dir_qs.get(o)[1], vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[3])));
+        allOneBVars("dT", vp.relD_qs.get(o)[2], new ArrayList<>(Arrays.asList(vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[3])));
 
         //B
-        allOneBVars("dB", vp.relD_qs.get(o)[3], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[2], vp.dir_qs.get(o)[3], vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2])));
+//        allOneBVars("dB", vp.relD_qs.get(o)[3], new ArrayList<>(Arrays.asList(vp.dir_qs.get(o)[2], vp.dir_qs.get(o)[3], vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2])));
+        allOneBVars("dB", vp.relD_qs.get(o)[3], new ArrayList<>(Arrays.asList(vp.non_qs.get(o)[0], vp.non_qs.get(o)[1], vp.non_qs.get(o)[2])));
+
     }
 
     private void allZeroBVars(String nickname, GurobiVariable targetVar, ArrayList<GurobiVariable> variables) {
@@ -4159,279 +4166,6 @@ public class Processor {
     }
 
 
-    public OppositeType relationDetermineRegardOs(ArrayList<Obstacle> relevantObstacles, PseudoBase cur_n, PseudoBase other_n) {
-
-        OppositeType type = OppositeType.NoDetour;
-        for (Obstacle cur_o : relevantObstacles) {
-            for (Obstacle other_o : relevantObstacles) {
-                //topL to bottomR
-                if (cur_o.topL_bottomR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[4] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[7] == 1) {
-                    type = OppositeType.ul_lr;
-                    break;
-                }
-                //bottomR to topL
-                if (cur_o.bottomR_topL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[7] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[4] == 1) {
-                    type = OppositeType.lr_ul;
-                    break;
-                }
-                //topR to bottomL
-                if (cur_o.topR_bottomL_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[5] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[6] == 1) {
-                    type = OppositeType.ur_ll;
-                    break;
-                }
-                //bottomL to topR
-                if (cur_o.bottomL_topR_oo(other_o) && cur_n.getPseudo_oRel_qs().get(cur_o)[6] == 1 && other_n.getPseudo_oRel_qs().get(other_o)[5] == 1) {
-                    type = OppositeType.ll_ur;
-                }
-
-
-            }
-        }
-
-
-        return type;
-    }
-
-    /**
-     * Sorted ArrayList of Obstacles according to the SortType
-     *
-     * @param targetObstacles ArrayList of Obstacles
-     * @param type            SortType
-     */
-    public void sortedObstacles(ArrayList<Obstacle> targetObstacles, SortType type) {
-
-        if (type == SortType.LeftToRight) {
-            for (int i = 0; i < targetObstacles.size(); ++i) {
-
-                boolean flag = true;
-                while (flag) {
-                    Obstacle cur_o = targetObstacles.get(i);
-                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
-                        Obstacle other_o = targetObstacles.get(j);
-                        if (cur_o.onLeft(other_o)) {
-                            Collections.swap(targetObstacles, i, j);
-                            break;
-                        }
-                        if (j == targetObstacles.size() - 1) {
-                            flag = false;
-                        }
-                    }
-                    if (i == targetObstacles.size() - 1) flag = false;
-                }
-            }
-
-        } else if (type == SortType.RightToLeft) {
-
-            for (int i = 0; i < targetObstacles.size(); ++i) {
-
-                boolean flag = true;
-                while (flag) {
-                    Obstacle cur_o = targetObstacles.get(i);
-                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
-                        Obstacle other_o = targetObstacles.get(j);
-                        if (cur_o.onRight(other_o)) {
-                            Collections.swap(targetObstacles, i, j);
-                            break;
-                        }
-                        if (j == targetObstacles.size() - 1) {
-                            flag = false;
-                        }
-                    }
-                    if (i == targetObstacles.size() - 1) flag = false;
-                }
-            }
-        } else if (type == SortType.TopToBottom) {
-
-            for (int i = 0; i < targetObstacles.size(); ++i) {
-
-                boolean flag = true;
-                while (flag) {
-                    Obstacle cur_o = targetObstacles.get(i);
-                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
-                        Obstacle other_o = targetObstacles.get(j);
-                        if (cur_o.onTop(other_o)) {
-                            Collections.swap(targetObstacles, i, j);
-                            break;
-                        }
-                        if (j == targetObstacles.size() - 1) {
-                            flag = false;
-                        }
-                    }
-                    if (i == targetObstacles.size() - 1) flag = false;
-                }
-            }
-        } else if (type == SortType.BottomToTop) {
-
-            for (int i = 0; i < targetObstacles.size(); ++i) {
-
-                boolean flag = true;
-                while (flag) {
-                    Obstacle cur_o = targetObstacles.get(i);
-                    for (int j = i + 1; j < targetObstacles.size(); ++j) {
-                        Obstacle other_o = targetObstacles.get(j);
-                        if (cur_o.onBottom(other_o)) {
-                            Collections.swap(targetObstacles, i, j);
-                            break;
-                        }
-                        if (j == targetObstacles.size() - 1) {
-                            flag = false;
-                        }
-                    }
-                    if (i == targetObstacles.size() - 1) flag = false;
-                }
-            }
-        }
-
-
-    }
-
-    private ArrayList<PseudoBase> parallelogramClockwise(PseudoBase cur_node, PseudoBase other_node) {
-        PseudoBase p1 = cur_node;
-        PseudoBase p3 = other_node;
-        PseudoBase p2 = null, p4 = null;
-        int dx = Math.abs(cur_node.getX() - other_node.getX());
-        int dy = Math.abs(cur_node.getY() - other_node.getY());
-        if (dx == dy || cur_node.getX() == other_node.getX() || cur_node.getY() == other_node.getY()) {
-            p2 = cur_node;
-            p4 = other_node;
-        } else {
-            int plusDY = (int) Math.max(dy * Math.signum(dx - dy), 0);
-            int plusDx = (int) Math.max(dx * Math.signum(dy - dx), 0);
-            //Case1: other -> lowerRight
-            if (other_node.getX() > cur_node.getX() && other_node.getY() < cur_node.getY()) {
-                p2 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() - plusDx);
-                p4 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
-            }
-            //Case2: other -> upperRight
-            else if (other_node.getX() > cur_node.getX() && other_node.getY() > cur_node.getY()) {
-                p2 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
-                p4 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() + plusDx);
-            }
-            //Case3: other -> upperLeft
-            else if (other_node.getX() < cur_node.getX() && other_node.getY() > cur_node.getY()) {
-                p4 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() - plusDx);
-                p2 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() + plusDx);
-            }
-            //Case 4: other -> lowerLeft
-            else if (other_node.getX() < cur_node.getX() && other_node.getY() < cur_node.getY()) {
-                p4 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() - plusDx);
-                p2 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() + plusDx);
-            } else {
-                System.err.println("Another Type of Parallelogram!!");
-                System.out.println("cur_node = (" + cur_node.getX() + ", " + cur_node.getY() + "), other_node = (" + other_node.getX() + ", " + other_node.getY() + ")");
-            }
-
-        }
-        ArrayList<PseudoBase> array = new ArrayList<PseudoBase>(Arrays.asList(p1, p2, p3, p4));
-        return array;
-    }
-
-    private ArrayList<Obstacle> overlappedObstacles(ArrayList<Obstacle> obstacles, PseudoBase cur_node, PseudoBase other_node, PseudoBase bypassNode, Obstacle cur_o, Obstacle other_o) {
-
-//        PseudoBase p1 = cur_node;
-//        PseudoBase p3 = other_node;
-//        PseudoBase p2 = null, p4 = null;
-//        int dx = Math.abs(cur_node.getX() - other_node.getX());
-//        int dy = Math.abs(cur_node.getY() - other_node.getY());
-//        if (dx == dy || cur_node.getX() == other_node.getX() || cur_node.getY() == other_node.getY()) {
-//            p2 = cur_node;
-//            p4 = other_node;
-//        } else {
-//            int plusDY = (int) Math.max(dy * Math.signum(dx - dy), 0);
-//            int plusDx = (int) Math.max(dx * Math.signum(dy - dx), 0);
-//            //Case1: other -> lowerRight
-//            if (other_node.getX() > cur_node.getX() && other_node.getY() < cur_node.getY()) {
-//                p2 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() - plusDx);
-//                p4 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
-//            }
-//            //Case2: other -> upperRight
-//            else if (other_node.getX() > cur_node.getX() && other_node.getY() > cur_node.getY()) {
-//                p2 = new PseudoBase(cur_node.getX() + plusDY, other_node.getY() - plusDx);
-//                p4 = new PseudoBase(other_node.getX() - plusDY, cur_node.getY() + plusDx);
-//            }
-//            //Case3: other -> upperLeft
-//            else if (other_node.getX() < cur_node.getX() && other_node.getY() > cur_node.getY()) {
-//                p4 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() - plusDx);
-//                p2 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() + plusDx);
-//            }
-//            //Case 4: other -> lowerLeft
-//            else if (other_node.getX() < cur_node.getX() && other_node.getY() < cur_node.getY()) {
-//                p4 = new PseudoBase(other_node.getX() + plusDY, cur_node.getY() - plusDx);
-//                p2 = new PseudoBase(cur_node.getX() - plusDY, other_node.getY() + plusDx);
-//            } else {
-//                System.err.println("Another Type of Parallelogram!!");
-//                System.out.println("cur_node = (" + cur_node.getX() + ", " + cur_node.getY() + "), other_node = (" + other_node.getX() + ", " + other_node.getY() + ")");
-//            }
-//
-//        }
-
-        ArrayList<Obstacle> overlappedO = new ArrayList<>();
-
-        for (Obstacle o : obstacles) {
-            //check if one of the edges of obstacles v.s., one of the edges of the parallelogram
-            if (segmentOverlappedObstacle(cur_node, bypassNode, o)) {
-                overlappedO.add(o);
-            }
-            if (segmentOverlappedObstacle(bypassNode, other_node, o)) {
-                overlappedO.add(o);
-            }
-        }
-
-
-        //Left -- Right
-        if (cur_node.getX() <= other_node.getX()) {
-            if (cur_node.getType() == BaseType.lowerRight || cur_node.getType() == BaseType.upperRight) {
-                overlappedO.remove(cur_o);
-            }
-            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.upperLeft) {
-                overlappedO.remove(other_o);
-            }
-        } else {
-            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.upperLeft) {
-                overlappedO.remove(cur_o);
-            }
-            if (other_node.getType() == BaseType.lowerRight || other_node.getType() == BaseType.upperRight) {
-                overlappedO.remove(other_o);
-            }
-        }
-        //Up -- Down
-        if (cur_node.getY() <= other_node.getY()) {
-            if (cur_node.getType() == BaseType.upperLeft || cur_node.getType() == BaseType.upperRight) {
-                overlappedO.remove(cur_o);
-            }
-            if (other_node.getType() == BaseType.lowerLeft || other_node.getType() == BaseType.lowerRight) {
-                overlappedO.remove(other_o);
-            }
-        } else {
-            if (cur_node.getType() == BaseType.lowerLeft || cur_node.getType() == BaseType.lowerRight) {
-                overlappedO.remove(cur_o);
-            }
-            if (other_node.getType() == BaseType.upperLeft || other_node.getType() == BaseType.upperRight) {
-                overlappedO.remove(other_o);
-            }
-
-        }
-
-        return overlappedO;
-    }
-
-    private boolean segmentOverlappedObstacle(PseudoBase node1, PseudoBase node2, Obstacle o) {
-        //node1_node2 vs o_LL_LR
-        if (doIntersect(node1, node2, o.getLowerLeft(), o.getLowerRight())) {
-            return true;
-        }
-        //node1_node2 vs o_LL_UL
-        if (doIntersect(node1, node2, o.getLowerLeft(), o.getUpperLeft())) {
-            return true;
-        }
-        //node1_node2 vs o_UR_UL
-        if (doIntersect(node1, node2, o.getUpperRight(), o.getUpperLeft())) {
-            return true;
-        }
-        //node1_node2 vs o_UR_LR
-        return doIntersect(node1, node2, o.getUpperRight(), o.getLowerRight());
-    }
-
 
     /**
      * Detect the direction and relation between known points, i.e., Master and Slaves, and obstacles.
@@ -4577,19 +4311,23 @@ public class Processor {
         } else orel_q[3] = 0;
 
         //d_Left
-        if (odir_q[5] + odir_q[6] + odir_q[7] + odir_q[0] + odir_q[3] == 5) {
+//        if (odir_q[5] + odir_q[6] + odir_q[7] + odir_q[0] + odir_q[3] == 5) {
+        if (odir_q[5] + odir_q[6] + odir_q[7] == 3) {
             orel_q[4] = 1;
         } else orel_q[4] = 0;
         //d_Right
-        if (odir_q[4] + odir_q[6] + odir_q[7] + odir_q[1] + odir_q[2]== 5) {
+//        if (odir_q[4] + odir_q[6] + odir_q[7] + odir_q[1] + odir_q[2]== 5) {
+        if (odir_q[4] + odir_q[6] + odir_q[7] == 3) {
             orel_q[5] = 1;
         } else orel_q[5] = 0;
         //d_Top
-        if (odir_q[4] + odir_q[5] + odir_q[7] + odir_q[0] + odir_q[1]== 5) {
+//        if (odir_q[4] + odir_q[5] + odir_q[7] + odir_q[0] + odir_q[1]== 5) {
+        if (odir_q[4] + odir_q[5] + odir_q[7] == 3) {
             orel_q[6] = 1;
         } else orel_q[6] = 0;
         //d_Bottom
-        if (odir_q[4] + odir_q[5] + odir_q[6] + odir_q[2] + odir_q[3]== 5) {
+//        if (odir_q[4] + odir_q[5] + odir_q[6] + odir_q[2] + odir_q[3]== 5) {
+        if (odir_q[4] + odir_q[5] + odir_q[6] == 3) {
             orel_q[7] = 1;
         } else orel_q[7] = 0;
 

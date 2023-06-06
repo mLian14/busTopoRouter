@@ -309,39 +309,6 @@ public class Obstacle {
         return minX == obstacle.minX && maxX == obstacle.maxX && minY == obstacle.minY && maxY == obstacle.maxY;
     }
 
-    public boolean onLeft(Obstacle other_o) {
-        return other_o.getMinX() < this.getMinX();
-    }
-
-    public boolean onRight(Obstacle other_o) {
-        return other_o.getMaxX() > this.getMaxX();
-    }
-
-    public boolean onTop(Obstacle other_o) {
-        return other_o.getMaxY() > this.getMaxY();
-    }
-
-    public boolean onBottom(Obstacle other_o) {
-        return other_o.getMinY() < this.getMinY();
-    }
-
-
-    public boolean topL_bottomR_oo(Obstacle other_o) {
-        return this.minX <= other_o.maxX && this.maxY >= other_o.maxY;
-    }
-
-    public boolean bottomR_topL_oo(Obstacle other_o) {
-        return this.maxX >= other_o.minX && this.minY <= other_o.maxY;
-    }
-
-    public boolean topR_bottomL_oo(Obstacle other_o) {
-        return this.maxX >= other_o.minX && this.maxY >= other_o.minY;
-    }
-
-    public boolean bottomL_topR_oo(Obstacle other_o) {
-        return this.minX <= other_o.maxX && this.minY <= other_o.maxY;
-    }
-
     public boolean aboveUp(PseudoBase base) {
         return base.getY() > this.gradient * (base.getX() - this.minX) + this.minY;
     }
