@@ -335,7 +335,7 @@ public class Obstacle {
 
     //Conference 45-degree Set
     public boolean atL(Obstacle other_o) {
-        return down_AreaOverlap(other_o) && this.aboveUp(other_o.getUpperLeft());
+        return down_AreaOverlap(other_o) && this.aboveUp(other_o.getLowerRight());
     }
 
     public boolean abR(Obstacle other_o) {
@@ -347,7 +347,7 @@ public class Obstacle {
     }
 
     public boolean abL(Obstacle other_o) {
-        return up_AreaOverlap(other_o) && this.belowDown(other_o.getLowerLeft());
+        return up_AreaOverlap(other_o) && this.belowDown(other_o.getUpperRight());
     }
 
     //Conference rectangular Set
