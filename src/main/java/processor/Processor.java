@@ -198,7 +198,7 @@ public class Processor {
         executor.setMIPGap(0);
         executor.setMIPGapAbs(0);
 //        executor.setTimeLimit(200);
-        executor.setTimeLimit(7200);
+        executor.setTimeLimit(36000);
 //        executor.setPresolve(0);
 
 
@@ -1883,9 +1883,9 @@ public class Processor {
                     }
 
                     //outCorner: vi -> o
-                    buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[0], vp.outCorner_qs.get(o), vp.rel_qs.get(o), vp.relD_qs.get(o), "v" + virtualPointVars.indexOf(vp) + "->o.Corner");
+                    //buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[0], vp.outCorner_qs.get(o), vp.rel_qs.get(o), vp.relD_qs.get(o), "v" + virtualPointVars.indexOf(vp) + "->o.Corner");
                     //inCorner: o -> vi
-                    buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[1], vp.inCorner_qs.get(o), vpN.rel_qs.get(o), vpN.relD_qs.get(o), "o.Corner->vNxt" + virtualPointVars.indexOf(vp));
+                    //buildCons_inOutCornerSelection(vp.inOutCnn_qs.get(o)[1], vp.inCorner_qs.get(o), vpN.rel_qs.get(o), vpN.relD_qs.get(o), "o.Corner->vNxt" + virtualPointVars.indexOf(vp));
 
 
                     //cnnRules.1: q_om->om = 0
@@ -2336,11 +2336,11 @@ public class Processor {
             }
 
             //vp->Base: outCorner: vi -> o
-            buildCons_inOutCornerSelection(inOutCnn_qs.get(o)[0], outCorner_qs.get(o), vp.rel_qs.get(o), vp.relD_qs.get(o), nickname + "->o.Corner");
+            //buildCons_inOutCornerSelection(inOutCnn_qs.get(o)[0], outCorner_qs.get(o), vp.rel_qs.get(o), vp.relD_qs.get(o), nickname + "->o.Corner");
             //vp->Base: inCorner: o -> pj
             int[] rel_q = Arrays.copyOfRange(base.getPseudo_oRel_qs().get(o), 0, 4);
             int[] relD_q = Arrays.copyOfRange(base.getPseudo_oRel_qs().get(o), base.getPseudo_oRel_qs().get(o).length - 4, base.getPseudo_oRel_qs().get(o).length);
-            buildCons_inOutCornerSelection(inOutCnn_qs.get(o)[1], inCorner_qs.get(o), rel_q, relD_q, nickname + "o.Corner->");
+            //buildCons_inOutCornerSelection(inOutCnn_qs.get(o)[1], inCorner_qs.get(o), rel_q, relD_q, nickname + "o.Corner->");
 
             //vp->Base:cnnRules.1: q_om->om = 0
             c = new GurobiConstraint();
