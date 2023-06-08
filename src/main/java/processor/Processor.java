@@ -108,8 +108,8 @@ public class Processor {
         executor = new GurobiExecutor("LinearBusRouting_KO");
         executor.setMIPGap(0);
         executor.setMIPGapAbs(0);
-        executor.setTimeLimit(100);
-//        executor.setTimeLimit(3600);
+//        executor.setTimeLimit(100);
+        executor.setTimeLimit(36000);
 //        executor.setPresolve(0);
 
 
@@ -1279,6 +1279,21 @@ public class Processor {
             for (PseudoBase sv : slaves) {
                 //sv.1
                 c_vsCnn.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+
+                //todo:let vp oder as the slave order
+                if (virtualPointVars.indexOf(vp) == slaves.indexOf(sv)){
+                    c = new GurobiConstraint();
+                    c.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+                    c.setSense('=');
+                    c.setRHSConstant(1.0);
+                    executor.addConstraint(c);
+                }else {
+                    c = new GurobiConstraint();
+                    c.addToLHS(vp.vsCnn_q.get(sv), 1.0);
+                    c.setSense('=');
+                    c.setRHSConstant(0.0);
+                    executor.addConstraint(c);
+                }
 
                 //add to branch length:
                 c_branchMin.addToRHS(vp.vs_corDist_cqs[0], 1.0);
