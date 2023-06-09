@@ -1331,7 +1331,7 @@ public class Processor {
         return Math.abs(Math.abs(base1.getX() - base2.getX()) - Math.abs(base1.getY() - base2.getY()));
     }
 
-    public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master, GurobiVariable busMin, GurobiVariable busXY, GurobiVariable branchMin, GurobiVariable branchDiff) throws GRBException {
+    public void buildCons(ArrayList<Obstacle> obstacles, ArrayList<VirtualPointVar> virtualPointVars, ArrayList<PseudoBase> slaves, PseudoBase master, GurobiVariable busMin, GurobiVariable busXY, GurobiVariable branchMin, GurobiVariable branchXY) throws GRBException {
         double minDist = 1;
 
         GurobiConstraint c;
@@ -1361,7 +1361,7 @@ public class Processor {
         //branchLength Difference
         GurobiConstraint c_branchXY = new GurobiConstraint();
         c_branchXY.setName("c_branchXY");
-        c_branchXY.addToLHS(branchDiff, 1.0);
+        c_branchXY.addToLHS(branchXY, 1.0);
         c_branchXY.setSense('=');
         executor.addConstraint(c_branchXY);
 
@@ -1910,7 +1910,7 @@ public class Processor {
                     c_obstacleInCnn.setSense('=');
                     c_obstacleInCnn.addToRHS(vp.inOutCnn_qs.get(o)[0], 1.0);
                     executor.addConstraint(c_obstacleInCnn);
-                    //vp->Base: cornerInOutCorner
+                    //vp->vp: cornerInOutCorner
                     c = new GurobiConstraint();
                     c.setName("_vpOutObstacleCorner");
                     c.addToLHS(vp.inOutCnn_qs.get(o)[0], 1.0);
